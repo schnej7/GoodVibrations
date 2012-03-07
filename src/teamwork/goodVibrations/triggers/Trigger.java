@@ -1,4 +1,4 @@
-package teamwork.goodVibrations;
+package teamwork.goodVibrations.triggers;
 
 public class Trigger
 {

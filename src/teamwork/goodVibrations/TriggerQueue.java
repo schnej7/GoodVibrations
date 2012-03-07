@@ -2,16 +2,19 @@ package teamwork.goodVibrations;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Set;
+
+import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue
 {
 	public PriorityQueue<Trigger> q;
-	private Trigger[] triggers;
+	private Set<Trigger> triggers;
 	
-	public TriggerQueue(Trigger[] t)
+	public TriggerQueue(Set<Trigger> set)
 	{
-		triggers = t;
-		q = new PriorityQueue<Trigger>(triggers.length, new Comparator<Trigger>()
+		triggers = set;
+		q = new PriorityQueue<Trigger>(triggers.size(), new Comparator<Trigger>()
 		{
 			@Override
 			public int compare(Trigger t1, Trigger t2)
