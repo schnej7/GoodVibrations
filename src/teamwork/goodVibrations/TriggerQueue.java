@@ -1,4 +1,4 @@
-package goodVibrations.test;
+package teamwork.goodVibrations;
 
 import java.util.Comparator;
 import java.util.PriorityQueue;
