@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue
@@ -16,7 +18,6 @@ public class TriggerQueue
 		triggers = set;
 		q = new PriorityQueue<Trigger>(triggers.size(), new Comparator<Trigger>()
 		{
-			@Override
 			public int compare(Trigger t1, Trigger t2)
 			{
 				if(t1.getNextPoll() == t2.getNextPoll())
@@ -33,11 +34,32 @@ public class TriggerQueue
 	}
 	public Trigger pop()
 	{
-		Trigger t = q.poll();
-		t.setNextPoll(t.getNextPoll() + t.getPollInterval()*1000000);
-		q.add(t);
-		return t;
+      try
+	  {
+        Trigger t = q.poll();
+        t.setNextPoll(t.getNextPoll() + t.getPollInterval()*1000000);
+        q.add(t);
+        return t;
+      }
+      catch(Exception e)
+      {
+        Log.w("vorsth","Queue is empty");
+        return null;
+      }
 	}
+	
+	public void finishTriggerExecution()
+	{
+		try
+		{
+		  q.poll();
+		}
+		catch(NullPointerException e)
+		{
+		  Log.w("vorsth","Queue is empty");
+		}
+	}
+	
 	public void initialize()
 	{
 		long n = System.nanoTime();
@@ -47,5 +69,11 @@ public class TriggerQueue
 			q.add(t);
 		}
 		triggers = null;
+	}
+	
+	public int size()
+	{
+		int s = q.size();
+		return s;
 	}
 }
