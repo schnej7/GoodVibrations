@@ -12,34 +12,16 @@ public class TimeTrigger implements Trigger
 
   public boolean addFunction(Function f)
   {
-    // TODO Auto-generated method stub
-    return false;
+    return true;
   }
-
+  
   public void removeFunction()
   {
-    // TODO Auto-generated method stub
-    
+   
   }
-
+  
   public void executeFunctions()
   {
-    // TODO Auto-generated method stub
     
   }
-
-public boolean addFunction(Function f)
-{
-  return true;
-}
-
-public void removeFunction()
-{
- 
-}
-
-public void executeFunctions()
-{
-  
-}
 }
