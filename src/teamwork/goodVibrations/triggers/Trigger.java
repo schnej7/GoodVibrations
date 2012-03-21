@@ -1,9 +1,12 @@
 package teamwork.goodVibrations.triggers;
 
+import java.util.ArrayList;
+
 public class Trigger
 {
 	private long pollInterval;
 	private long nextPoll;
+	private ArrayList<Integer> functionIDs;
 	public String name;
 	
 	public Trigger(String n, int t)
@@ -11,18 +14,22 @@ public class Trigger
 		name = n;
 		pollInterval = t;
 	}
+	
 	public long getPollInterval()
 	{
 		return pollInterval;
 	}
+	
 	public long getNextPoll()
 	{
 		return nextPoll;
 	}
+	
 	public void setNextPoll(long p)
 	{
 		nextPoll = p;
 	}
+	
 	@Override
 	public String toString()
 	{
