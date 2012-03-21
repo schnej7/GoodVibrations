@@ -1,10 +1,31 @@
 package teamwork.goodVibrations.triggers;
 
-public class TimeTrigger extends Trigger
+import teamwork.goodVibrations.functions.Function;
+
+public class TimeTrigger implements Trigger
 {
   
-public TimeTrigger()
-{
-}
+  public TimeTrigger()
+  {
+    
+  }
+
+  public boolean addFunction(Function f)
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  public void removeFunction()
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void executeFunctions()
+  {
+    // TODO Auto-generated method stub
+    
+  }
 
 }
