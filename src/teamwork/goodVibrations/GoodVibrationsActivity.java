@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class GoodVibrationsActivity extends Activity
 	public void onStart()
 	{
 		super.onStart();
+		Log.d("vorsth","Starting Service");
 		startService(new Intent(this, GoodVibrationsService.class));
+		Log.d("vorsth","Service Started");
 	}
 }
