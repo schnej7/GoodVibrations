@@ -2,13 +2,19 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/linearLayoutTrigger"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/textViewTrigger"
-            android:layout_width="wrap_content"
+        <Button
+            android:id="@+id/addTrigger"
+            android:layout_width="172dp"
             android:layout_height="wrap_content"
-            android:text="@string/triggers"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="Add Trigger" />
+
+        <ListView
+            android:id="@+id/listViewTriggers"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+        </ListView>
 
     </LinearLayout>
