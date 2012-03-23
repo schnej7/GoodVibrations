@@ -17,13 +17,6 @@ public class GoodVibrationsActivity extends TabActivity
 	{
 		super.onCreate(savedInstanceState);
 		//setContentView(R.layout.main_menu);
-	}
-
-	@Override
-	public void onStart()
-	{
-		super.onStart();
-		
 	    Resources res = getResources(); // Resource object to get Drawables
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
@@ -44,6 +37,14 @@ public class GoodVibrationsActivity extends TabActivity
 	    tabHost.addTab(spec);
 
 	    //tabHost.setCurrentTab(2);
+	}
+
+	@Override
+	public void onStart()
+	{
+		super.onStart();
+		
+
 
 
 	}
