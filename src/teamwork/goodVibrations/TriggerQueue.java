@@ -78,4 +78,10 @@ public class TriggerQueue
 		return s;
 	}
 	*/
+	//TODO Implement this
+	public void push(Trigger a_trigger) {}
+	//TODO Implement this
+	public Trigger pop(){return null;}
+	
+	
 }
