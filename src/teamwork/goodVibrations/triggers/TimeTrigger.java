@@ -24,4 +24,14 @@ public class TimeTrigger implements Trigger
   {
     
   }
+
+public int getNextExecutionTime() {
+	// TODO Auto-generated method stub
+	return 0;
+}
+
+public Integer[] getFunctions() {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
