@@ -169,7 +169,8 @@ public class GoodVibrationsService extends Service
 	  }
 	  else
 	  {
-	    msg.obj = new NULLFunction();  
+		  //TODO: fix this
+	    //msg.obj = new NULLFunction();  
 	  }
 	  
 	  Log.d("vorsth","Created Trigger");
