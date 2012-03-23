@@ -10,6 +10,7 @@ import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue
 {
+  /*
 	public PriorityQueue<Trigger> q;
 	private Set<Trigger> triggers;
 	
@@ -76,4 +77,5 @@ public class TriggerQueue
 		int s = q.size();
 		return s;
 	}
+	*/
 }
