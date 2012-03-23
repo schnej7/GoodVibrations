@@ -4,11 +4,14 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:orientation="vertical" >
+
         <Button
             android:id="@+id/addFunction"
-            android:layout_width="164dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Add Function" />
+            android:text="Add Function"
+            android:background="@drawable/btn_green"
+            style = "@style/ButtonText" />
 
         <ListView
             android:id="@+id/listViewFunctions"

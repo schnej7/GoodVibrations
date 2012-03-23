@@ -7,9 +7,11 @@
 
         <Button
             android:id="@+id/addTrigger"
-            android:layout_width="172dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Add Trigger" />
+            android:text="Add Trigger"
+            android:background="@drawable/btn_green"
+            style = "@style/ButtonText" />
 
         <ListView
             android:id="@+id/listViewTriggers"
