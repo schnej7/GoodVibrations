@@ -1,39 +1,32 @@
 package teamwork.goodVibrations;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 
 import teamwork.goodVibrations.functions.Function;
+import teamwork.goodVibrations.triggers.TimeTrigger;
 import teamwork.goodVibrations.triggers.Trigger;
 import teamwork.goodVibrations.functions.*;
 
-import android.app.PendingIntent;
 import android.app.Service;
-import android.app.AlarmManager;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.media.AudioManager;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Toast;
 
 public class GoodVibrationsService extends Service
 {
-  public static final String CUSTOM_INTENT = "teamwork.goodVibrations.custom.intent.action.TEST";
-	private ArrayList<Trigger> triggers;
-	private ArrayList<Function> functions;
-	private AlarmManager am;
+	private TriggerQueue triggers;          // Queue that holds all of the triggers
+	private ArrayList<Function> functions;  // List that holds all of the functions
 	
-	private Looper mServiceLooper;
+	private Looper mServiceLooper;          // Looper to handle the messages
 	private ServiceHandler mServiceHandler;
+		
+	private SettingsChanger changer;
 	
 	// Handler that receives messages from the thread
 	private final class ServiceHandler extends Handler
@@ -47,57 +40,77 @@ public class GoodVibrationsService extends Service
       {
         synchronized (this)
         {
-          int x = 1;
-          //while(triggers.size() > 0)
-          while(x < 0)
+          synchronized(triggers)
           {
-            try
+            changer.interrupt();
+            if(msg.arg2 == 1)
             {
-              /*
-              Trigger t = getNextTrigger(triggers);
-              ArrayList<Integer> triggerFuncs = getAllFunctionIds(t);
-              for(Integer f : triggerFuncs)
-              {
-                Function func = functions.get(f.intValue());
-                func.execute();
-              }
-              //t.setLastExecutionTime( )
-              int time = q.getSleepTimeMilli();
-              Log.d("vorsth","Sleeping for " + time);
-              
-              
-              */
-              Thread.sleep(500);
+              triggers.push((Trigger)msg.obj);
             }
-            catch(InterruptedException e)
+            else
             {
-              Log.d("vorsth", "INTERRUPTED");
-              e.printStackTrace();
-	        }
-            catch(Exception e)
-            {
-              Log.w("vorsth","Other Error in handleMessage");
-              Log.e("vorsth",e.toString());
+              functions.add((Function)msg.obj);
             }
-	      }
+          }
+          changer.run();
         }
         Log.d("vorsth","Stopping handle message");
         // Stop the service using the startId, so that we don't stop
         // the service in the middle of handling another job
         stopSelf(msg.arg1);
       }
-      
-	  private ArrayList<Integer> getAllFunctionIds(Trigger t)
-	  {
-        // TODO Auto-generated method stub
-        return null;
-	  }
-	  
-	  private Trigger getNextTrigger(ArrayList<Trigger> triggers)
-	  {
-        // TODO Auto-generated method stub
-        return null;
-	  }
+	}
+	
+	private class SettingsChanger extends Thread
+	{
+    public void run()
+    {
+      while(true)
+      {
+        Trigger t;
+        synchronized(triggers)
+        {
+          // Grab the next trigger that will execute
+          t = triggers.pop();
+        }
+        if(t != null) // Make sure we have a trigger to process
+        {
+          try
+          {
+            // Sleep for the time until the trigger will execute
+            Thread.sleep(t.getNextExecutionTime() - System.currentTimeMillis());
+            // Execute all of the functions for this trigger
+            for(Integer fID : t.getFunctions() )
+            {
+              functions.get(fID.intValue()).execute();
+            }
+            // Re-insert the trigger so that it gets executed again
+            synchronized(triggers)
+            {
+              triggers.push(t);
+            }
+          }
+          catch(InterruptedException e)
+          {
+            // If we were interrupted, re-insert the trigger so it is not lost
+            synchronized(triggers)
+            {
+              triggers.push(t);
+            }
+          }
+        }
+        else // t is null
+        {
+          try
+          {
+            Thread.sleep(10000); 
+          }
+          catch(InterruptedException e)
+          {         
+          }
+        }
+      } // End While
+    } // End run()
 	}
 
 	@Override
@@ -105,76 +118,68 @@ public class GoodVibrationsService extends Service
 	{
 		Log.d("vorsth","Calling onCreate");
 		
+		triggers  = new TriggerQueue();
 		functions = new ArrayList<Function>();
-		triggers = new ArrayList<Trigger>();
-		loadTriggers();
+		
+		// Only samples, need to be removed
+		functions.add(new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
+		functions.add(new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
+				
+		Log.d("vorsth","Added Function");
 		
 		// Start up the thread running the service.  Note that we create a
-    // separate thread because the service normally runs in the process's
-    // main thread, which we don't want to block.  We also make it
-    // background priority so CPU-intensive work will not disrupt our UI.
-    HandlerThread thread = new HandlerThread("ServiceStartArguments", 10);//Process.THREAD_PRIORITY_BACKGROUND);
-    thread.start();
-	    
-    // Get the HandlerThread's Looper and use it for our Handler 
-    mServiceLooper = thread.getLooper();
-    mServiceHandler = new ServiceHandler(mServiceLooper);
-    Log.d("vorsth","Finished onCreate");
-	}
-	
-	@Override
-	public void onStart(Intent intent, int id)
-	{
-	  Log.d("vorsth","Starting onStart");		
-    Log.d("vorsth","Finished onStart");
+	  // separate thread because the service normally runs in the process's
+	  // main thread, which we don't want to block.  We also make it
+	  // background priority so CPU-intensive work will not disrupt our UI.
+	  HandlerThread thread = new HandlerThread("ServiceStartArguments", 10);//Process.THREAD_PRIORITY_BACKGROUND);
+	  thread.start();
+	  
+	  Log.d("vorsth","Handler Started");
+	  
+	  changer = new SettingsChanger();
+	  changer.start();
+	  
+	  Log.d("vorsth","Settings Changer Started");
+	  
+	  // Get the HandlerThread's Looper and use it for our Handler 
+	  mServiceLooper = thread.getLooper();
+	  mServiceHandler = new ServiceHandler(mServiceLooper);
+	  Log.d("vorsth","Finished onCreate");
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
     Log.d("vorsth","Starting onStartCommand");
-            
     // For each start request, send a message to start a job and deliver the
 	  // start ID so we know which request we're stopping when we finish the job
+    
+    // TODO Parse the intent to determine message
+    
 	  Message msg = mServiceHandler.obtainMessage();
 	  msg.arg1 = startId;
+	  msg.arg2 = 1; // 1 - Trigger 2 - Function
+	  
+	  Log.d("vorsth","Messaged recieved");
+	  
+	  if(msg.arg2 == 1)
+	  {
+	    // Making a trigger
+	    msg.obj = new TimeTrigger();
+	  }
+	  else
+	  {
+	    msg.obj = new NULLFunction();  
+	  }
+	  
+	  Log.d("vorsth","Created Trigger");
+	  
 	  mServiceHandler.sendMessage(msg);
 	     
 	  Log.d("vorsth","Finished onStartCommand");
 	  
 	  // If we get killed, after returning from here, restart
 	  return START_STICKY;
-	}
-	
-	private void loadTriggers()
-	{
-	  Log.d("vorsth","Starting Load Triggers");
-		functions.add(new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		functions.add(new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		//triggers.add(new TimeTrigger());
-		
-		Log.d("vorsth","Added Functions");
-
-		String alarm = Context.ALARM_SERVICE;
-		AlarmManager am = ( AlarmManager ) getSystemService( alarm );
-
-		Intent intent = new Intent( "REFRESH_THIS" );
-		intent.putExtra("alarm_message", "Hello world");
-		PendingIntent pi = PendingIntent.getBroadcast( this, 0, intent, PendingIntent.FLAG_ONE_SHOT );
-		
-		int type = AlarmManager.ELAPSED_REALTIME_WAKEUP;
-		long interval = 3000;
-		long triggerTime = SystemClock.elapsedRealtime() + interval;
-		am.set( type, triggerTime, pi );
-		
-		/*
-		Intent intent2 = new Intent("REFRESH_THIS2");
-		intent2.putExtra("alarm_message","Goodbye world");
-		PendingIntent pi2 = PendingIntent.getBroadcast(this, 0, intent2, PendingIntent.FLAG_ONE_SHOT);
-		am.setRepeating(type, triggerTime + 1000, 8000, pi2);
-		*/
-		
-    Log.d("vorsth","Finished Load Triggers");
 	}
 	
 	@Override
