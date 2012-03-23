@@ -7,4 +7,6 @@ public interface Trigger
   boolean addFunction(Function f);
   void removeFunction();
   void executeFunctions();
+  int getNextExecutionTime();
+  Integer[] getFunctions();
 }
