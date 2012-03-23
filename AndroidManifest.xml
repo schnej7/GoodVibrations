@@ -8,7 +8,8 @@
 
     <application>
         <activity
-            android:name=".GoodVibrationsActivity" >
+            android:name=".GoodVibrationsActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -16,8 +17,10 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="TriggerDisplayActivity" />
-        <activity android:name="FunctionDisplayActivity" />
+        <activity android:name="TriggerDisplayActivity"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
+        <activity android:name="FunctionDisplayActivity" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         
         <service android:name=".GoodVibrationsService"></service>
         
