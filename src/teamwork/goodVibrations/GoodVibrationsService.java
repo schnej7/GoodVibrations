@@ -54,17 +54,8 @@ public class GoodVibrationsService extends Service
               functions.add((Function)msg.obj);
             }
           }
-          try
-          {
-            changer.join();
-          }
-          catch()
-          {
-            
-          }
           changer = new SettingsChanger();
           changer.start();
-          //changer.run();  // TODO Should this create a new SettingsChanger and start it?
         }
         Log.d("vorsth","Stopping handle message");
         // Stop the service using the startId, so that we don't stop
