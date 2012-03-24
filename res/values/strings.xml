@@ -16,6 +16,12 @@
 	    <item name="android:shadowDy">1</item>
 	    <item name="android:shadowRadius">2</item>
 	</style>
+	    <string name="name">Name</string>
+	    <string name="type">Type</string>
+	    <string name="volume">Ring Volume</string>
+	    <string name="vibrate">Vibrate</string>
+	    <string name="toneName">Ringtone</string>
+	    <string name="selectTone">Select Ringtone</string>
         
 </resources>
 
