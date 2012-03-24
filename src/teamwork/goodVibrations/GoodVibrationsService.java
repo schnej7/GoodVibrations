@@ -6,7 +6,7 @@ import teamwork.goodVibrations.functions.Function;
 import teamwork.goodVibrations.triggers.Trigger;
 import teamwork.goodVibrations.functions.*;
 
-import android.app.Service;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -116,6 +116,9 @@ public class GoodVibrationsService extends Service
 	{
 		map.put(new Trigger("pie 2000", 2000), new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
 		map.put(new Trigger("pie 4000", 4000), new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
+		
+		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		
 	}
 	
 	@Override
