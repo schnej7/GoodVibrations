@@ -1,20 +1,10 @@
 package teamwork.goodVibrations;
 
-import android.app.Activity;
 import android.app.TabActivity;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.os.Looper;
 import android.widget.TabHost;
-import android.widget.TabHost.TabSpec;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class GoodVibrationsActivity extends TabActivity
 {
@@ -25,9 +15,7 @@ public class GoodVibrationsActivity extends TabActivity
 	{
 		super.onCreate(savedInstanceState);
 
-		//setContentView(R.layout.main_menu);
-	    Resources res = getResources(); // Resource object to get Drawables
-	    TabHost tabHost = getTabHost();  // The activity TabHost
+		TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    Intent intent;  // Reusable Intent for each tab
 
