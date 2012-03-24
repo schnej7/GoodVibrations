@@ -54,7 +54,17 @@ public class GoodVibrationsService extends Service
               functions.add((Function)msg.obj);
             }
           }
-          changer.run();  // TODO Should this create a new SettingsChanger and start it?
+          try
+          {
+            changer.join();
+          }
+          catch()
+          {
+            
+          }
+          changer = new SettingsChanger();
+          changer.start();
+          //changer.run();  // TODO Should this create a new SettingsChanger and start it?
         }
         Log.d("vorsth","Stopping handle message");
         // Stop the service using the startId, so that we don't stop
@@ -67,17 +77,17 @@ public class GoodVibrationsService extends Service
 	{
     public void run()
     {
-      while(true)
+      Trigger t = null;
+      while(!currentThread().isInterrupted())
       {
-        Trigger t;
-        synchronized(triggers)
+        try
         {
-          // Grab the next trigger that will execute
-          t = triggers.pop();
-        }
-        if(t != null) // Make sure we have a trigger to process
-        {
-          try
+          synchronized(triggers)
+          {
+            // Grab the next trigger that will execute
+            t = triggers.pop();
+          }
+          if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
             Thread.sleep(t.getNextExecutionTime() - System.currentTimeMillis());
@@ -93,27 +103,30 @@ public class GoodVibrationsService extends Service
               triggers.push(t);
             }
           }
-          catch(InterruptedException e)
+          else // t is null because no trigger are in system
           {
-            // If we were interrupted, re-insert the trigger so it is not lost
-            synchronized(triggers)
+            try
             {
-              t.switchState();  // TODO Do we want to switch state here?
-              triggers.push(t);
+              Thread.sleep(10000); 
+            }
+            catch(InterruptedException e)
+            {         
             }
           }
         }
-        else // t is null
+        catch(InterruptedException e)
         {
-          try
-          {
-            Thread.sleep(10000); 
-          }
-          catch(InterruptedException e)
-          {         
-          }
         }
       } // End While
+      
+      // If we were interrupted, re-insert the trigger so it is not lost
+      synchronized(triggers)
+      {
+        if(t != null)  // Only push if a trigger was popped off earlier
+        {
+          triggers.push(t);
+        }
+      }
     } // End run()
 	}
 
