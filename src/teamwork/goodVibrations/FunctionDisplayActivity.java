@@ -37,7 +37,7 @@ public class FunctionDisplayActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
-			functionArrayAdapter.add(data.getExtras().getString("one"));
+			functionArrayAdapter.add(data.getExtras().getString(Constants.INTENT_KEY_NAME));
 		}
 		else{
 			Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
