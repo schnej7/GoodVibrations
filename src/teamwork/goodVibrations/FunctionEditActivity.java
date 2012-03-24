@@ -8,7 +8,10 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 
 public class FunctionEditActivity extends Activity{
@@ -29,11 +32,15 @@ public class FunctionEditActivity extends Activity{
 		
 		String array_spinner[];
 		array_spinner=new String[2];
-		array_spinner[0]="Volume";
-		array_spinner[1]="Ringtone";
+		array_spinner[Constants.FUNCTION_TYPE_VOLUME]="Volume";
+		array_spinner[Constants.FUNCTION_TYPE_RINGTONE]="Ringtone";
 		
 		final LinearLayout llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
 		final LinearLayout llRingtoneOptions = (LinearLayout) findViewById(R.id.llRingTone);
+		
+		final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
+		final CheckBox chkVibrate = (CheckBox) findViewById(R.id.chkVibrate);
+		final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
 		
 		final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
 		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.function_list_item, array_spinner);
@@ -64,8 +71,22 @@ public class FunctionEditActivity extends Activity{
 		final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
 	    buttonAdd.setOnClickListener(new View.OnClickListener() {
 	        public void onClick(View v) {
-	        	//TODO: add form data to the bundle
-	        	mIntent.putExtra("one", "number one");
+	        	int i = spinnerType.getSelectedItemPosition();
+	        	mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
+	        	mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+	        	switch(i){
+		        case 0:
+		        	//Use the volume fields
+		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, sliderVolume.getProgress());
+		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
+		        	break;
+		        case 1:
+		        	//Use the tone fields
+		        	break;
+		        default:
+		        	//Do nothing, this should never happen
+		        	break;
+		        }
 	    		setResult(RESULT_OK, mIntent);
 	    		finish();
 	        }
