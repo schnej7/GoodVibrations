@@ -21,6 +21,8 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" />
         <activity android:name="FunctionDisplayActivity" 
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
+        <activity android:name=".FunctionEditActivity" 
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"/>
         
         <service android:name=".GoodVibrationsService"></service>
         
