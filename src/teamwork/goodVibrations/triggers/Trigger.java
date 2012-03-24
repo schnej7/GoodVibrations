@@ -1,12 +1,13 @@
 package teamwork.goodVibrations.triggers;
 
+import java.util.ArrayList;
+
 import teamwork.goodVibrations.functions.Function;
 
 public interface Trigger
 {
-  boolean addFunction(Function f);
+  boolean addFunction(Integer f);
   void removeFunction();
-  void executeFunctions();
-  int getNextExecutionTime();
-  Integer[] getFunctions();
+  long getNextExecutionTime();
+  ArrayList<Integer> getFunctions();
 }
