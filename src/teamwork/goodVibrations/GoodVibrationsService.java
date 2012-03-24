@@ -81,7 +81,7 @@ public class GoodVibrationsService extends Service
           if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
-            Thread.sleep(t.getNextExecutionTime() - System.currentTimeMillis());
+            Thread.sleep(t.getNextExecutionTime());
             // Execute all of the functions for this trigger
             for(Integer fID : t.getFunctions() )
             {
@@ -174,7 +174,8 @@ public class GoodVibrationsService extends Service
 	  {
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
-	    TimeTrigger t = new TimeTrigger();
+	    long currentTimeInDay = Utils.getTimeOfDayInMillis();
+	    TimeTrigger t = new TimeTrigger(currentTimeInDay+5000,currentTimeInDay+10000,(byte)127);
 	    t.addFunction(TimeTrigger.START, new Integer(0));
 	    t.addFunction(TimeTrigger.STOP,  new Integer(1));
 	    msg.obj = t;
