@@ -15,7 +15,7 @@ public class TimeTrigger implements Trigger
   private int state;
   private ArrayList<int[]> daysActive;   // Holds the days that the trigger is active 1 for Sunday through 7 for Saturday
   
-  
+  // Constructor
   public TimeTrigger()
   {
     startFunctionIDs = new ArrayList<Integer>();
@@ -23,6 +23,7 @@ public class TimeTrigger implements Trigger
     state = STOP;
   }
   
+  // Adds a functionID to either the start or stop list
   public boolean addFunction(int type, Integer f)
   {
     if(type == START)
@@ -36,12 +37,14 @@ public class TimeTrigger implements Trigger
     return true;
   }
 
+  // Returns the next time in milliseconds that this trigger must execute
   public long getNextExecutionTime()
   {
     // TODO Implement so calculate based on the schedule 
     return System.currentTimeMillis() + 5000;
   }
 
+  // Gets the functions of the specified state
   public ArrayList<Integer> getFunctions(int type)
   {
     if(type == START)
@@ -55,6 +58,7 @@ public class TimeTrigger implements Trigger
     return null;
   }
   
+  // Gets the functions of the current state
   public ArrayList<Integer> getFunctions()
   {
     if(state == START)
@@ -68,6 +72,7 @@ public class TimeTrigger implements Trigger
     return null;
   }
   
+  // Changes the state of the trigger.  Should this be called automatically?
   public int switchState()
   {
     if(state == START)
@@ -84,22 +89,9 @@ public class TimeTrigger implements Trigger
   public void removeFunction(Integer id)
   {
     // TODO Auto-generated method stub
-    
   }
 
   public void removeFunction()
-  {
-    // TODO Auto-generated method stub
-    
-  }
-
-  public boolean addFunction(Function f)
-  {
-    // TODO Auto-generated method stub
-    return false;
-  }
-
-  public void executeFunctions()
   {
     // TODO Auto-generated method stub
     
