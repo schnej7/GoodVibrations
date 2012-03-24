@@ -87,6 +87,7 @@ public class GoodVibrationsService extends Service
             // Re-insert the trigger so that it gets executed again
             synchronized(triggers)
             {
+              t.switchState();
               triggers.push(t);
             }
           }
@@ -95,6 +96,7 @@ public class GoodVibrationsService extends Service
             // If we were interrupted, re-insert the trigger so it is not lost
             synchronized(triggers)
             {
+              t.switchState();
               triggers.push(t);
             }
           }
@@ -165,7 +167,10 @@ public class GoodVibrationsService extends Service
 	  if(msg.arg2 == 1)
 	  {
 	    // Making a trigger
-	    msg.obj = new TimeTrigger();
+	    TimeTrigger t = new TimeTrigger();
+	    t.addFunction(TimeTrigger.START, new Integer(0));
+	    t.addFunction(TimeTrigger.STOP,  new Integer(1));
+	    msg.obj = t;
 	  }
 	  else
 	  {
