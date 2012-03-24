@@ -1,7 +1,7 @@
 package teamwork.goodVibrations.triggers;
 
 import java.util.ArrayList;
-
+import android.app.*;
 public class Trigger
 {
 	private long pollInterval;
