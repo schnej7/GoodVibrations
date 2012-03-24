@@ -35,6 +35,8 @@ public class GoodVibrationsService extends Service
       {
           super(looper);
       }
+      
+      // Handles the message to add a trigger or a function
       @Override
       public void handleMessage(Message msg)
       {
@@ -52,7 +54,7 @@ public class GoodVibrationsService extends Service
               functions.add((Function)msg.obj);
             }
           }
-          changer.run();
+          changer.run();  // TODO Should this create a new SettingsChanger and start it?
         }
         Log.d("vorsth","Stopping handle message");
         // Stop the service using the startId, so that we don't stop
@@ -96,7 +98,7 @@ public class GoodVibrationsService extends Service
             // If we were interrupted, re-insert the trigger so it is not lost
             synchronized(triggers)
             {
-              t.switchState();
+              t.switchState();  // TODO Do we want to switch state here?
               triggers.push(t);
             }
           }
@@ -167,6 +169,7 @@ public class GoodVibrationsService extends Service
 	  if(msg.arg2 == 1)
 	  {
 	    // Making a trigger
+	    // TODO Build trigger from parsed message
 	    TimeTrigger t = new TimeTrigger();
 	    t.addFunction(TimeTrigger.START, new Integer(0));
 	    t.addFunction(TimeTrigger.STOP,  new Integer(1));
