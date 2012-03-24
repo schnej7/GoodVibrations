@@ -1,37 +1,46 @@
 package teamwork.goodVibrations.triggers;
 
-import teamwork.goodVibrations.functions.Function;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 public class TimeTrigger implements Trigger
 {
   
+  private ArrayList<Integer> functionIDs;
+  private ArrayList<int[]> daysActive;   // Holds the days that the trigger is active 1 for Sunday through 7 for Saturday
+  
+  
   public TimeTrigger()
   {
-    
+    functionIDs = new ArrayList<Integer>();
+    functionIDs.add(new Integer(0));
+    functionIDs.add(new Integer(1));
   }
-
-  public boolean addFunction(Function f)
+  
+  public boolean addFunction(Integer f)
   {
     return true;
   }
-  
-  public void removeFunction()
+
+  public long getNextExecutionTime()
   {
-   
+    return System.currentTimeMillis() + 5000;
   }
-  
-  public void executeFunctions()
+
+  public ArrayList<Integer> getFunctions()
   {
+    return functionIDs;
+  }
+
+  public void removeFunction(Integer id)
+  {
+    // TODO Auto-generated method stub
     
   }
 
-public int getNextExecutionTime() {
-	// TODO Auto-generated method stub
-	return 0;
-}
-
-public Integer[] getFunctions() {
-	// TODO Auto-generated method stub
-	return null;
-}
+  public void removeFunction()
+  {
+    // TODO Auto-generated method stub
+    
+  }
 }
