@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
@@ -20,6 +21,8 @@ import android.util.Log;
 
 public class GoodVibrationsService extends Service
 {
+  private static String TAG = "GoodVibrationsService";
+  
 	private TriggerQueue triggers;          // Queue that holds all of the triggers
 	private ArrayList<Function> functions;  // List that holds all of the functions
 	
@@ -57,7 +60,7 @@ public class GoodVibrationsService extends Service
           changer = new SettingsChanger();
           changer.start();
         }
-        Log.d("vorsth","Stopping handle message");
+        Log.d(TAG,"Stopping handle message");
         // Stop the service using the startId, so that we don't stop
         // the service in the middle of handling another job
         stopSelf(msg.arg1);
@@ -132,16 +135,22 @@ public class GoodVibrationsService extends Service
 	@Override
 	public void onCreate()
 	{
-		Log.d("vorsth","Calling onCreate");
+		Log.d(TAG,"Calling onCreate");
 		
 		triggers  = new TriggerQueue();
 		functions = new ArrayList<Function>();
 		
 		// Only samples, need to be removed
+		/*
 		functions.add(new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
 		functions.add(new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-				
-		Log.d("vorsth","Added Function");
+		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"THREE",3));
+		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"FIVE",5));
+		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"ONE",1));
+    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"SEVEN",7));
+	  */
+		
+		Log.d(TAG,"Added Function");
 		
 		// Start up the thread running the service.  Note that we create a
 	  // separate thread because the service normally runs in the process's
@@ -160,13 +169,13 @@ public class GoodVibrationsService extends Service
 	  // Get the HandlerThread's Looper and use it for our Handler 
 	  mServiceLooper = thread.getLooper();
 	  mServiceHandler = new ServiceHandler(mServiceLooper);
-	  Log.d("vorsth","Finished onCreate");
+	  Log.d(TAG,"Finished onCreate");
 	}
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
-    Log.d("vorsth","Starting onStartCommand");
+    Log.d(TAG,"Starting onStartCommand");
     // For each start request, send a message to start a job and deliver the
 	  // start ID so we know which request we're stopping when we finish the job
     
@@ -174,33 +183,54 @@ public class GoodVibrationsService extends Service
     
 	  Message msg = mServiceHandler.obtainMessage();
 	  msg.arg1 = startId;
-	  msg.arg2 = 1; // 1 - Trigger 2 - Function
 	  
-	  Log.d("vorsth","Messaged recieved");
+	  Log.d(TAG,"Messaged recieved");
 	  
+	  Bundle b = intent.getBundleExtra(Constants.INTENT_BUNDLE);
+	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
+	  
+	  Log.d(TAG,"Bundle Created");
+	  
+	  switch(type)
+	  {   
+	    // Add a new volume function
+	    case Constants.FUNCTION_TYPE_VOLUME:
+	      functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
+	      break;
+	      
+	    // Add a new 
+	    case Constants.FUNCTION_TYPE_RINGTONE:
+	      break;
+	      
+      default:
+        //Should never happen
+	  }
+	  
+	  /*
 	  if(msg.arg2 == 1 && intent.getExtras().getInt("id") == 1)
 	  {
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
 	    TimeTrigger t = new TimeTrigger(5000,10000,(byte)127);
-	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(0));
-	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(1));
+	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(4));
+	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(5));
 	    msg.obj = t;
 	  }
 	  else
 	  {
-	    TimeTrigger t = new TimeTrigger(15000,20000,(byte)0);
-      t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(1));
-      t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(0));
+	    TimeTrigger t = new TimeTrigger(15000,20000,(byte)127);
+      t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(2));
+      t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(3));
       msg.obj = t;
 		  //TODO: fix this
 	    //msg.obj = new NULLFunction();  
 	  }
-	  
-	  Log.d("vorsth","Created Trigger");
+	  */
 	  
 	  mServiceHandler.sendMessage(msg);
     
+	  Log.d(TAG,"onStartCommand() Finished");
+	  
 	  // If we get killed, after returning from here, restart
 	  return START_STICKY;
 	}
