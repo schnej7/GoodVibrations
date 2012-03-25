@@ -37,7 +37,12 @@ public class FunctionDisplayActivity extends Activity {
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
-			functionArrayAdapter.add(data.getExtras().getString(Constants.INTENT_KEY_NAME));
+		  Bundle b = data.getExtras();
+			functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
+			// Create the intent that gets sent to the service
+			Intent i = new Intent(this,GoodVibrationsService.class);
+			i.putExtra(Constants.INTENT_BUNDLE, b);
+			startService(i);
 		}
 		else{
 			Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
