@@ -5,5 +5,5 @@
   android:layout_width="fill_parent"
   android:layout_height="fill_parent"
   android:textAppearance="?android:attr/textAppearanceLarge"
-  android:textColor="#000">
+  android:textColor="#FFF">
 </TextView>

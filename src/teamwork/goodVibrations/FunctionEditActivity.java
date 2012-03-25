@@ -43,7 +43,7 @@ public class FunctionEditActivity extends Activity{
 		final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
 		
 		final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
-		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.function_list_item, array_spinner);
+		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
 		spinnerType.setAdapter(spinnerAdapter);
 		spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 			public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) { 
