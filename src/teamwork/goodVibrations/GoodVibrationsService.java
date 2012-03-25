@@ -69,6 +69,7 @@ public class GoodVibrationsService extends Service
     public void run()
     {
       Trigger t = null;
+      boolean executed = false;
       while(!currentThread().isInterrupted())
       {
         try
@@ -83,14 +84,21 @@ public class GoodVibrationsService extends Service
             // Sleep for the time until the trigger will execute
             Thread.sleep(t.getNextExecutionTime());
             // Execute all of the functions for this trigger
-            for(Integer fID : t.getFunctions() )
+            if(t.canExecute())
             {
-              functions.get(fID.intValue()).execute();
+              executed = true;
+              for(Integer fID : t.getFunctions() )
+              {
+                functions.get(fID.intValue()).execute();
+              }
             }
             // Re-insert the trigger so that it gets executed again
             synchronized(triggers)
             {
-              t.switchState();
+              if(executed)
+              {
+                t.switchState();
+              }
               triggers.push(t);
             }
           }
@@ -170,18 +178,21 @@ public class GoodVibrationsService extends Service
 	  
 	  Log.d("vorsth","Messaged recieved");
 	  
-	  if(msg.arg2 == 1)
+	  if(msg.arg2 == 1 && intent.getExtras().getInt("id") == 1)
 	  {
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
-	    long currentTimeInDay = Utils.getTimeOfDayInMillis();
-	    TimeTrigger t = new TimeTrigger(currentTimeInDay+5000,currentTimeInDay+10000,(byte)127);
-	    t.addFunction(TimeTrigger.START, new Integer(0));
-	    t.addFunction(TimeTrigger.STOP,  new Integer(1));
+	    TimeTrigger t = new TimeTrigger(5000,10000,(byte)127);
+	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(0));
+	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(1));
 	    msg.obj = t;
 	  }
 	  else
 	  {
+	    TimeTrigger t = new TimeTrigger(15000,20000,(byte)0);
+      t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(1));
+      t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(0));
+      msg.obj = t;
 		  //TODO: fix this
 	    //msg.obj = new NULLFunction();  
 	  }
@@ -189,9 +200,7 @@ public class GoodVibrationsService extends Service
 	  Log.d("vorsth","Created Trigger");
 	  
 	  mServiceHandler.sendMessage(msg);
-	     
-	  Log.d("vorsth","Finished onStartCommand");
-	  
+    
 	  // If we get killed, after returning from here, restart
 	  return START_STICKY;
 	}
