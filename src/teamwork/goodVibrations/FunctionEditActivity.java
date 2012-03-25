@@ -1,7 +1,9 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -69,28 +71,35 @@ public class FunctionEditActivity extends Activity{
 		});
 		
 		final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
-	    buttonAdd.setOnClickListener(new View.OnClickListener() {
-	        public void onClick(View v) {
+	    buttonAdd.setOnClickListener(new View.OnClickListener()
+	    {
+	        public void onClick(View v)
+	        {
 	        	int i = spinnerType.getSelectedItemPosition();
 	        	mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
 	        	mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
-	        	switch(i){
-		        case 0:
-		        	//Use the volume fields
-		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, sliderVolume.getProgress());
-		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
-		        	break;
-		        case 1:
-		        	//Use the tone fields
-		        	break;
-		        default:
-		        	//Do nothing, this should never happen
-		        	break;
+	        	switch(i)
+	        	{
+  		        case 0:
+  		        	// Use the volume fields
+  		          // Convert 0-99 volume to 0 to MaxVol
+  		          float progress = (float)sliderVolume.getProgress();
+  		          float maxVol = (float)((AudioManager)getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
+  		          int volume = (int) Math.round(maxVol*(progress/100.0));
+  		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
+  		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
+  		        	break;
+  		        case 1:
+  		        	//Use the tone fields
+  		          mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
+  		        	break;
+  		        default:
+  		        	//Do nothing, this should never happen
+  		        	break;
 		        }
-	    		setResult(RESULT_OK, mIntent);
-	    		finish();
+	        	setResult(RESULT_OK, mIntent);
+	        	finish();
 	        }
 	    });
 	}
-
 }
