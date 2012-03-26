@@ -22,6 +22,24 @@
 	    <string name="vibrate">Vibrate</string>
 	    <string name="toneName">Ringtone</string>
 	    <string name="selectTone">Select Ringtone</string>
+	    <string name="setFunctions">Set Functions</string>
+	    <string name="done">Done</string>
+	    <!-- for time triggers-->
+	    <string name="startTime">Start Time</string>
+	    <string name="endTime">End Time</string>
+	    <string name="addTimeTrigger">Add Time Trigger</string>
+	    <string name="setTimes">Set Start and End Times</string>
+	    <string name="repeat">Repeat?</string>
+	    <string name="mon">Monday</string>
+	    <string name="tues">Tuesday</string>
+	    <string name="wed">Wednesday</string>
+	    <string name="thurs">Thursday</string>
+	    <string name="fri">Friday</string>
+	    <string name="sat">Saturday</string>
+	    <string name="sun">Sunday</string>
+	    <string name="repeatWeekly">Repeat Weekly?</string>
+	    <!-- for location triggers -->
+	    <string name="addLocTrigger">Add Location Trigger</string>
         
 </resources>
 
