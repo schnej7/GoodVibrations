@@ -22,8 +22,10 @@ public class TriggerDisplayActivity extends Activity {
         listView.setAdapter(triggerArrayAdapter);
         
         final Button buttonAdd = (Button) findViewById(R.id.addTrigger);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
+        buttonAdd.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
             	triggerArrayAdapter.add("NEW TRIGGER!");
             }
         });
