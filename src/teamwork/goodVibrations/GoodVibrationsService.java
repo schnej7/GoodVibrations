@@ -48,13 +48,9 @@ public class GoodVibrationsService extends Service
           synchronized(triggers)
           {
             changer.interrupt();
-            if(msg.arg2 == 1)
+            if(msg.arg2 == Constants.TRIGGER_TYPE)
             {
               triggers.push((Trigger)msg.obj);
-            }
-            else
-            {
-              functions.add((Function)msg.obj);
             }
           }
           changer = new SettingsChanger();
@@ -179,8 +175,6 @@ public class GoodVibrationsService extends Service
     // For each start request, send a message to start a job and deliver the
 	  // start ID so we know which request we're stopping when we finish the job
     
-    // TODO Parse the intent to determine message
-    
 	  Message msg = mServiceHandler.obtainMessage();
 	  msg.arg1 = startId;
 	  
@@ -195,7 +189,7 @@ public class GoodVibrationsService extends Service
 	  if(intentType == Constants.FUNCTION_TYPE)
 	  {
 	    switch(type)
-	    {   
+	    {
 	      // Add a new volume function
 	      case Constants.FUNCTION_TYPE_VOLUME:
 	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
@@ -203,11 +197,15 @@ public class GoodVibrationsService extends Service
 	        
 	      // Add a new ring tone function 
 	      case Constants.FUNCTION_TYPE_RINGTONE:
+	        Log.d(TAG, "New Ringtone Function");
+	        functions.add( new RingtoneFunction(this) );
 	        break;
 	        
 	      default:
+	        Log.d(TAG, "Default Function");
 	        break;
 	    }
+	    
 	  }
 	  else if(intentType == Constants.TRIGGER_TYPE)
 	  {
@@ -222,6 +220,10 @@ public class GoodVibrationsService extends Service
         default:
           //Should never happen
       }
+	    
+	    msg.arg2 = Constants.TRIGGER_TYPE;
+	    mServiceHandler.sendMessage(msg);
+	    
 	  }
 	  	  
 	  /*
@@ -244,8 +246,6 @@ public class GoodVibrationsService extends Service
 	    //msg.obj = new NULLFunction();  
 	  }
 	  */
-	  
-	  mServiceHandler.sendMessage(msg);
     
 	  Log.d(TAG,"onStartCommand() Finished");
 	  
