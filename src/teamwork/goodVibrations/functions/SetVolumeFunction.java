@@ -33,7 +33,15 @@ public class SetVolumeFunction implements Function
   public void execute()
   {
     AM.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI);
-    // TODO Handle Vibrate setting
+    if(vibrate)
+    {
+      AM.setVibrateSetting(AudioManager.STREAM_RING,AudioManager.VIBRATE_SETTING_ON);
+    }
+    else
+    {
+      AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_OFF);
+    }
+
     Log.d(TAG,"execute() - Setting to " + volume);
   }
 
