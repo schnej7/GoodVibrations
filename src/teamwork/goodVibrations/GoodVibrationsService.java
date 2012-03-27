@@ -187,25 +187,43 @@ public class GoodVibrationsService extends Service
 	  Log.d(TAG,"Messaged recieved");
 	  
 	  Bundle b = intent.getBundleExtra(Constants.INTENT_BUNDLE);
+	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
 	  
 	  Log.d(TAG,"Bundle Created");
 	  
-	  switch(type)
-	  {   
-	    // Add a new volume function
-	    case Constants.FUNCTION_TYPE_VOLUME:
-	      functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
-	      break;
-	      
-	    // Add a new 
-	    case Constants.FUNCTION_TYPE_RINGTONE:
-	      break;
-	      
-      default:
-        //Should never happen
+	  if(intentType == Constants.FUNCTION_TYPE)
+	  {
+	    switch(type)
+	    {   
+	      // Add a new volume function
+	      case Constants.FUNCTION_TYPE_VOLUME:
+	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
+	        break;
+	        
+	      // Add a new ring tone function 
+	      case Constants.FUNCTION_TYPE_RINGTONE:
+	        break;
+	        
+	      default:
+	        break;
+	    }
 	  }
-	  
+	  else if(intentType == Constants.TRIGGER_TYPE)
+	  {
+	    switch(type)
+      {   
+        case Constants.TRIGGER_TYPE_TIME:
+          break;
+          
+        case Constants.TRIGGER_TYPE_LOCATION:
+          break;
+          
+        default:
+          //Should never happen
+      }
+	  }
+	  	  
 	  /*
 	  if(msg.arg2 == 1 && intent.getExtras().getInt("id") == 1)
 	  {
