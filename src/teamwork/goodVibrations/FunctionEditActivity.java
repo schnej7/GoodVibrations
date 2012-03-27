@@ -86,6 +86,7 @@ public class FunctionEditActivity extends Activity{
   		          float progress = (float)sliderVolume.getProgress();
   		          float maxVol = (float)((AudioManager)getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
   		          int volume = (int) Math.round(maxVol*(progress/100.0));
+  		          mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
   		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
   		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
   		        	break;
