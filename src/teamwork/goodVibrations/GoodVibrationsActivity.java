@@ -16,22 +16,22 @@ public class GoodVibrationsActivity extends TabActivity
 		super.onCreate(savedInstanceState);
 
 		TabHost tabHost = getTabHost();  // The activity TabHost
-	    TabHost.TabSpec spec;  // Reusable TabSpec for each tab
-	    Intent intent;  // Reusable Intent for each tab
+	  TabHost.TabSpec spec;  // Reusable TabSpec for each tab
+	  Intent intent;  // Reusable Intent for each tab
 
-	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, TriggerDisplayActivity.class);
+	  // Create an Intent to launch an Activity for the tab (to be reused)
+	  intent = new Intent().setClass(this, TriggerDisplayActivity.class);
 
-	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("triggers").setIndicator("Triggers").setContent(intent);
-	    tabHost.addTab(spec);
+	  // Initialize a TabSpec for each tab and add it to the TabHost
+	  spec = tabHost.newTabSpec("triggers").setIndicator("Triggers").setContent(intent);
+	  tabHost.addTab(spec);
 	    
-	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    intent = new Intent().setClass(this, FunctionDisplayActivity.class);
+	  // Create an Intent to launch an Activity for the tab (to be reused)
+	  intent = new Intent().setClass(this, FunctionDisplayActivity.class);
 
-	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("functions").setIndicator("Functions").setContent(intent);
-	    tabHost.addTab(spec);
+	  // Initialize a TabSpec for each tab and add it to the TabHost
+	  spec = tabHost.newTabSpec("functions").setIndicator("Functions").setContent(intent);
+	  tabHost.addTab(spec);
 	}
 	
 	@Override
