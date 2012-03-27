@@ -1,9 +1,14 @@
 package teamwork.goodVibrations;
 
+import java.util.Iterator;
+import java.util.Set;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +20,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class FunctionEditActivity extends Activity{
 	
@@ -27,7 +33,8 @@ public class FunctionEditActivity extends Activity{
 		setContentView(R.layout.function_edit_menu);
 	}
 	
-	protected void onStart(){
+	protected void onStart()
+	{
 		super.onStart();
 		Log.d(TAG, "onStart()");
 		mIntent = new Intent();
@@ -70,37 +77,65 @@ public class FunctionEditActivity extends Activity{
 		    }
 		});
 		
+		final Button buttonSelectRingtone = (Button)findViewById(R.id.buttonSelectRingtone);
+		buttonSelectRingtone.setOnClickListener( new View.OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+
+        startActivityForResult(i, 1); 
+      }
+    });
+		
 		final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
-	    buttonAdd.setOnClickListener(new View.OnClickListener()
-	    {
-	        public void onClick(View v)
-	        {
-	        	int i = spinnerType.getSelectedItemPosition();
-	        	mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
-	        	mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
-	        	switch(i)
-	        	{
-  		        case 0:
-  		        	// Use the volume fields
-  		          // Convert 0-99 volume to 0 to MaxVol
-  		          float progress = (float)sliderVolume.getProgress();
-  		          float maxVol = (float)((AudioManager)getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
-  		          int volume = (int) Math.round(maxVol*(progress/100.0));
-  		          mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
-  		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
-  		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
-  		        	break;
-  		        case 1:
-  		        	//Use the tone fields
-  		          mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
-  		        	break;
-  		        default:
-  		        	//Do nothing, this should never happen
-  		        	break;
-		        }
-	        	setResult(RESULT_OK, mIntent);
-	        	finish();
+    buttonAdd.setOnClickListener(new View.OnClickListener()
+    {
+        public void onClick(View v)
+        {
+        	int i = spinnerType.getSelectedItemPosition();
+        	mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
+        	mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        	switch(i)
+        	{
+		        case 0:
+		        	// Use the volume fields
+		          // Convert 0-99 volume to 0 to MaxVol
+		          float progress = (float)sliderVolume.getProgress();
+		          float maxVol = (float)((AudioManager)getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
+		          int volume = (int) Math.round(maxVol*(progress/100.0));
+		          mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
+		        	mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
+		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVibrate.isChecked());
+		        	break;
+		        case 1:
+		        	//Use the tone fields
+		          mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
+		        	break;
+		        default:
+		        	//Do nothing, this should never happen
+		        	break;
 	        }
-	    });
+        	setResult(RESULT_OK, mIntent);
+        	finish();
+        }
+    });
 	}
+	
+ @Override
+  protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if(resultCode==RESULT_OK)
+    {
+      Uri uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI); 
+      Log.d(TAG, "uri " + uri);
+      Toast.makeText(this, "" + uri, Toast.LENGTH_LONG).show();
+    }
+    else
+    {
+      Log.d(TAG, "RINGTONE RESULT FAIL");
+      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
+    }
+  }
+	
 }
