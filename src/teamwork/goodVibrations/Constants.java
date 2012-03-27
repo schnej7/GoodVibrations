@@ -6,8 +6,8 @@ public class Constants
   //public static long dayInMillis = 86400000;
   public static final long dayInMillis = 30000;
   public static final String INTENT_TYPE = "INTENT_TYPE";
-  public static final int TRIGGER_TYPE = 0;
-  public static final int FUNCTION_TYPE = 1;
+  public static final int FUNCTION_TYPE = 0;
+  public static final int TRIGGER_TYPE = 1;
   public static final int FUNCTION_TYPE_VOLUME = 0;
   public static final int FUNCTION_TYPE_RINGTONE = 1;
   public static final int TRIGGER_TYPE_TIME = 0;
