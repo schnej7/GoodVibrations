@@ -58,7 +58,7 @@ public class GoodVibrationsService extends Service
           {
             changer.join();
           }
-          catch()
+          catch(InterruptedException e)
           {
             
           }
