@@ -30,6 +30,7 @@ public class TriggerEditActivity extends Activity
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.add_trigger);
   }
+  
   protected void onStart()
   {
     super.onStart();
@@ -49,7 +50,7 @@ public class TriggerEditActivity extends Activity
   }
   
   @Override
-  protected void onActivity Result(int requestCode, int resultCode, Intent data)
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivtyResult(requestCode, resultCode, data);
     if(resultCode == RESULT_OK)
