@@ -30,8 +30,15 @@ public class Constants
   public static final String INTENT_KEY_VIBRATE = "KEYVIBE";
   public static final String INTENT_KEY_BUNDLE = "BUNDLE";
   public static final String INTENT_KEY_URI = "URI";
+  public static final String INTENT_KEY_LOCATION = "LOCATION";
+  public static final String INTENT_KEY_TIME = "TIME";
+  
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
+  
+  // Intent request codes.  Used in onActivityResult triggers to determine which activity was returned
+  public static final int REQUEST_CODE_LOCATION = 0;
+  public static final int REQUEST_CODE_TIME = 1;
   
 }

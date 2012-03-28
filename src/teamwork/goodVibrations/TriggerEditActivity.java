@@ -22,7 +22,6 @@ import android.widget.Toast;
 public class TriggerEditActivity extends Activity
 {
   private static final String TAG  = "TriggerEditActivity";
-  Intent mIntent;
   
   public void onCreate(Bundle savedInstanceState)
   {
@@ -34,8 +33,6 @@ public class TriggerEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    mIntent = new Intent();
-    
     final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
     buttonAddTimeTrigger.setOnClickListener(new View.OnClickListener()
     {
@@ -49,14 +46,19 @@ public class TriggerEditActivity extends Activity
   }
   
   @Override
-  protected void onActivity Result(int requestCode, int resultCode, Intent data)
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
-    super.onActivtyResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    super.onActivityResult(requestCode, resultCode, data);
+    if(resultCode==RESULT_OK)
     {
-      Bundle b = data.getExtras();
-      //send back to service
-      
+      // If the ringtone picker was returned
+      setResult(RESULT_OK, data);
+      finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+    }
+    else
+    {
+      Log.d(TAG, "RINGTONE RESULT FAIL");
+      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
     }
   }
 }
