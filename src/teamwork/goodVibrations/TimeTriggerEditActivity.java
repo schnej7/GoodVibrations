@@ -50,9 +50,8 @@ public class TimeTriggerEditActivity extends Activity
       
       public void onClick(View v)
       {
-        //sets the name in the intent
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
-        //start
+        Intent TimeTriggerSetTimesIntent = new Intent(getApplicationContext(), TimeTriggerSetTimesActivity.class);
+        startActivityForResult(TimeTriggerSetTimesIntent,0);
       }
     });
     

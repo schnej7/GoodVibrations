@@ -1,8 +1,11 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 public class TimeTriggerSetTimesActivity extends Activity
@@ -10,6 +13,32 @@ public class TimeTriggerSetTimesActivity extends Activity
 
   
   private static final String TAG = "TimeTriggerSetTimeActivity";
+  Intent mIntent;
+  
+  public void onCreate(Bundle savedInstanceState)
+  {
+    super.onCreate(savedInstanceState);
+    Log.d(TAG, "onCreate()");
+    setContentView(R.layout.set_times);
+  }
+  
+  protected void onStart()
+  {
+    super.onStart();
+    Log.d(TAG, "onStart()");
+    mIntent=new Intent();
+    
+    final TimePickerDialog.OnTimeSetListener timepicker = new TimePickerDialog.OnTimeSetListener()
+    {
+      
+      public void onTimeSet(TimePicker view, int hourOfDay, int minute)
+      {
+        //convert time using han's function
+        //put in intent
+        
+      }
+    };
+  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data){
