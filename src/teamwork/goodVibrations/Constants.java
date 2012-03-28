@@ -32,7 +32,7 @@ public class Constants
   public static final String INTENT_KEY_URI = "105";
   public static final String INTENT_KEY_LOCATION = "106";
   public static final String INTENT_KEY_TIME = "107";
-  
+  public static final String INTENT_KEY_RADIUS = "108";  
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
