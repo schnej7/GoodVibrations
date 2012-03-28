@@ -3,6 +3,7 @@ package teamwork.goodVibrations.triggers;
 import java.util.ArrayList;
 
 public interface Trigger
+
 {
   void removeFunction(Integer id);
   long getNextExecutionTime();
@@ -10,3 +11,4 @@ public interface Trigger
   void switchState();
   boolean canExecute();
 }
+

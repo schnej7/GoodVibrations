@@ -7,7 +7,7 @@ import teamwork.goodVibrations.triggers.TimeTrigger;
 import teamwork.goodVibrations.triggers.Trigger;
 import teamwork.goodVibrations.functions.*;
 
-import android.app.Service;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -52,6 +52,17 @@ public class GoodVibrationsService extends Service
             {
               triggers.push((Trigger)msg.obj);
             }
+            else
+            {
+              functions.add((Function)msg.obj);
+            }
+          }
+          try
+          {
+            changer.join();
+          }
+          catch(InterruptedException e)
+          {
           }
           changer = new SettingsChanger();
           changer.start();

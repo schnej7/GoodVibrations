@@ -70,15 +70,25 @@ public class LocationTrigger implements Trigger
 
   public long getNextExecutionTime()
   {
+	//Check location every 5 minutes
     return 300000;
   }
 
   public ArrayList<Integer> getFunctions()
   {
-    
+	if (lastLocation && !currentLocation)
+	{
+	   return exitFunctionIDs;
+	}
+	  
     if(currentLocation == lastLocation)
     {
       return null;
+    }
+    
+    if (!lastLocation && currentLocation)
+    {
+      return enterFunctionIDs;
     }
     
     return null;
@@ -91,12 +101,16 @@ public class LocationTrigger implements Trigger
 
   public boolean canExecute()
   {
+	//Get new location and calculate distance to target
     String bestProvider = LM.getBestProvider(criteria, false);
     Location recievedLocation = LM.getLastKnownLocation(bestProvider);
     
     double dist = recievedLocation.distanceTo(center); 
     
+    //make the current location the new location since we're updating current location
     lastLocation = currentLocation;
+    
+    //update location based in distance to target
     if(dist < radius)
     {
       currentLocation = true;
@@ -106,17 +120,20 @@ public class LocationTrigger implements Trigger
       currentLocation = false;
     }
     
-    if(lastLocation == false && dist < radius)
+    //Return true if we've moved into the target area
+    if(!lastLocation  && currentLocation)
     {
       currentLocation = true;
       return true;
     }
     
-    if(lastLocation == true && dist > radius)
+    //Also return true if we've moved out of the target area
+    if(lastLocation && !currentLocation)
     {
       return true;
     }
     
+    //otherwise, we haved moved in our out of target area
     if(currentLocation == lastLocation)
     {
       return false;
