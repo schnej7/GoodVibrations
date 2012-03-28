@@ -93,7 +93,7 @@ public class TimeTrigger implements Trigger
     
     int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
     
-    byte cDayOfWeek = getDayOfWeekBitMask(dayOfWeek);
+    byte cDayOfWeek = Utils.getDayOfWeekBitMask(dayOfWeek);
     
     // If current day is in daysActive
     if((daysActive & cDayOfWeek) != 0)
@@ -148,16 +148,6 @@ public class TimeTrigger implements Trigger
   public void removeFunction(Integer id)
   {
     // TODO Auto-generated method stub
-  }
-  
-  private byte getDayOfWeekBitMask(int dayOfWeek)
-  {
-    int res = 1;
-    for(int i = 1; i < dayOfWeek - 1; i++)
-    {
-      res = res * 2;
-    }
-    return (byte)res;
   }
   
 }
