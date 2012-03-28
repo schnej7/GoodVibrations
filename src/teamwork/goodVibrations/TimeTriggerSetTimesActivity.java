@@ -28,16 +28,8 @@ public class TimeTriggerSetTimesActivity extends Activity
     Log.d(TAG, "onStart()");
     mIntent=new Intent();
     
-    final TimePickerDialog.OnTimeSetListener timepicker = new TimePickerDialog.OnTimeSetListener()
-    {
-      
-      public void onTimeSet(TimePicker view, int hourOfDay, int minute)
-      {
-        //convert time using han's function
-        //put in intent
-        
-      }
-    };
+   //time pickers here
+
   }
 
   @Override
