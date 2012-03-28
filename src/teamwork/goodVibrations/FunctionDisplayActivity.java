@@ -55,9 +55,8 @@ public class FunctionDisplayActivity extends Activity
 		  }
 		  
 			// Create the intent that gets sent to the service
-			Intent i = new Intent(this,GoodVibrationsService.class);
-			i.putExtra(Constants.INTENT_KEY_BUNDLE, b);
-			startService(i); // Calls GoodVibrationsService.onStartCommand()
+		  data.setClass(this, GoodVibrationsService.class);
+			startService(data); // Calls GoodVibrationsService.onStartCommand()
 		}
 		else
 		{
