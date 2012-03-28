@@ -1,22 +1,12 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 public class TimeTriggerEditActivity extends Activity
@@ -50,15 +40,24 @@ public class TimeTriggerEditActivity extends Activity
       
       public void onClick(View v)
       {
-        //sets the name in the intent
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
         //start
       }
     });
     
     //final Button buttonSetFunctions = (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
     final Button buttonDone = (Button)findViewById(R.id.buttonTimeTriggerDone);
-    
+    buttonDone.setOnClickListener(new View.OnClickListener()
+    {
+      
+      public void onClick(View v)
+      {
+        //sets the name in the intent
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        //start
+        setResult(RESULT_OK, mIntent);
+        finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+      }
+    }); 
     
     
     
@@ -71,8 +70,14 @@ public class TimeTriggerEditActivity extends Activity
     if(resultCode==RESULT_OK)
     {
       // If the ring tone picker was returned
-      setResult(RESULT_OK, data);
-      finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+      Bundle b = data.getExtras();
+      mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
+      mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
+      if(b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL)){
+        //If there is also repeat days information
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+      }
     }
     else
     {
