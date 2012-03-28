@@ -40,7 +40,8 @@ public class TimeTriggerEditActivity extends Activity
       
       public void onClick(View v)
       {
-        //start
+        Intent TimeTriggerSetTimesIntent = new Intent(getApplicationContext(), TimeTriggerSetTimesActivity.class);
+        startActivityForResult(TimeTriggerSetTimesIntent,0);
       }
     });
     
