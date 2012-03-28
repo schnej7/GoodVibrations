@@ -1,28 +1,16 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 public class TriggerEditActivity extends Activity
 {
   private static final String TAG  = "TriggerEditActivity";
-  Intent mIntent;
   
   public void onCreate(Bundle savedInstanceState)
   {
@@ -35,8 +23,6 @@ public class TriggerEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    mIntent = new Intent();
-    
     final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
     buttonAddTimeTrigger.setOnClickListener(new View.OnClickListener()
     {
@@ -52,12 +38,17 @@ public class TriggerEditActivity extends Activity
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
-    super.onActivtyResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    super.onActivityResult(requestCode, resultCode, data);
+    if(resultCode==RESULT_OK)
     {
-      Bundle b = data.getExtras();
-      //send back to service
-      
+      // If the ring tone picker was returned
+      setResult(RESULT_OK, data);
+      finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+    }
+    else
+    {
+      Log.d(TAG, "RINGTONE RESULT FAIL");
+      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
     }
   }
 }
