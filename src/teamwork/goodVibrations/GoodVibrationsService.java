@@ -180,7 +180,7 @@ public class GoodVibrationsService extends Service
 	  
 	  Log.d(TAG,"Messaged recieved");
 	  
-	  Bundle b = intent.getBundleExtra(Constants.INTENT_BUNDLE);
+	  Bundle b = intent.getBundleExtra(Constants.INTENT_KEY_BUNDLE);
 	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
 	  
@@ -198,7 +198,7 @@ public class GoodVibrationsService extends Service
 	      // Add a new ring tone function 
 	      case Constants.FUNCTION_TYPE_RINGTONE:
 	        Log.d(TAG, "New Ringtone Function");
-	        functions.add( new RingtoneFunction(this) );
+	        functions.add( new RingtoneFunction(this,b) );
 	        break;
 	        
 	      default:
