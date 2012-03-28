@@ -38,11 +38,22 @@ public class FunctionDisplayActivity extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode==RESULT_OK){
 		  Bundle b = data.getExtras();
-			functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
+		  // Add name to the list of functions with a different format depending on the function type
+		  switch(b.getInt(Constants.INTENT_KEY_TYPE))
+		  {
+		    case Constants.FUNCTION_TYPE_VOLUME:
+		      functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
+		      break;
+		      
+		    case Constants.FUNCTION_TYPE_RINGTONE:
+		      functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Tone: " + b.getParcelable(Constants.INTENT_KEY_URI));
+		      break;
+		  }
+		  
 			// Create the intent that gets sent to the service
 			Intent i = new Intent(this,GoodVibrationsService.class);
-			i.putExtra(Constants.INTENT_BUNDLE, b);
-			startService(i);
+			i.putExtra(Constants.INTENT_KEY_BUNDLE, b);
+			startService(i); // Calls GoodVibrationsService.onStartCommand()
 		}
 		else{
 			Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
