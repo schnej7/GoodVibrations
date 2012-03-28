@@ -51,9 +51,9 @@
             android:id="@+id/skbarVolume"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
-
+
         <CheckBox
-            android:id="@+id/chkVibrate"
+            android:id="@+id/chkVolumeVibrate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vibrate" />
@@ -79,6 +79,12 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="@string/selectTone" />
+        
+        <CheckBox
+            android:id="@+id/chkRingtoneVibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrate" />
 
     </LinearLayout>
 
