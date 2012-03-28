@@ -14,5 +14,10 @@ public class Utils
            c.get(Calendar.MILLISECOND))%30000;
   }
   
+  public static long calculateTimeInMillis(int hour, int minute)
+  {
+    return hour*3600000 + minute*60000;
+  }
+  
   
 }
