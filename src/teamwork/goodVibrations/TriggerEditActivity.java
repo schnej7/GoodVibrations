@@ -28,6 +28,12 @@ public class TriggerEditActivity extends Activity
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
+    setContentView(R.layout.add_trigger);
+  }
+  protected void onStart()
+  {
+    super.onStart();
+    Log.d(TAG, "onStart()");
     mIntent = new Intent();
     
     final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
@@ -49,6 +55,7 @@ public class TriggerEditActivity extends Activity
     if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
+      //send back to service
       
     }
   }
