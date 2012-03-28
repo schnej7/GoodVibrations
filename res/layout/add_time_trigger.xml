@@ -12,7 +12,7 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <EditText
-        android:id="@+id/editTextFunctionName"
+        android:id="@+id/editTextTriggerName"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
@@ -21,7 +21,7 @@
     
     <!--  set start/end times -->
       <Button
-        android:id="@+id/buttonDoneTimeTrigger"
+        android:id="@+id/buttonTimeTriggerSetTimes"
         style="@style/ButtonText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
     
     <!--  done button -->
      <Button
-        android:id="@+id/buttonTimeTriggerSetTimes"
+        android:id="@+id/buttonTimeTriggerDone"
         style="@style/ButtonText"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

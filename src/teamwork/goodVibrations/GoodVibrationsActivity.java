@@ -3,8 +3,8 @@ package teamwork.goodVibrations;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TabHost;
 import android.util.Log;
+import android.widget.TabHost;
 
 public class GoodVibrationsActivity extends TabActivity
 {
@@ -14,6 +14,7 @@ public class GoodVibrationsActivity extends TabActivity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate()");
 
 		TabHost tabHost = getTabHost();  // The activity TabHost
 	  TabHost.TabSpec spec;  // Reusable TabSpec for each tab
