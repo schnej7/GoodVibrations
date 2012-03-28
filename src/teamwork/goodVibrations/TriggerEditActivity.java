@@ -29,6 +29,7 @@ public class TriggerEditActivity extends Activity
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.add_trigger);
   }
+  
   protected void onStart()
   {
     super.onStart();
