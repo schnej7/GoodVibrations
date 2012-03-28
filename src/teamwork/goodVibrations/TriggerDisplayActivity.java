@@ -26,7 +26,8 @@ public class TriggerDisplayActivity extends Activity {
         {
             public void onClick(View v)
             {
-            	triggerArrayAdapter.add("NEW TRIGGER!");
+            	Intent TriggerEditIntent = new Intent(getApplicationContext(), TriggerEditActivity.class);
+            	startActivityForResult(TriggerEditIntent,0);
             }
         });
     }
