@@ -1,43 +1,47 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
-public class TriggerEditActivity extends Activity
+public class TimeTriggerSetTimesActivity extends Activity
 {
-  private static final String TAG  = "TriggerEditActivity";
+
+  
+  private static final String TAG = "TimeTriggerSetTimeActivity";
+  Intent mIntent;
   
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
-    setContentView(R.layout.add_trigger);
+    setContentView(R.layout.set_times);
   }
   
   protected void onStart()
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
-    buttonAddTimeTrigger.setOnClickListener(new View.OnClickListener()
+    mIntent=new Intent();
+    
+    final TimePickerDialog.OnTimeSetListener timepicker = new TimePickerDialog.OnTimeSetListener()
     {
       
-      public void onClick(View v)
+      public void onTimeSet(TimePicker view, int hourOfDay, int minute)
       {
-        Intent TimeTriggerEditIntent = new Intent(getApplicationContext(), TimeTriggerEditActivity.class);
-        startActivityForResult(TimeTriggerEditIntent,0);
+        //convert time using han's function
+        //put in intent
+        
       }
-    });
+    };
   }
-  
+
   @Override
-  protected void onActivityResult(int requestCode, int resultCode, Intent data)
-  {
+  protected void onActivityResult(int requestCode, int resultCode, Intent data){
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode==RESULT_OK)
     {
