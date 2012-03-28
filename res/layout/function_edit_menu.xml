@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextFunctionName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/type"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Spinner
+        android:id="@+id/typeSelect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/llFunctionVolume"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:visibility="visible" >
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/volume"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <SeekBar
+            android:id="@+id/skbarVolume"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <CheckBox
+            android:id="@+id/chkVolumeVibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrate" />
+
+    </LinearLayout>
+    
+     <LinearLayout
+        android:id="@+id/llRingTone"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:visibility = "gone" >
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/toneName"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+        <Button
+            android:id="@+id/buttonSelectRingtone"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selectTone" />
+        
+        <CheckBox
+            android:id="@+id/chkRingtoneVibrate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vibrate" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/buttonDoneTriggerEdit"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="Add Function" />
+
+</LinearLayout>

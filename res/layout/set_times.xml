@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <!-- start time picker -->
+    <TextView
+        android:id="@+id/textViewStartTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/startTime"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TimePicker
+        android:id="@+id/startPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <!-- end time picker -->
+    <TextView
+        android:id="@+id/textViewEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/endTime"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+    <TimePicker
+        android:id="@+id/endPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    
+    <Button
+        android:id="@+id/repeat"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="@string/repeat" />
+    <Button
+        android:id="@+id/doneSetTimes"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="@string/done" />
+    
+</LinearLayout>   

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 public interface Trigger
 
 {
-  boolean addFunction(int type, Integer f);
-  void removeFunction();
+  void removeFunction(Integer id);
   long getNextExecutionTime();
-  ArrayList<Integer> getFunctions(int type);
   ArrayList<Integer> getFunctions();
-  int switchState();
+  void switchState();
+  boolean canExecute();
 }
+

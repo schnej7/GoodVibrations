@@ -1,7 +1,5 @@
 package teamwork.goodVibrations;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,18 +15,21 @@ public class TriggerDisplayActivity extends Activity {
 	
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.testview0);
+        setContentView(R.layout.trigger_tab);
        
         triggerArrayAdapter = new ArrayAdapter<String>(this, R.layout.trigger_list_item);
         listView = (ListView) findViewById(R.id.listViewTriggers);
         listView.setAdapter(triggerArrayAdapter);
         
         final Button buttonAdd = (Button) findViewById(R.id.addTrigger);
-        buttonAdd.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-            	//triggerArray.add(messageString);
-            	triggerArrayAdapter.add("NEW TRIGGER!");
+        buttonAdd.setOnClickListener(new View.OnClickListener()
+        {
+            public void onClick(View v)
+            {
+            	Intent TriggerEditIntent = new Intent(getApplicationContext(), TriggerEditActivity.class);
+            	startActivityForResult(TriggerEditIntent,0);
             }
         });
     }
+
 }

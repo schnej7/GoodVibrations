@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextFunctionName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+
+        <requestFocus />
+    </EditText>
+    
+    <!--  set start/end times -->
+      <Button
+        android:id="@+id/buttonDoneTimeTrigger"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="@string/setTimes" />
+      
+    <!--  set functions button --> 
+    <Button
+        android:id="@+id/buttonTimeTriggerSetFunctions"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="@string/setFunctions" />
+    
+    <!--  done button -->
+     <Button
+        android:id="@+id/buttonTimeTriggerSetTimes"
+        style="@style/ButtonText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_green"
+        android:text="@string/done" />
+
+</LinearLayout>
