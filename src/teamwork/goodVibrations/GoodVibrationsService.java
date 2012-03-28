@@ -155,12 +155,12 @@ public class GoodVibrationsService extends Service
 	  HandlerThread thread = new HandlerThread("ServiceStartArguments", 10);//Process.THREAD_PRIORITY_BACKGROUND);
 	  thread.start();
 	  
-	  Log.d("vorsth","Handler Started");
+	  Log.d(TAG,"Handler Started");
 	  
 	  changer = new SettingsChanger();
 	  changer.start();
 	  
-	  Log.d("vorsth","Settings Changer Started");
+	  Log.d(TAG,"Settings Changer Started");
 	  
 	  // Get the HandlerThread's Looper and use it for our Handler 
 	  mServiceLooper = thread.getLooper();
@@ -198,14 +198,13 @@ public class GoodVibrationsService extends Service
 	      // Add a new ring tone function 
 	      case Constants.FUNCTION_TYPE_RINGTONE:
 	        Log.d(TAG, "New Ringtone Function");
-	        functions.add( new RingtoneFunction(this,b) );
+	        functions.add( new RingtoneFunction(getApplicationContext(),b) );
 	        break;
 	        
 	      default:
 	        Log.d(TAG, "Default Function");
 	        break;
 	    }
-	    
 	  }
 	  else if(intentType == Constants.TRIGGER_TYPE)
 	  {
@@ -223,19 +222,22 @@ public class GoodVibrationsService extends Service
 	    
 	    msg.arg2 = Constants.TRIGGER_TYPE;
 	    mServiceHandler.sendMessage(msg);
-	    
 	  }
 	  	  
-	  /*
-	  if(msg.arg2 == 1 && intent.getExtras().getInt("id") == 1)
+	  
+	  if(functions.size() == 2)
 	  {
+	    Log.d(TAG,"Adding Trigger");
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
-	    TimeTrigger t = new TimeTrigger(5000,10000,(byte)127);
-	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(4));
-	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(5));
+	    TimeTrigger t = new TimeTrigger(5000,15000,(byte)127);
+	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(0));
+	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(1));
 	    msg.obj = t;
+	    msg.arg2 = Constants.TRIGGER_TYPE;
+      mServiceHandler.sendMessage(msg);
 	  }
+	  /*
 	  else
 	  {
 	    TimeTrigger t = new TimeTrigger(15000,20000,(byte)127);
