@@ -37,11 +37,25 @@ public class TimeTriggerEditActivity extends Activity
     Log.d(TAG, "onStart()");
     mIntent=new Intent();
     
+    //set intent type to time trigger
+    mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
+    mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
+    
     //name text box
     final EditText txtName = (EditText) findViewById(R.id.editTextTriggerName);
     //button to set times
     final Button buttonSetTimes = (Button)findViewById(R.id.buttonTimeTriggerSetTimes);
-    buttonSetTimes.setOnClickListener(new View.
+    buttonSetTimes.setOnClickListener(new View.OnClickListener()
+    {
+      
+      public void onClick(View v)
+      {
+        //sets the name in the intent
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        //start
+      }
+    });
+    
     //final Button buttonSetFunctions = (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
     final Button buttonDone = (Button)findViewById(R.id.buttonTimeTriggerDone);
     
