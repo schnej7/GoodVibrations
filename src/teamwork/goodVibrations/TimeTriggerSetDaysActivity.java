@@ -26,7 +26,14 @@ public class TimeTriggerSetDaysActivity extends Activity
       {
         byte days = 0;
         //days = (byte) (days | 1);
-        if (chkSunday.isChecked()) days |= 
+        if (chkSunday.isChecked()) days |= Utils.getDayOfWeekBitMask(1);
+        if (chkMonday.isChecked()) days |= Utils.getDayOfWeekBitMask(2);
+        if (chkTuesday.isChecked()) days |= Utils.getDayOfWeekBitMask(3);
+        if (chkWednesday.isChecked()) days |= Utils.getDayOfWeekBitMask(4);
+        if (chkThursday.isChecked()) days |= Utils.getDayOfWeekBitMask(5);
+        if (chkFriday.isChecked()) days |= Utils.getDayOfWeekBitMask(6);
+        if (chkSaturday.isChecked()) days |= Utils.getDayOfWeekBitMask(7);
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, days);
         setResult(RESULT_OK, mIntent);
         finish();  // Returns to FunctionDisplayActivity.onActivityResult()
       }
