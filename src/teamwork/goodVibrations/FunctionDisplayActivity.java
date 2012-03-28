@@ -9,12 +9,14 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FunctionDisplayActivity extends Activity {
+public class FunctionDisplayActivity extends Activity
+{
 
 	private ArrayAdapter <String> functionArrayAdapter;
 	private ListView listView;
 
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.function_tab);
 
@@ -24,8 +26,10 @@ public class FunctionDisplayActivity extends Activity {
 		listView.setAdapter(functionArrayAdapter);
 
 		final Button buttonAdd = (Button) findViewById(R.id.addFunction);
-		buttonAdd.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
+		buttonAdd.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v)
+			{
 				Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
 				startActivityForResult(functionEditIntent, 0);
 			}
@@ -55,7 +59,8 @@ public class FunctionDisplayActivity extends Activity {
 			i.putExtra(Constants.INTENT_KEY_BUNDLE, b);
 			startService(i); // Calls GoodVibrationsService.onStartCommand()
 		}
-		else{
+		else
+		{
 			Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
 		}
 	}
