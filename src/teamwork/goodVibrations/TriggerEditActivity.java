@@ -1,22 +1,11 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 public class TriggerEditActivity extends Activity
@@ -52,7 +41,7 @@ public class TriggerEditActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode==RESULT_OK)
     {
-      // If the ringtone picker was returned
+      // If the ring tone picker was returned
       setResult(RESULT_OK, data);
       finish();  // Returns to FunctionDisplayActivity.onActivityResult()
     }

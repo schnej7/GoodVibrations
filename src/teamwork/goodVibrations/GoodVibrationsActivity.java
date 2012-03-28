@@ -4,7 +4,6 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
-import android.util.Log;
 
 public class GoodVibrationsActivity extends TabActivity
 {
