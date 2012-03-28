@@ -49,9 +49,9 @@ public class TriggerEditActivity extends Activity
   }
   
   @Override
-  protected void onActivity Result(int requestCode, int resultCode, Intent data)
+  protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
-    super.onActivtyResult(requestCode, resultCode, data);
+    super.onActivityResult(requestCode, resultCode, data);
     if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
