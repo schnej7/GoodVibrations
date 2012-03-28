@@ -111,7 +111,7 @@ public class FunctionEditActivity extends Activity{
 		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVolumeVibrate.isChecked());
 		        	break;
 		        case Constants.FUNCTION_TYPE_RINGTONE:
-		        	//Use the ringtone fields
+		        	//Use the ring tone fields
 		          mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
 		          mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
 		          mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());

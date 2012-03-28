@@ -183,7 +183,7 @@ public class GoodVibrationsService extends Service
 	  Bundle b = intent.getExtras();
 	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
-	  
+
 	  Log.d(TAG,"Bundle Created");
 	  
 	  if(intentType == Constants.FUNCTION_TYPE)
@@ -220,8 +220,8 @@ public class GoodVibrationsService extends Service
           //Should never happen
       }
 	    
-	    msg.arg2 = Constants.TRIGGER_TYPE;
-	    mServiceHandler.sendMessage(msg);
+	    //msg.arg2 = Constants.TRIGGER_TYPE;
+	    //mServiceHandler.sendMessage(msg);
 	  }
 	  	  
 	  
