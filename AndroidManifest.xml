@@ -22,11 +22,20 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="TriggerDisplayActivity"
+        <activity android:name=".TriggerDisplayActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
-        <activity android:name="FunctionDisplayActivity" 
+        <activity android:name=".FunctionDisplayActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".FunctionEditActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        
+        <activity android:name=".TriggerEditActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name=".TimeTriggerEditActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".TimeTriggerSetDaysActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".TimeTriggerSetTimeActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         
         <service android:name=".GoodVibrationsService"></service>
