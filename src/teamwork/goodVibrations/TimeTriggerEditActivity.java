@@ -54,15 +54,12 @@ public class TimeTriggerEditActivity extends Activity
       {
         //sets the name in the intent
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
         //start
         setResult(RESULT_OK, mIntent);
         finish();  // Returns to FunctionDisplayActivity.onActivityResult()
       }
-    }); 
-    
-    
-    
-    
+    });  
   }
   
   @Override

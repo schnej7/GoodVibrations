@@ -191,7 +191,7 @@ public class GoodVibrationsService extends Service
 	  
 	  Log.d(TAG,"Messaged recieved");
 	  
-	  Bundle b = intent.getBundleExtra(Constants.INTENT_KEY_BUNDLE);
+	  Bundle b = intent.getExtras();
 	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
 	  

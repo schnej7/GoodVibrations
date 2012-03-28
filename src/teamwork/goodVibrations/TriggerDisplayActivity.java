@@ -49,18 +49,17 @@ public class TriggerDisplayActivity extends Activity
       switch (b.getInt(Constants.INTENT_KEY_TYPE))
       {
         case Constants.TRIGGER_TYPE_TIME:
-          triggerArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME));
+          triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
           break;
 
         case Constants.TRIGGER_TYPE_LOCATION:
-          triggerArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME));
+          triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
           break;
       }
 
       // Create the intent that gets sent to the service
-      Intent i = new Intent(this, GoodVibrationsService.class);
-      i.putExtra(Constants.INTENT_KEY_BUNDLE, b);
-      startService(i); // Calls GoodVibrationsService.onStartCommand()
+      data.setClass(this, GoodVibrationsService.class);
+      startService(data); // Calls GoodVibrationsService.onStartCommand()
     }
     else
     {
