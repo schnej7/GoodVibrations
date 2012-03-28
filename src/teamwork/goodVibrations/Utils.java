@@ -19,7 +19,7 @@ public class Utils
     return hour*3600000 + minute*60000;
   }
   
-  private byte getDayOfWeekBitMask(int dayOfWeek)
+  public static byte getDayOfWeekBitMask(int dayOfWeek)
   {
     int res = 1;
     for(int i = 1; i < dayOfWeek - 1; i++)
