@@ -46,17 +46,19 @@ public class TriggerDisplayActivity extends Activity
       Bundle b = data.getExtras();
       // Add name to the list of functions with a different format depending on
       // the function type
-      switch (b.getInt(Constants.INTENT_KEY_TYPE))
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should always be true, but just double checking
       {
-        case Constants.TRIGGER_TYPE_TIME:
-          triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
-          break;
-
-        case Constants.TRIGGER_TYPE_LOCATION:
-          triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
-          break;
+        switch (b.getInt(Constants.INTENT_KEY_TYPE))
+        {
+          case Constants.TRIGGER_TYPE_TIME:
+            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME) + " S:" + b.getLong(Constants.INTENT_KEY_START_TIME)));
+            break;
+  
+          case Constants.TRIGGER_TYPE_LOCATION:
+            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
+            break;
+        }
       }
-
       // Create the intent that gets sent to the service
       data.setClass(this, GoodVibrationsService.class);
       startService(data); // Calls GoodVibrationsService.onStartCommand()
