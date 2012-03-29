@@ -1,17 +1,15 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 public class TimeTriggerSetTimesActivity extends Activity
 {
-
-  
   private static final String TAG = "TimeTriggerSetTimeActivity";
   Intent mIntent;
   
@@ -20,16 +18,52 @@ public class TimeTriggerSetTimesActivity extends Activity
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.set_times);
+    
+    mIntent = new Intent();
   }
   
   protected void onStart()
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    mIntent=new Intent();
     
-   //time pickers here
+    final TimePicker startTimePicker = (TimePicker) findViewById(R.id.startPicker);
+    final TimePicker endTimePicker   = (TimePicker) findViewById(R.id.endPicker);
 
+    Button repeatButton = (Button) findViewById(R.id.buttonRepeat);
+    repeatButton.setOnClickListener(new View.OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        Intent TimeTriggerDaysIntent = new Intent(getApplicationContext(), TimeTriggerSetDaysActivity.class);
+        try
+        {
+          Bundle b = mIntent.getExtras();
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+        }
+        catch(NullPointerException e)
+        {
+          // If we get a NullPointerException that means that this hasn't been called so there is no data to be passed anyway.
+        }
+        startActivityForResult(TimeTriggerDaysIntent,Constants.REQUEST_CODE_DAY_PICKER);
+      }
+    });
+    
+    Button doneSetTimesButton = (Button) findViewById(R.id.buttonDoneSetTimes);
+    doneSetTimesButton.setOnClickListener(new View.OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        // TODO Get the values of the time pickers here
+        
+        mIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.calculateTimeInMillis(startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute()));
+        mIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.calculateTimeInMillis(endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute()));
+        
+        setResult(RESULT_OK, mIntent);
+        finish();
+      }
+    });
   }
 
   @Override
@@ -37,14 +71,17 @@ public class TimeTriggerSetTimesActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode==RESULT_OK)
     {
-      // If the ring tone picker was returned
-      setResult(RESULT_OK, data);
-      finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+      if(requestCode == Constants.REQUEST_CODE_DAY_PICKER)
+      {
+        Log.d(TAG,"Daypicker Returned");
+        Bundle b = data.getExtras();
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+      }
     }
     else
     {
-      Log.d(TAG, "RINGTONE RESULT FAIL");
-      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
+      Log.d(TAG, "onActivityResult() failed");
     }
   }
 }
