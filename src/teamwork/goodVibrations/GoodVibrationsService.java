@@ -3,9 +3,7 @@ package teamwork.goodVibrations;
 import java.util.ArrayList;
 
 import teamwork.goodVibrations.functions.Function;
-import teamwork.goodVibrations.triggers.LocationTrigger;
-import teamwork.goodVibrations.triggers.TimeTrigger;
-import teamwork.goodVibrations.triggers.Trigger;
+import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
 
 import android.app.*;
