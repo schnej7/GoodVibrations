@@ -185,6 +185,7 @@ public class GoodVibrationsService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
     Log.d(TAG,"Starting onStartCommand");
+    
     // For each start request, send a message to start a job and deliver the
 	  // start ID so we know which request we're stopping when we finish the job
     
@@ -236,8 +237,29 @@ public class GoodVibrationsService extends Service
 	    //msg.arg2 = Constants.TRIGGER_TYPE;
 	    //mServiceHandler.sendMessage(msg);
 	  }
+	  else if(intentType == Constants.GET_DATA)
+    {
+	    switch(type)
+	    {
+	      case Constants.INTENT_KEY_FUNCTION_LIST:
+	        /*
+	        Intent i = new Intent(Constants.SERVICE_DATA_MESSAGE);
+	        i.putExtra("ONE", 1);
+	        i.putExtra("TWO", 2);
+	        i.putExtra("THREE", 3);
+	        sendBroadcast(i);
+	        */
+	        Log.d(TAG,"GET FUNCTION LIST");
+	        break;
+	       
+	      case Constants.INTENT_KEY_TRIGGER_LIST:
+	        Log.d(TAG,"GET TRIGGER LIST");
+	        break;
+	    }
+    }
 	  	  
 	  
+	  // TODO Remove the following block.  It is for testing only
 	  if(functions.size() == 2)
 	  {
 	    Log.d(TAG,"Adding Trigger");

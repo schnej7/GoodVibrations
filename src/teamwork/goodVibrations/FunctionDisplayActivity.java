@@ -1,8 +1,12 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -11,9 +15,11 @@ import android.widget.Toast;
 
 public class FunctionDisplayActivity extends Activity
 {
-
+  private static String TAG = "FunctionDisplayActivity";
+  
 	private ArrayAdapter <String> functionArrayAdapter;
 	private ListView listView;
+	private DataReceiver dataReceiver;
 
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -34,9 +40,29 @@ public class FunctionDisplayActivity extends Activity
 				startActivityForResult(functionEditIntent, 0);
 			}
 		});
+		
+    
+    IntentFilter messageFilter;
+    messageFilter = new IntentFilter(Constants.SERVICE_DATA_MESSAGE);
+    dataReceiver = new DataReceiver();
+    registerReceiver(dataReceiver, messageFilter);
 	}
 
+  public void onResume()
+  {
+    super.onResume();
+    Intent i = new Intent(getApplicationContext(),GoodVibrationsService.class);
+    i.putExtra(Constants.INTENT_TYPE,Constants.GET_DATA);
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
+    startService(i);
+  }
 
+  public void onDestroy()
+  {
+    super.onDestroy();
+    unregisterReceiver(dataReceiver);
+  }
+  
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
@@ -66,4 +92,14 @@ public class FunctionDisplayActivity extends Activity
 			Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
 		}
 	}
+	
+  public class DataReceiver extends BroadcastReceiver
+  {
+    @Override
+    public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
+    {
+      Log.d(TAG,"RECIEVED BROADCAST MESSAGE");
+    }
+  }
+	
 }

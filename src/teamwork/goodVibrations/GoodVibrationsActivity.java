@@ -34,25 +34,5 @@ public class GoodVibrationsActivity extends TabActivity
 	  spec = tabHost.newTabSpec("functions").setIndicator("Functions").setContent(intent);
 	  tabHost.addTab(spec);
 	}
-	
-	@Override
-	public void onStart()
-	{
-		super.onStart();
-
-		/*
-		Log.d(TAG,"Starting Service");
-		Intent i1 = new Intent(this, GoodVibrationsService.class);
-		Intent i2 = new Intent(this, GoodVibrationsService.class);
-		
-		i1.putExtra("id",1);
-		i2.putExtra("id",2);
-		
-		startService(i1);
-		startService(i2);
-		Log.d(TAG,"Service Started");
-		*/
-		
-	}
 
 }

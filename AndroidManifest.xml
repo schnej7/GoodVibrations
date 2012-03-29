@@ -20,8 +20,8 @@
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="serviceDataMessage" />
             </intent-filter>
         </activity>
         
