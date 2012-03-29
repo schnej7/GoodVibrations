@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" ></uses-permission> 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     
     <uses-sdk android:minSdkVersion="7" />
     
@@ -39,6 +39,10 @@
         <activity android:name=".TimeTriggerSetDaysActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".TimeTriggerSetTimesActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".TimeTriggerSetDaysActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".LocationTriggerEditActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         
         <service android:name=".GoodVibrationsService"></service>
