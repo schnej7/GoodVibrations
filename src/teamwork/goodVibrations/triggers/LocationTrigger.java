@@ -180,16 +180,17 @@ public class LocationTrigger implements Trigger
   }
   
   //Adds a functionID to either the start or stop list
- public boolean addFunction(boolean type, Integer f)
- {
-   if(type == ENTERFUNCTION)
-   {
-     enterFunctionIDs.add(f);
-   }
-   else if(type == EXITFUNCTION)
-   {
-     exitFunctionIDs.add(f);
-   }
-   return true;
- }
+  public boolean addFunction(boolean type, Integer f)
+  {
+    if(type == ENTERFUNCTION)
+    {
+      enterFunctionIDs.add(f);
+    }
+    else if(type == EXITFUNCTION)
+    {
+      exitFunctionIDs.add(f);
+    }
+     return true;
+  }
+  
 }
