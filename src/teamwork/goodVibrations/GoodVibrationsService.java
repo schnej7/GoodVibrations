@@ -3,6 +3,7 @@ package teamwork.goodVibrations;
 import java.util.ArrayList;
 
 import teamwork.goodVibrations.functions.Function;
+import teamwork.goodVibrations.triggers.LocationTrigger;
 import teamwork.goodVibrations.triggers.TimeTrigger;
 import teamwork.goodVibrations.triggers.Trigger;
 import teamwork.goodVibrations.functions.*;
@@ -12,6 +13,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -241,9 +245,23 @@ public class GoodVibrationsService extends Service
 	    Log.d(TAG,"Adding Trigger");
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
-	    TimeTrigger t = new TimeTrigger(5000,15000,(byte)127);
-	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(0));
-	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(1));
+	    
+	    LocationManager LM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    Criteria criteria = new Criteria();
+	    String bestProvider = LM.getBestProvider(criteria, false);
+	    
+	    Location l = new Location(bestProvider);
+
+	    l.setLatitude(0);
+	    l.setLongitude(0);
+
+	    b.putParcelable(Constants.INTENT_KEY_LOCATION, l);
+	    b.putFloat(Constants.INTENT_KEY_RADIUS, (float)10.0);
+
+	    LocationTrigger t = new LocationTrigger(getApplicationContext(),b);
+	    t.addFunction(LocationTrigger.ENTERFUNCTION, new Integer(0));
+	    t.addFunction(LocationTrigger.EXITFUNCTION,  new Integer(1));
+	    
 	    msg.obj = t;
 	    msg.arg2 = Constants.TRIGGER_TYPE;
       mServiceHandler.sendMessage(msg);

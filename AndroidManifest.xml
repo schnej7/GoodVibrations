@@ -8,6 +8,9 @@
 	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION" ></uses-permission>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" ></uses-permission> 
+    <uses-permission android:name="android.permission.INTERNET" />
     
     <uses-sdk android:minSdkVersion="7" />
     
@@ -35,7 +38,7 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".TimeTriggerSetDaysActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".TimeTriggerSetTimeActivity" 
+        <activity android:name=".TimeTriggerSetTimesActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         
         <service android:name=".GoodVibrationsService"></service>

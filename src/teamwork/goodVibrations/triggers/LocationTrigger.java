@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamwork.goodVibrations.Constants;
-
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 
 public class LocationTrigger implements Trigger
 {
+  
+  private static String TAG = "LocationTrigger";
   
   private boolean lastLocation;    // True - inside
   private boolean currentLocation; // True - inside
@@ -25,41 +27,57 @@ public class LocationTrigger implements Trigger
   private ArrayList<Integer> exitFunctionIDs;  // The functions that will be executed on stop
   private Criteria criteria;
   
+  public static boolean ENTERFUNCTION = true;
+  public static boolean EXITFUNCTION = false;
+  
+  private int lat = 0;
+  private int lon = 0;
+  
   public LocationTrigger(Context c,Bundle b)
   {
     mC = c;
     // Get the location manager
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+    enterFunctionIDs = new ArrayList<Integer>();
+    exitFunctionIDs = new ArrayList<Integer>();
     
-    // List all providers:
+    Log.d(TAG,"Made Location Manager");
+    
+    // List all providers:Log
+    providers = new ArrayList<String>();
     providers = LM.getAllProviders();
     
-    Criteria criteria = new Criteria();
+    Log.d(TAG, "Got providers");
+    Log.d(TAG,"PROVIDERS:" + providers);
+    criteria = new Criteria();
     String bestProvider = LM.getBestProvider(criteria, false);
-    Location recievedLocation = LM.getLastKnownLocation(bestProvider);
+    //Location recievedLocation = LM.getLastKnownLocation(bestProvider);
+    Location recievedLocation = new Location(bestProvider);
+    recievedLocation.setLatitude(0);
+    recievedLocation.setLongitude(0);
     
+    Log.d(TAG,"Got location" + recievedLocation);
     radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
-    recievedLocation = (Location)b.getParcelable(Constants.INTENT_KEY_LOCATION);
+    center = (Location)b.getParcelable(Constants.INTENT_KEY_LOCATION);
     
-    
-    if(getDistanceBetween(recievedLocation, center) > radius)
+    if(recievedLocation != null)
     {
-      lastLocation = false;
-      currentLocation = false;
+      if(recievedLocation.distanceTo(center) > radius)
+      {
+        lastLocation = false;
+        currentLocation = false;
+      }
+      else
+      {
+        lastLocation = true;
+        currentLocation = true;      
+      }
     }
     else
     {
-      lastLocation = true;
-      currentLocation = true;      
+      Log.d(TAG,"Location not recieved");
     }
     
-  }
-  
-  private double getDistanceBetween(Location a, Location b)
-  {
-    float results[] = new float[3];
-    Location.distanceBetween(a.getLatitude(), a.getLongitude(), b.getLatitude(), b.getLongitude(), results);
-    return results[0];
   }
   
   public void removeFunction(Integer id)
@@ -70,8 +88,9 @@ public class LocationTrigger implements Trigger
 
   public long getNextExecutionTime()
   {
-	//Check location every 5 minutes
-    return 300000;
+    // Check location every 5 minutes
+    //return 300000;
+    return 10000;
   }
 
   public ArrayList<Integer> getFunctions()
@@ -101,45 +120,76 @@ public class LocationTrigger implements Trigger
 
   public boolean canExecute()
   {
-	//Get new location and calculate distance to target
+    Log.d(TAG,"canExecute()");
+    //Get new location and calculate distance to target
     String bestProvider = LM.getBestProvider(criteria, false);
-    Location recievedLocation = LM.getLastKnownLocation(bestProvider);
-    
-    double dist = recievedLocation.distanceTo(center); 
-    
-    //make the current location the new location since we're updating current location
-    lastLocation = currentLocation;
-    
-    //update location based in distance to target
-    if(dist < radius)
+    //Location recievedLocation = LM.getLastKnownLocation(bestProvider);
+    Location recievedLocation = new Location(bestProvider);
+    if(lat > 5)
     {
-      currentLocation = true;
+      lat = -2;
+      lon = -2;
+    }
+    recievedLocation.setLatitude(lat++);
+    recievedLocation.setLongitude(lon++);
+    
+    Log.d(TAG,"LAT/LON " + lat);
+    
+    if(recievedLocation == null)
+    {
+      Log.d(TAG,"Location not recieved");
+      return false;
     }
     else
     {
-      currentLocation = false;
+      double dist = recievedLocation.distanceTo(center); 
+      
+      //make the current location the new location since we're updating current location
+      lastLocation = currentLocation;
+      
+      //update location based in distance to target
+      if(dist < radius)
+      {
+        currentLocation = true;
+      }
+      else
+      {
+        currentLocation = false;
+      }
+      
+      //Return true if we've moved into the target area
+      if(!lastLocation  && currentLocation)
+      {
+        currentLocation = true;
+        return true;
+      }
+      
+      //Also return true if we've moved out of the target area
+      if(lastLocation && !currentLocation)
+      {
+        return true;
+      }
+      
+      //otherwise, we haved moved in our out of target area
+      if(currentLocation == lastLocation)
+      {
+        return false;
+      }
     }
-    
-    //Return true if we've moved into the target area
-    if(!lastLocation  && currentLocation)
-    {
-      currentLocation = true;
-      return true;
-    }
-    
-    //Also return true if we've moved out of the target area
-    if(lastLocation && !currentLocation)
-    {
-      return true;
-    }
-    
-    //otherwise, we haved moved in our out of target area
-    if(currentLocation == lastLocation)
-    {
-      return false;
-    }
-    
     return false;
   }
-
+  
+  //Adds a functionID to either the start or stop list
+ public boolean addFunction(boolean type, Integer f)
+ {
+   if(type == ENTERFUNCTION)
+   {
+     enterFunctionIDs.add(f);
+   }
+   else if(type == EXITFUNCTION)
+   {
+     exitFunctionIDs.add(f);
+   }
+   return true;
+ }
 }
