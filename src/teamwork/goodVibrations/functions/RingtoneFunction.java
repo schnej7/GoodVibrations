@@ -7,9 +7,7 @@ import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
 
 public class RingtoneFunction implements Function
 {
