@@ -11,7 +11,7 @@ public class Constants
   // A String label for the type of intent
   public static final String INTENT_TYPE = "INTENT_TYPE";
   
-  // Used to determine if intent if a function or a trigger for INTENT_TYPE
+  // Used to determine if intent if a function, trigger, get data for INTENT_TYPE
   public static final int FUNCTION_TYPE = 0;
   public static final int TRIGGER_TYPE = 1;
   
@@ -43,5 +43,8 @@ public class Constants
   // Intent request codes.  Used in onActivityResult triggers to determine which activity was returned
   public static final int REQUEST_CODE_LOCATION = 0;
   public static final int REQUEST_CODE_TIME = 1;
+  public static final int REQUEST_CODE_SET_TIMES_ACTIVITY = 2;
+  public static final int REQUEST_CODE_DAY_PICKER = 3;
+
   
 }
