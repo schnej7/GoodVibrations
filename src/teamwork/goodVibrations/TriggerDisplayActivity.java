@@ -51,7 +51,7 @@ public class TriggerDisplayActivity extends Activity
         switch (b.getInt(Constants.INTENT_KEY_TYPE))
         {
           case Constants.TRIGGER_TYPE_TIME:
-            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME) + " S:" + b.getLong(Constants.INTENT_KEY_START_TIME)));
+            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME) + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
             break;
   
           case Constants.TRIGGER_TYPE_LOCATION:
