@@ -10,6 +10,7 @@ import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue
 {
+  private static String TAG = "TriggerQueue";
   public PriorityQueue<Trigger> q;
   private Comparator<Trigger> comparator;
 
@@ -57,6 +58,7 @@ public class TriggerQueue
       IDs[i] = iter.next().id;
       i++;
     }
+    Log.d(TAG,"IDS: " + i);
     return IDs;
   }
   
@@ -70,6 +72,7 @@ public class TriggerQueue
       names[i] = iter.next().name;
       i++;
     }
+    Log.d(TAG,"Names: " + i);
     return names;
   }
 
