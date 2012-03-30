@@ -36,6 +36,7 @@ public class LocationTrigger extends Trigger
   public LocationTrigger(Context c,Bundle b)
   {
     mC = c;
+    name = b.getString(Constants.INTENT_KEY_NAME);
     // Get the location manager
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
     enterFunctionIDs = new ArrayList<Integer>();
