@@ -3,7 +3,7 @@ package teamwork.goodVibrations.functions;
 import android.media.AudioManager;
 import android.util.Log;
 
-public class RaiseFunction implements Function {
+public class RaiseFunction extends Function {
 
 	private AudioManager AM;
 	
@@ -13,9 +13,11 @@ public class RaiseFunction implements Function {
       Log.d("vorsth","Addtion Function ");
 	}
 	
-	public RaiseFunction(AudioManager am)
+	public RaiseFunction(AudioManager am,int newID, String tName)
 	{
 		AM = am;
+		id = newID;
+		name = tName;
 	}
 
 }
