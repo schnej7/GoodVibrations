@@ -1,6 +1,8 @@
 package teamwork.goodVibrations.functions;
 
-public interface Function
+public abstract class Function
 {
-	public void execute();
+  public int id;
+  public String name;
+	public abstract void execute();
 }
