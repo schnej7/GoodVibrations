@@ -1,11 +1,13 @@
 package teamwork.goodVibrations;
 
+import teamwork.goodVibrations.functions.Function;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -99,6 +101,20 @@ public class FunctionDisplayActivity extends Activity
     public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
     {
       Log.d(TAG,"RECIEVED BROADCAST MESSAGE");
+      
+      Bundle b = intent.getExtras();
+      
+      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      {
+        functionArrayAdapter.clear();
+        int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
+        String[] functionNames = b.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        int[] functionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+        for(int i = 0; i < length; i++)
+        {
+          functionArrayAdapter.add("(" + functionIDs[i] + ")  " + functionNames[i]);
+        }
+      }
     }
   }
 	
