@@ -40,10 +40,9 @@ public class FunctionDisplayActivity extends Activity
 				startActivityForResult(functionEditIntent, 0);
 			}
 		});
-		
-    
+		  
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
 	}
