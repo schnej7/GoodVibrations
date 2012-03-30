@@ -3,33 +3,29 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
-public class SetVolumeFunction implements Function
+public class SetVolumeFunction extends Function
 {
 
   private static String TAG = "SetVolumeFunction";
 
   private AudioManager AM;
-  public String name;
   private int volume;
   private boolean vibrate;
 
-  public SetVolumeFunction(AudioManager tAM, String tName, int tVolume, boolean tVibrate)
-  {
-    AM = tAM;
-    name = tName;
-    volume = tVolume;
-    vibrate = tVibrate;
-  }
-
-  public SetVolumeFunction(AudioManager tAM, Bundle b)
+  public SetVolumeFunction(AudioManager tAM, Bundle b,int newID)
   {
     volume = b.getInt(Constants.INTENT_KEY_VOLUME);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
+    name = b.getString(Constants.INTENT_KEY_NAME);
     AM = tAM;
+    id = newID;
   }
-
+  
+  @Override
   public void execute()
   {
     AM.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI);

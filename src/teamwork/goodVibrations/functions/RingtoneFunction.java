@@ -7,9 +7,11 @@ import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
-public class RingtoneFunction implements Function
+public class RingtoneFunction extends Function
 {
   private static String TAG = "RingtoneFunction";
   
@@ -19,15 +21,33 @@ public class RingtoneFunction implements Function
   private AudioManager AM;
   Context mC;
     
-  public RingtoneFunction(Context c, Bundle b)
+  public RingtoneFunction(Context c, Bundle b,int newID)
   {
     Log.d(TAG,"RingtoneFunction() Constructor");
-    
     mC = c;
     AM = (AudioManager) mC.getSystemService(Context.AUDIO_SERVICE);
-    //Uri ruri = Uri.parse("");
     mUri = b.getParcelable(Constants.INTENT_KEY_URI);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
+    name = b.getString(Constants.INTENT_KEY_NAME);
+    id = newID;
+  }
+  
+  //this is used to regenerate your object. All Parcelables must have a CREATOR that implements these two methods
+  public static final Parcelable.Creator<RingtoneFunction> CREATOR = new Parcelable.Creator<RingtoneFunction>()
+  {
+    public RingtoneFunction createFromParcel(Parcel in) {
+        return new RingtoneFunction(in);
+    }
+  
+    public RingtoneFunction[] newArray(int size) {
+        return new RingtoneFunction[size];
+    }
+  };
+  
+  private RingtoneFunction(Parcel in)
+  {
+    name = in.readString();
+    id = in.readInt();
   }
   
   public void execute()
@@ -38,10 +58,9 @@ public class RingtoneFunction implements Function
     //Toast.makeText(mC, "executing()", Toast.LENGTH_LONG).show();
     
     try
-    {  
+    {
       //RingtoneManager.getRingtone(mC, mUri).play();
       //Log.d(TAG,"Ringtone playing");
-      
       RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
     }
     catch (Exception e)
