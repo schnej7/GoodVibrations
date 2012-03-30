@@ -2,13 +2,13 @@ package teamwork.goodVibrations.triggers;
 
 import java.util.ArrayList;
 
-public interface Trigger
-
+public abstract class Trigger
 {
-  void removeFunction(Integer id);
-  long getNextExecutionTime();
-  ArrayList<Integer> getFunctions();
-  void switchState();
-  boolean canExecute();
+  public int id;
+  abstract public void removeFunction(Integer id);
+  abstract public long getNextExecutionTime();
+  abstract public ArrayList<Integer> getFunctions();
+  abstract public void switchState();
+  abstract public boolean canExecute();
 }
 
