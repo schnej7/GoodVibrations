@@ -7,7 +7,7 @@ import android.util.Log;
 import teamwork.goodVibrations.Utils;
 import teamwork.goodVibrations.Constants;
 
-public class TimeTrigger implements Trigger
+public class TimeTrigger extends Trigger
 {
   private static String TAG = "TimeTrigger";
   
