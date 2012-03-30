@@ -54,7 +54,6 @@ public class FunctionList
     while(iter.hasNext())
     {
       names[i] = iter.next().name;
-      Log.d(TAG, "N: " + names[i]);
       i++;
     }
     return names;
