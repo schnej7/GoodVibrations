@@ -59,6 +59,7 @@ public class Constants
   public static final int REQUEST_CODE_DAY_PICKER = 3;
   
   // Used to broadcast messages from the service to the activity
-  public static final String SERVICE_DATA_MESSAGE = "serviceDataMessage";
+  public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
+  public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
 
 }
