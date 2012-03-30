@@ -52,6 +52,7 @@ public class GoodVibrationsService extends Service
             if(msg.arg2 == Constants.TRIGGER_TYPE)
             {
               triggers.push((Trigger)msg.obj);
+              Log.d(TAG,"TRIGGER WAS ADDED");
             }
             else
             {
@@ -244,10 +245,11 @@ public class GoodVibrationsService extends Service
 	  }
 	  else if(intentType == Constants.GET_DATA)
     {
-	    Intent i = new Intent(Constants.SERVICE_DATA_MESSAGE);
+	    Intent i;
 	    switch(type)
 	    {
 	      case Constants.INTENT_KEY_FUNCTION_LIST:
+	        i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
 	        i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
 	        i.putExtra(Constants.INTENT_KEY_DATA_LENGTH,functions.size());
 	        i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES,functions.getNames());
@@ -257,6 +259,7 @@ public class GoodVibrationsService extends Service
 	        break;
 	       
 	      case Constants.INTENT_KEY_TRIGGER_LIST:
+	        i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
           i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());
