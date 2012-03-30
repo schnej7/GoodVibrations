@@ -22,7 +22,7 @@ public class Utils
   public static byte getDayOfWeekBitMask(int dayOfWeek)
   {
     int res = 1;
-    for(int i = 1; i < dayOfWeek - 1; i++)
+    for(int i = 1; i < dayOfWeek; i++)
     {
       res = res * 2;
     }
