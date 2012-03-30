@@ -11,7 +11,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
-public class LocationTrigger implements Trigger
+public class LocationTrigger extends Trigger
 {
   
   private static String TAG = "LocationTrigger";
