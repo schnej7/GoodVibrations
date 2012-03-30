@@ -41,6 +41,11 @@ public class Constants
   public static final String INTENT_KEY_REPEAT_DAYS_BOOL = "109";
   public static final String INTENT_KEY_REPEAT_DAYS_BYTE = "110";
   public static final String INTENT_KEY_RADIUS = "111";
+  public static final String INTENT_KEY_FUNCTIONS = "112";
+  public static final String INTENT_KEY_TRIGGERS = "113";
+  public static final String INTENT_KEY_FUNCTION_NAMES = "114";
+  public static final String INTENT_KEY_FUNCTION_IDS = "115";
+  public static final String INTENT_KEY_DATA_LENGTH = "116";
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
