@@ -70,9 +70,10 @@ public class TimeTriggerSetDaysActivity extends Activity
         if (chkFriday.isChecked())    days |= Utils.getDayOfWeekBitMask(6);
         if (chkSaturday.isChecked())  days |= Utils.getDayOfWeekBitMask(7);
         mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, chkRepeat.isChecked());
+        Log.d(TAG,"DAYS: " + days);
         mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, days);
         setResult(RESULT_OK, mIntent);
-        finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+        finish();  // Returns to TimeTriggerSetTimesActivity.onActivityResult()
       }
     }); 
   }

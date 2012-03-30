@@ -20,6 +20,10 @@ public class TimeTriggerSetTimesActivity extends Activity
     setContentView(R.layout.set_times);
     
     mIntent = new Intent();
+    
+    Bundle b = getIntent().getExtras();
+    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
   }
   
   protected void onStart()
@@ -55,13 +59,11 @@ public class TimeTriggerSetTimesActivity extends Activity
     {
       public void onClick(View v)
       {
-        // TODO Get the values of the time pickers here
-        
         mIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.calculateTimeInMillis(startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute()));
         mIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.calculateTimeInMillis(endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute()));
         
         setResult(RESULT_OK, mIntent);
-        finish();
+        finish();  // Return to TimeTriggerEditActivity.onActivityResult()
       }
     });
   }
