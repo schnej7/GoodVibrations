@@ -3,8 +3,6 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 public class SetVolumeFunction extends Function
