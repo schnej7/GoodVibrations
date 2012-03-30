@@ -3,6 +3,7 @@ package teamwork.goodVibrations.triggers;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.os.Bundle;
 import android.util.Log;
 import teamwork.goodVibrations.Utils;
 import teamwork.goodVibrations.Constants;
@@ -20,14 +21,20 @@ public class TimeTrigger extends Trigger
   long stopTime;                               // Number of milliseconds into the day that the trigger ends
   
   // Constructor
-  public TimeTrigger(long tStartTime, long tStopTime, byte tDaysActive)
+  public TimeTrigger(Bundle b, int newID)
   {
+    id = newID;
+    name = b.getString(Constants.INTENT_KEY_NAME);
     startFunctionIDs = new ArrayList<Integer>();
     stopFunctionIDs = new ArrayList<Integer>();
     state = STATE.FIRSTSTART;
-    daysActive = tDaysActive;
-    startTime = tStartTime;
-    stopTime = tStopTime;
+    daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
+    startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
+    stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+    
+    Log.d(TAG,"DAYSACTIVE" + daysActive);
+    
+    // TODO Add Functions to time trigger
     
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     if(currentTimeInDay > stopTime)
