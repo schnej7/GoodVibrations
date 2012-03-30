@@ -1,8 +1,5 @@
 package teamwork.goodVibrations;
 
-import java.util.ArrayList;
-
-import teamwork.goodVibrations.functions.Function;
 import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
 
@@ -26,7 +23,9 @@ public class GoodVibrationsService extends Service
   private static String TAG = "GoodVibrationsService";
   
 	private TriggerQueue triggers;          // Queue that holds all of the triggers
-	private ArrayList<Function> functions;  // List that holds all of the functions
+	private FunctionList functions;  // List that holds all of the functions
+	private int maxFunctionID = 0;
+	private int maxTriggerID = 0;
 	
 	private Looper mServiceLooper;          // Looper to handle the messages
 	private ServiceHandler mServiceHandler;
@@ -147,7 +146,7 @@ public class GoodVibrationsService extends Service
 		Log.d(TAG,"Calling onCreate");
 		
 		triggers  = new TriggerQueue();
-		functions = new ArrayList<Function>();
+		functions = new FunctionList();
 		
 		// Only samples, need to be removed
 		/*
@@ -206,13 +205,13 @@ public class GoodVibrationsService extends Service
 	    {
 	      // Add a new volume function
 	      case Constants.FUNCTION_TYPE_VOLUME:
-	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
+	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b, maxFunctionID++) );
 	        break;
 	        
 	      // Add a new ring tone function 
 	      case Constants.FUNCTION_TYPE_RINGTONE:
 	        Log.d(TAG, "New Ringtone Function");
-	        functions.add( new RingtoneFunction(getApplicationContext(),b) );
+	        functions.add( new RingtoneFunction(getApplicationContext(),b,maxFunctionID++) );
 	        break;
 	        
 	      default:
@@ -239,26 +238,26 @@ public class GoodVibrationsService extends Service
 	  }
 	  else if(intentType == Constants.GET_DATA)
     {
+	    Intent i = new Intent(Constants.SERVICE_DATA_MESSAGE);
 	    switch(type)
 	    {
 	      case Constants.INTENT_KEY_FUNCTION_LIST:
-	        /*
-	        Intent i = new Intent(Constants.SERVICE_DATA_MESSAGE);
-	        i.putExtra("ONE", 1);
-	        i.putExtra("TWO", 2);
-	        i.putExtra("THREE", 3);
+	        i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
+	        i.putExtra(Constants.INTENT_KEY_DATA_LENGTH,functions.size());
+	        i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES,functions.getNames());
+	        i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, functions.getIDs());
 	        sendBroadcast(i);
-	        */
 	        Log.d(TAG,"GET FUNCTION LIST");
 	        break;
 	       
 	      case Constants.INTENT_KEY_TRIGGER_LIST:
+          
+          sendBroadcast(i);
 	        Log.d(TAG,"GET TRIGGER LIST");
 	        break;
 	    }
     }
-	  	  
-	  
+
 	  // TODO Remove the following block.  It is for testing only
 	  if(functions.size() == 2)
 	  {
