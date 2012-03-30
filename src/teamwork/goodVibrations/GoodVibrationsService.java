@@ -224,6 +224,12 @@ public class GoodVibrationsService extends Service
 	    switch(type)
       {   
         case Constants.TRIGGER_TYPE_TIME:
+          TimeTrigger t = new TimeTrigger(b,maxTriggerID++);
+          
+          // Submit the trigger into the queue
+          msg.obj = t;
+          msg.arg2 = Constants.TRIGGER_TYPE;
+          mServiceHandler.sendMessage(msg);
           break;
           
         case Constants.TRIGGER_TYPE_LOCATION:
@@ -251,7 +257,10 @@ public class GoodVibrationsService extends Service
 	        break;
 	       
 	      case Constants.INTENT_KEY_TRIGGER_LIST:
-          
+          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
+          i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
+          i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());
+          i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, triggers.getIDs());
           sendBroadcast(i);
 	        Log.d(TAG,"GET TRIGGER LIST");
 	        break;
