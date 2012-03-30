@@ -13,25 +13,12 @@ import android.widget.Button;
 public class TriggerEditActivity extends Activity
 {
   private static final String TAG  = "TriggerEditActivity";
-  
-  private DataReceiver dataReceiver;
-  
+    
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.add_trigger);
-    
-    IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_MESSAGE);
-    dataReceiver = new DataReceiver();
-    registerReceiver(dataReceiver, messageFilter);
-  }
-  
-  public void onDestroy()
-  {
-    super.onDestroy();
-    unregisterReceiver(dataReceiver);
   }
   
   protected void onStart()
@@ -87,14 +74,5 @@ public class TriggerEditActivity extends Activity
       Log.d(TAG, "onActivityResult Failed");
     }
   }
-  
-  public class DataReceiver extends BroadcastReceiver
-  {
-    @Override
-    public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
-    {
-      Log.d(TAG,"RECIEVED BROADCAST MESSAGE");
-    }
-  } 
   
 }
