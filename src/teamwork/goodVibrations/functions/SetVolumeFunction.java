@@ -27,6 +27,7 @@ public class SetVolumeFunction extends Function
   @Override
   public void execute()
   {
+    Log.d(TAG,"EXECUTING " + name);
     AM.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI | AudioManager.FLAG_ALLOW_RINGER_MODES | AudioManager.FLAG_VIBRATE);
     if(volume > 0)
     {
