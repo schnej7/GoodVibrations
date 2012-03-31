@@ -30,7 +30,16 @@ public class FunctionList
   
   public Function get(int i)
   {
-    return functions.get(i);
+    Iterator<Function> iter = functions.iterator();
+    while(iter.hasNext())
+    {
+      Function f = iter.next();
+      if(f.id == i)
+      {
+        return f;
+      }
+    }
+    return null;
   }
   
   public int[] getIDs()
