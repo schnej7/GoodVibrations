@@ -22,6 +22,10 @@ public class TimeTriggerEditActivity extends Activity
     // Set defaults in case the user does not click on "Repeat?" button
     mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, false);
     mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)0);
+    // Set defaults in case user does not select start or end functions
+    int [] emptyInts = new int[0];
+    mIntent.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, emptyInts);
+    mIntent.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, emptyInts);
   }
   
   protected void onStart()
