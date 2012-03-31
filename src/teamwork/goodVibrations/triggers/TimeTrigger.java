@@ -19,7 +19,7 @@ public class TimeTrigger extends Trigger
   private byte daysActive;                     // Holds the days that the trigger is active 1 for Sunday through 7 for Saturday
   long startTime;                              // Number of milliseconds into the day that the trigger starts
   long stopTime;                               // Number of milliseconds into the day that the trigger ends
-  
+
   // Constructor
   public TimeTrigger(Bundle b, int newID)
   {
@@ -31,14 +31,17 @@ public class TimeTrigger extends Trigger
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
-
-    // TODO Add Functions to time trigger
     
-    startFunctionIDs.add(new Integer(newID*2));
-    stopFunctionIDs.add(new Integer(newID*2 + 1));
-    
-    startTime = newID*1000 + 200;
-    stopTime = newID*5000 + 2000;
+    int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
+    int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
+    for(int i = 0; i < startIDs.length; i++)
+    {
+      startFunctionIDs.add(new Integer(startIDs[i]));
+    }
+    for(int i = 0; i < stopIDs.length; i++)
+    {
+      stopFunctionIDs.add(new Integer(stopIDs[i]));
+    }
     
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     if(currentTimeInDay > stopTime)
@@ -93,6 +96,7 @@ public class TimeTrigger extends Trigger
       return delay;
     }
     
+    // Cannot run today so sleep until tomorrow
     return Constants.dayInMillis - currentTimeInDay;
   }
   
