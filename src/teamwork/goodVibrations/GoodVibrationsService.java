@@ -89,14 +89,17 @@ public class GoodVibrationsService extends Service
 		functions = new FunctionList();
 		
 		// Only samples, need to be removed
-		/*
-		functions.add(new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		functions.add(new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"THREE",3));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"FIVE",5));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"ONE",1));
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"SEVEN",7));
-	  */
+		Bundle b = new Bundle();
+		b.putInt(Constants.INTENT_KEY_VOLUME,1); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F1");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,2); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F2");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,3); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F3");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,4); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F4");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,5); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F5");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
 		
 		Log.d(TAG,"Added Function");
 		
