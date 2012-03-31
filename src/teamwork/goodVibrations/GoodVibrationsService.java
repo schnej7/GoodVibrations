@@ -22,129 +22,68 @@ public class GoodVibrationsService extends Service
 {
   private static String TAG = "GoodVibrationsService";
   
-	private TriggerQueue triggers;          // Queue that holds all of the triggers
-	private FunctionList functions;  // List that holds all of the functions
+	private volatile TriggerQueue triggers;          // Queue that holds all of the triggers
+	private volatile FunctionList functions;  // List that holds all of the functions
 	private int maxFunctionID = 0;
 	private int maxTriggerID = 0;
-	
-	private Looper mServiceLooper;          // Looper to handle the messages
-	private ServiceHandler mServiceHandler;
 		
 	private SettingsChanger changer;
-	
-	// Handler that receives messages from the thread
-	private final class ServiceHandler extends Handler
-	{
-      public ServiceHandler(Looper looper)
-      {
-          super(looper);
-      }
-      
-      // Handles the message to add a trigger or a function
-      @Override
-      public void handleMessage(Message msg)
-      {
-        synchronized (this)
-        {
-          synchronized(triggers)
-          {
-            changer.interrupt();
-            if(msg.arg2 == Constants.TRIGGER_TYPE)
-            {
-              triggers.push((Trigger)msg.obj);
-              Log.d(TAG,"TRIGGER WAS ADDED");
-            }
-            else
-            {
-              functions.add((Function)msg.obj);
-            }
-          }
-          try
-          {
-            changer.join();
-          }
-          catch(InterruptedException e)
-          {
-          }
-          changer = new SettingsChanger();
-          changer.start();
-        }
-        Log.d(TAG,"Stopping handle message");
-        // Stop the service using the startId, so that we don't stop
-        // the service in the middle of handling another job
-        stopSelf(msg.arg1);
-      }
-	}
 	
 	private class SettingsChanger extends Thread
 	{
     public void run()
     {
       Trigger t = null;
-      boolean executed = false;
-      while(!currentThread().isInterrupted())
+      while(!Thread.currentThread().isInterrupted())
       {
         try
         {
           synchronized(triggers)
           {
-            // Grab the next trigger that will execute
-            t = triggers.pop();
+            t = triggers.getNextTrigger();
           }
           if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
-            Thread.sleep(t.getNextExecutionTime());
+            Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
             if(t.canExecute())
             {
-              executed = true;
-              for(Integer fID : t.getFunctions() )
+              Log.d(TAG,"Executing trigger: " + t.id + "  " + t.name);
+              synchronized(triggers)
               {
-                functions.get(fID.intValue()).execute();
+                for(Integer fID : t.getFunctions() )
+                {
+                  functions.get(fID.intValue()).execute();
+                }
+                triggers.switchState(t.id);
               }
-            }
-            // Re-insert the trigger so that it gets executed again
-            synchronized(triggers)
-            {
-              if(executed)
-              {
-                t.switchState();
-              }
-              triggers.push(t);
             }
           }
-          else // t is null because no trigger are in system
+          else // t is null because no triggers are in system
           {
             try
             {
               Thread.sleep(10000); 
             }
             catch(InterruptedException e)
-            {         
+            {
+              Log.d(TAG,"Sleep while no triggers interrupted");
             }
           }
         }
         catch(InterruptedException e)
         {
+          Log.d(TAG,"Sleep while waiting for trigger was interrupted");
         }
       } // End While
-      
-      // If we were interrupted, re-insert the trigger so it is not lost
-      synchronized(triggers)
-      {
-        if(t != null)  // Only push if a trigger was popped off earlier
-        {
-          triggers.push(t);
-        }
-      }
     } // End run()
 	}
 
 	@Override
 	public void onCreate()
 	{
-		Log.d(TAG,"Calling onCreate");
+		Log.d(TAG,"Calling onCreate()");
 		
 		triggers  = new TriggerQueue();
 		functions = new FunctionList();
@@ -161,23 +100,11 @@ public class GoodVibrationsService extends Service
 		
 		Log.d(TAG,"Added Function");
 		
-		// Start up the thread running the service.  Note that we create a
-	  // separate thread because the service normally runs in the process's
-	  // main thread, which we don't want to block.  We also make it
-	  // background priority so CPU-intensive work will not disrupt our UI.
-	  HandlerThread thread = new HandlerThread("ServiceStartArguments", 10);//Process.THREAD_PRIORITY_BACKGROUND);
-	  thread.start();
-	  
-	  Log.d(TAG,"Handler Started");
-	  
 	  changer = new SettingsChanger();
 	  changer.start();
 	  
 	  Log.d(TAG,"Settings Changer Started");
-	  
-	  // Get the HandlerThread's Looper and use it for our Handler 
-	  mServiceLooper = thread.getLooper();
-	  mServiceHandler = new ServiceHandler(mServiceLooper);
+
 	  Log.d(TAG,"Finished onCreate");
 	}
 	
@@ -185,15 +112,7 @@ public class GoodVibrationsService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
     Log.d(TAG,"Starting onStartCommand");
-    
-    // For each start request, send a message to start a job and deliver the
-	  // start ID so we know which request we're stopping when we finish the job
-    
-	  Message msg = mServiceHandler.obtainMessage();
-	  msg.arg1 = startId;
-	  
-	  Log.d(TAG,"Messaged recieved");
-	  
+
 	  Bundle b = intent.getExtras();
 	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
@@ -226,11 +145,18 @@ public class GoodVibrationsService extends Service
       {   
         case Constants.TRIGGER_TYPE_TIME:
           TimeTrigger t = new TimeTrigger(b,maxTriggerID++);
-          
+          Log.d(TAG,"Submitting TimeTrigger To queue");
           // Submit the trigger into the queue
-          msg.obj = t;
-          msg.arg2 = Constants.TRIGGER_TYPE;
-          mServiceHandler.sendMessage(msg);
+          changer.interrupt();
+          synchronized(triggers)
+          {
+            triggers.add(t);
+          }
+               
+          // Restart the settings changer
+          SettingsChanger.interrupted();
+          
+          Log.d(TAG,"TimeTrigger submitted");
           break;
           
         case Constants.TRIGGER_TYPE_LOCATION:
@@ -257,11 +183,12 @@ public class GoodVibrationsService extends Service
 	        sendBroadcast(i);
 	        Log.d(TAG,"GET FUNCTION LIST");
 	        break;
-	       
+
 	      case Constants.INTENT_KEY_TRIGGER_LIST:
 	        i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
           i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
+          Log.d(TAG,"NT: " + triggers.size());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, triggers.getIDs());
           sendBroadcast(i);
@@ -270,6 +197,7 @@ public class GoodVibrationsService extends Service
 	    }
     }
 
+	  /*
 	  // TODO Remove the following block.  It is for testing only
 	  if(functions.size() == 2)
 	  {
@@ -297,6 +225,7 @@ public class GoodVibrationsService extends Service
 	    msg.arg2 = Constants.TRIGGER_TYPE;
       mServiceHandler.sendMessage(msg);
 	  }
+	  */
 	  /*
 	  else
 	  {
