@@ -31,10 +31,14 @@ public class TimeTrigger extends Trigger
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
-    
-    Log.d(TAG,"DAYSACTIVE" + daysActive);
-    
+
     // TODO Add Functions to time trigger
+    
+    startFunctionIDs.add(new Integer(newID*2));
+    stopFunctionIDs.add(new Integer(newID*2 + 1));
+    
+    startTime = newID*1000 + 200;
+    stopTime = newID*5000 + 2000;
     
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     if(currentTimeInDay > stopTime)
@@ -58,7 +62,7 @@ public class TimeTrigger extends Trigger
   }
 
   // Returns the next time in milliseconds that this trigger must execute
-  public long getNextExecutionTime()
+  public long getSleepTime()
   {
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     
@@ -66,7 +70,6 @@ public class TimeTrigger extends Trigger
     if(canExecute())
     {
       long delay = 0;
-      Log.d(TAG,"currentTime" + currentTimeInDay);
       switch(state)
       {
         case FIRSTSTART:
@@ -87,7 +90,6 @@ public class TimeTrigger extends Trigger
       {
         delay = 0;
       }
-      Log.d(TAG,"delay: " + delay);
       return delay;
     }
     
