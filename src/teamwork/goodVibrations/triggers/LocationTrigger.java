@@ -87,7 +87,7 @@ public class LocationTrigger extends Trigger
     
   }
 
-  public long getNextExecutionTime()
+  public long getSleepTime()
   {
     // Check location every 5 minutes
     //return 300000;
