@@ -44,10 +44,11 @@ public class Constants
   public static final String INTENT_KEY_FUNCTIONS = "112";
   public static final String INTENT_KEY_TRIGGERS = "113";
   public static final String INTENT_KEY_FUNCTION_NAMES = "114";
-  public static final String INTENT_KEY_FUNCTION_IDS = "115";
-  public static final String INTENT_KEY_TRIGGER_NAMES = "116";
-  public static final String INTENT_KEY_TRIGGER_IDS = "117";
-  public static final String INTENT_KEY_DATA_LENGTH = "118";
+  public static final String INTENT_KEY_START_FUNCTION_IDS = "115";
+  public static final String INTETN_KEY_STOP_FUNCTION_IDS = "116";
+  public static final String INTENT_KEY_TRIGGER_NAMES = "117";
+  public static final String INTENT_KEY_TRIGGER_IDS = "118";
+  public static final String INTENT_KEY_DATA_LENGTH = "119";
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
