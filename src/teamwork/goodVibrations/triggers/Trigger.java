@@ -7,7 +7,7 @@ public abstract class Trigger
   public int id;
   public String name;
   abstract public void removeFunction(Integer id);
-  abstract public long getNextExecutionTime();
+  abstract public long getSleepTime();
   abstract public ArrayList<Integer> getFunctions();
   abstract public void switchState();
   abstract public boolean canExecute();
