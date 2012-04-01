@@ -52,7 +52,7 @@ public class Constants
   public static final String INTENT_KEY_STOP_FUNCTION_IDS = "120";
   public static final String INTENT_KEY_LONGITUDE = "121";
   public static final String INTENT_KEY_LATITUDE = "122";
-  public static final String MAP_API_KEY = "0Fo9_za044J_6oar0wObX-wyTPM9Coy5QG9r1yg"; // Hans
+  //public static final String MAP_API_KEY = "0Fo9_za044J9HOqtG5xlbqG9ORCGKE1uXvj3m5Q";
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
@@ -62,6 +62,7 @@ public class Constants
   public static final int REQUEST_CODE_TIME = 1;
   public static final int REQUEST_CODE_SET_TIMES_ACTIVITY = 2;
   public static final int REQUEST_CODE_DAY_PICKER = 3;
+  public static final int REQUEST_CODE_SET_FUNCTION_IDS = 4;
   
   // Used to broadcast messages from the service to the activity
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
