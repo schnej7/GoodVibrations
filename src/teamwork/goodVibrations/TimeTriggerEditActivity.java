@@ -61,6 +61,18 @@ public class TimeTriggerEditActivity extends Activity
       }
     });
     
+    final Button buttonSetFunction = (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
+    buttonSetFunction.setOnClickListener(new View.OnClickListener()
+    {
+      
+      public void onClick(View v)
+      {
+        // Add the selected functions to the bundle so they can be automatically checked
+        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), TimeTriggerSetFunctionsActivity.class);
+        startActivityForResult(TimeTriggerSetFunctions,0);
+      }
+    });
+    
     //final Button buttonSetFunctions = (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
     final Button buttonDone = (Button)findViewById(R.id.buttonTimeTriggerDone);
     buttonDone.setOnClickListener(new View.OnClickListener()
