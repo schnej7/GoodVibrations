@@ -13,7 +13,7 @@ import android.location.Location;
 public class LocationTriggerEditActivity extends Activity
 {
   private static final String TAG = "LocationTriggerEditActivity";
-  Intent mIntent;
+  Intent mIntent = new Intent();
   
   public void onCreate(Bundle savedInstanceState)
   {
@@ -26,7 +26,6 @@ public class LocationTriggerEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()"); 
-    mIntent=new Intent();
     
     //set intent type to time trigger
     mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
@@ -44,11 +43,22 @@ public class LocationTriggerEditActivity extends Activity
         // START THE MAPS API TO GET THE RESULT
         Log.d(TAG,"STARTING MAPS API TO GET LOCATION");
         Intent LocationTriggerSetLocationIntent = new Intent(getApplicationContext(), MapSelector.class);
-        startActivityForResult(LocationTriggerSetLocationIntent,0);
+        startActivityForResult(LocationTriggerSetLocationIntent,Constants.REQUEST_CODE_LOCATION);
       }
     });
     
-    //final Button buttonSetFunctions = (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
+    final Button buttonSetFunctions = (Button)findViewById(R.id.buttonLocationTriggerSetFunctions);
+    buttonSetFunctions.setOnClickListener(new View.OnClickListener()
+    {
+      public void onClick(View v)
+      {
+        // Add the selected functions to the bundle so they can be automatically checked
+        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), TimeTriggerSetFunctionsActivity.class);
+        startActivityForResult(TimeTriggerSetFunctions,Constants.REQUEST_CODE_SET_FUNCTION_IDS);
+      }
+    });
+    
+    
     final Button buttonDone = (Button)findViewById(R.id.buttonLocationTriggerDone);
     buttonDone.setOnClickListener(new View.OnClickListener()
     {
@@ -73,8 +83,15 @@ public class LocationTriggerEditActivity extends Activity
       //received location from map activity
       Log.d(TAG,"Running onClick()");
       Bundle b = data.getExtras();
-      mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
-      mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));     
+      if(requestCode == Constants.REQUEST_CODE_LOCATION)
+      {
+        mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+        mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+      }
+      else if(requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
+      {
+        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+      }
     }
     else
     {
