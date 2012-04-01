@@ -15,7 +15,8 @@
     
      <uses-sdk android:minSdkVersion="7" />
     
-    <application>
+    <application
+        android:label="@string/applicationName">
         <uses-library android:required="true" android:name="com.google.android.maps"></uses-library>
         <activity
             android:name=".GoodVibrationsActivity"
