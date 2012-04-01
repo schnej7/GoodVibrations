@@ -10,8 +10,9 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ListView;
 
 public class TimeTriggerSetFunctionsActivity extends Activity
@@ -21,6 +22,7 @@ public class TimeTriggerSetFunctionsActivity extends Activity
   TimeTriggerFunctionAdapter arrayAdapter;
   ArrayList<FunctionForUI> funcs = null;
   DataReceiver dataReceiver;
+  Intent mIntent;
   
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -38,11 +40,55 @@ public class TimeTriggerSetFunctionsActivity extends Activity
     //Set the above adapter as the adapter of choice for the list
     lview.setAdapter(arrayAdapter);
     
+    
     //register data receiver to get functions
     IntentFilter messageFilter;
     messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
+    
+    final Button buttonDone = (Button)findViewById(R.id.doneSetTimeTriggerFunctions);
+    //look for data in the intent, which means that we have been here before
+    /*try
+    {
+      Bundle b = getIntent().getExtras();
+      int ids[]=b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+      for(int i=0; i<ids.length; i++)
+      {
+        if()
+      }
+    }*/
+    
+    buttonDone.setOnClickListener(new View.OnClickListener()
+    {
+      
+      public void onClick(View v)
+      {
+        Log.d(TAG, "Running onClick()");
+        int count =arrayAdapter.getCount();
+        ArrayList<Integer> chks = new ArrayList<Integer>();
+        for(int i=0; i<count; i++)
+        {
+          FunctionForUI f = arrayAdapter.getItem(i);
+          if(f.chkbx.isChecked())
+          {
+            chks.add(f.id);
+          }
+        }
+        //convert to int [] from ArrayList<Integer>
+        Integer [] integerChks=null;
+        integerChks = chks.toArray(integerChks);
+        int [] intChks=new int[integerChks.length];
+        for(int j=0; j<intChks.length; j++)
+        {
+          intChks[j]=integerChks[j].intValue();
+        }
+        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, intChks);
+        setResult(RESULT_OK, mIntent);
+        finish();
+      }
+    });
+    
   }
   
   public void onResume()
@@ -66,7 +112,7 @@ public class TimeTriggerSetFunctionsActivity extends Activity
     @Override
     public void onReceive(Context context, Intent intent)//this method receives broadcast messages. Be sure to modify AndroidManifest.xml file in order to enable message receiving
     {
-      //Log.d(TAG,"RECIEVED BROADCAST MESSAGE");
+      Log.d(TAG,"RECIEVED BROADCAST MESSAGE");
       
       Bundle b = intent.getExtras();
       

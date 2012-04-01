@@ -43,7 +43,8 @@ public class TimeTriggerFunctionAdapter extends ArrayAdapter<FunctionForUI>
     }
     //get items from time_trigger_functions_items.xml
     TextView funcName =(TextView)funcView.findViewById(R.id.timeTriggerFunctionName);
-    CheckBox funcBox = (CheckBox)funcView.findViewById(R.id.timeTriggerFunctionCheckBox);
+    f.chkbx=(CheckBox)funcView.findViewById(R.id.timeTriggerFunctionCheckBox);
+    
     
     //assign appropriate data
     funcName.setText(f.name);
