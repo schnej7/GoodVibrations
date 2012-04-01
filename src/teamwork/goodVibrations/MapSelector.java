@@ -96,6 +96,9 @@ public class MapSelector extends MapActivity
     
     setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
     aml = new AMLController(this, Constants.MAP_API_KEY);
+    
+    //setContentView(R.layout.map_layout);
+    //aml = new AMLController(this, R.id.map_view);
     myMapView = aml.getMapView();
     
     myMapView.setSatellite(true);

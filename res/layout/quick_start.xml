@@ -3,6 +3,8 @@
     android:id="@+id/mapview"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:apiKey="0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ"
-    android:clickable="true" 
+    android:apiKey="0Fo9_za044J_6oar0wObX-wyTPM9Coy5QG9r1yg"
+    android:clickable="true"
     />
+
+<!-- Trevor android:apiKey="0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ" -->

@@ -50,7 +50,8 @@ public class Constants
   public static final String INTENT_KEY_DATA_LENGTH = "118";
   public static final String INTENT_KEY_START_FUNCTION_IDS = "119";
   public static final String INTENT_KEY_STOP_FUNCTION_IDS = "120";
-  public static final String MAP_API_KEY = "0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ";
+  //public static final String MAP_API_KEY = "0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ"; // Trevor
+  public static final String MAP_API_KEY = "0Fo9_za044J_6oar0wObX-wyTPM9Coy5QG9r1yg"; // Hans
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
