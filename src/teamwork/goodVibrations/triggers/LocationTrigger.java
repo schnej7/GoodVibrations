@@ -75,7 +75,7 @@ public class LocationTrigger extends Trigger
       else
       {
         lastLocation = true;
-        currentLocation = true;      
+        currentLocation = true;
       }
     }
     else
