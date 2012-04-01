@@ -1,7 +1,6 @@
 package teamwork.goodVibrations.functions;
 
 import teamwork.goodVibrations.Constants;
-import android.content.ContentValues;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
@@ -15,7 +14,6 @@ public class RingtoneFunction extends Function
 {
   private static String TAG = "RingtoneFunction";
   
-  public ContentValues values;
   private Uri mUri;
   private boolean vibrate;
   private AudioManager AM;
