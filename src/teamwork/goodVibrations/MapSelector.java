@@ -71,7 +71,7 @@ public class MapSelector extends MapActivity
         mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, p.getLatitudeE6() / 1E6);
         mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, p.getLongitudeE6() / 1E6);
         setResult(RESULT_OK, mIntent);
-        finish();  // Returns to TimeTriggerSetTimesActivity.onActivityResult()
+        finish();  // Returns to LocationTriggerEditActivity.onActivityResult()
         return false;
       }
   }
