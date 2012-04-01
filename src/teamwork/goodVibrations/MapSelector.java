@@ -86,7 +86,7 @@ public class MapSelector extends MapActivity
         Location receivedLocation = LM.getLastKnownLocation(bestProvider);
     	
         super.onCreate(icicle);
-        setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
+        //setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
         aml = new AMLController(this, Constants.MAP_API_KEY);
         myMapView = aml.getMapView();
         
