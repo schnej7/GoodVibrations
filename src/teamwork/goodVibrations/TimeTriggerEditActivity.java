@@ -24,8 +24,9 @@ public class TimeTriggerEditActivity extends Activity
     mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)0);
     // Set defaults in case user does not select start or end functions
     int [] emptyInts = new int[0];
-    mIntent.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, emptyInts);
-    mIntent.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, emptyInts);
+    //mIntent.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, emptyInts);
+    //mIntent.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, emptyInts);
+    mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, emptyInts);
   }
   
   protected void onStart()
@@ -69,7 +70,7 @@ public class TimeTriggerEditActivity extends Activity
       {
         // Add the selected functions to the bundle so they can be automatically checked
         Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), TimeTriggerSetFunctionsActivity.class);
-        startActivityForResult(TimeTriggerSetFunctions,0);
+        startActivityForResult(TimeTriggerSetFunctions,Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });
     
@@ -104,6 +105,11 @@ public class TimeTriggerEditActivity extends Activity
         //If there is also repeat days information
         mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
         mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+      }
+      else if(requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
+      {
+        Bundle b = data.getExtras();
+        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
       }
     }
     else
