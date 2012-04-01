@@ -69,7 +69,7 @@ public class TimeTriggerEditActivity extends Activity
       public void onClick(View v)
       {
         // Add the selected functions to the bundle so they can be automatically checked
-        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), TimeTriggerSetFunctionsActivity.class);
+        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), SetFunctionsActivity.class);
         startActivityForResult(TimeTriggerSetFunctions,Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });

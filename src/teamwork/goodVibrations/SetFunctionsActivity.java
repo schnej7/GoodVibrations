@@ -15,11 +15,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 
-public class TimeTriggerSetFunctionsActivity extends Activity
+public class SetFunctionsActivity extends Activity
 {
   private static String TAG = "TimeTriggerSetFunctionsActivity";
   ListView lview;
-  TimeTriggerFunctionAdapter arrayAdapter;
+  SetFunctionsAdapter arrayAdapter;
   ArrayList<FunctionForUI> funcs = null;
   DataReceiver dataReceiver;
   Intent mIntent = new Intent();
@@ -35,7 +35,7 @@ public class TimeTriggerSetFunctionsActivity extends Activity
     //initialize array list
     funcs = new ArrayList<FunctionForUI>();
     //initialize array adapter
-    arrayAdapter = new TimeTriggerFunctionAdapter(TimeTriggerSetFunctionsActivity.this,R.layout.time_trigger_functions_items,funcs);
+    arrayAdapter = new SetFunctionsAdapter(SetFunctionsActivity.this,R.layout.time_trigger_functions_items,funcs);
     
     //Set the above adapter as the adapter of choice for the list
     lview.setAdapter(arrayAdapter);

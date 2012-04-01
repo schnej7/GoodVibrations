@@ -11,11 +11,11 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import teamwork.goodVibrations.functions.FunctionForUI;
-public class TimeTriggerFunctionAdapter extends ArrayAdapter<FunctionForUI>
+public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
 {
   int resource;
   Context context;
-  public TimeTriggerFunctionAdapter(Context context, int resource, List<FunctionForUI> items)
+  public SetFunctionsAdapter(Context context, int resource, List<FunctionForUI> items)
   {
     super(context,resource,items);
     this.resource=resource;
