@@ -50,6 +50,8 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".LocationTriggerEditActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".TimeTriggerSetFunctionsActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
         
         <service android:name=".GoodVibrationsService"></service>
         
