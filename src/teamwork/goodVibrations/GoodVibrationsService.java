@@ -144,33 +144,33 @@ public class GoodVibrationsService extends Service
 	  }
 	  else if(intentType == Constants.TRIGGER_TYPE)
 	  {
+	    Trigger t = null;
 	    switch(type)
-      {   
+      {
         case Constants.TRIGGER_TYPE_TIME:
-          TimeTrigger t = new TimeTrigger(b,maxTriggerID++);
-          Log.d(TAG,"Submitting TimeTrigger To queue");
-          // Submit the trigger into the queue
-          changer.interrupt();
-          synchronized(triggers)
-          {
-            triggers.add(t);
-          }
-               
-          // Restart the settings changer
-          SettingsChanger.interrupted();
-          
-          Log.d(TAG,"TimeTrigger submitted");
+          t = new TimeTrigger(b,maxTriggerID++);
           break;
           
         case Constants.TRIGGER_TYPE_LOCATION:
+          t = new LocationTrigger(this,b,maxTriggerID++);
           break;
           
         default:
           //Should never happen
       }
 	    
-	    //msg.arg2 = Constants.TRIGGER_TYPE;
-	    //mServiceHandler.sendMessage(msg);
+	    Log.d(TAG,"Submitting TimeTrigger To queue");
+      // Submit the trigger into the queue
+      changer.interrupt();
+      synchronized(triggers)
+      {
+        triggers.add(t);
+      }
+           
+      // Restart the settings changer
+      SettingsChanger.interrupted();
+      
+      Log.d(TAG,"Trigger submitted");
 	  }
 	  else if(intentType == Constants.GET_DATA)
     {

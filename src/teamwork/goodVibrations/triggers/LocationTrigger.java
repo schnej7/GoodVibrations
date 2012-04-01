@@ -33,10 +33,11 @@ public class LocationTrigger extends Trigger
   private int lat = 0;
   private int lon = 0;
   
-  public LocationTrigger(Context c,Bundle b)
+  public LocationTrigger(Context c,Bundle b, int newID)
   {
     mC = c;
     name = b.getString(Constants.INTENT_KEY_NAME);
+    id = newID;
     // Get the location manager
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
     enterFunctionIDs = new ArrayList<Integer>();
@@ -54,12 +55,15 @@ public class LocationTrigger extends Trigger
     String bestProvider = LM.getBestProvider(criteria, false);
     //Location recievedLocation = LM.getLastKnownLocation(bestProvider);
     Location recievedLocation = new Location(bestProvider);
-    recievedLocation.setLatitude(0);
-    recievedLocation.setLongitude(0);
+    //recievedLocation.setLatitude(0);
+    //recievedLocation.setLongitude(0);
     
     Log.d(TAG,"Got location" + recievedLocation);
     radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
-    center = (Location)b.getParcelable(Constants.INTENT_KEY_LOCATION);
+    Location l = new Location("");
+    l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
+    l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+    center = l;
     
     if(recievedLocation != null)
     {

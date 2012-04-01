@@ -10,7 +10,7 @@
         android:layout_height="0dp"
         android:layout_above="@+id/text1"
         android:layout_weight="1"
-        android:apiKey="0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ" />
+        android:apiKey="0Fo9_za044J_6oar0wObX-wyTPM9Coy5QG9r1yg" />
 
     <TextView
         android:id="@+id/text1"
