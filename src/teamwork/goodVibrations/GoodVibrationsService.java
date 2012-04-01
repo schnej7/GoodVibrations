@@ -1,10 +1,6 @@
 package teamwork.goodVibrations;
 
-import java.util.ArrayList;
-
-import teamwork.goodVibrations.functions.Function;
-import teamwork.goodVibrations.triggers.TimeTrigger;
-import teamwork.goodVibrations.triggers.Trigger;
+import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
 
 import android.app.*;
@@ -12,6 +8,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -23,159 +22,92 @@ public class GoodVibrationsService extends Service
 {
   private static String TAG = "GoodVibrationsService";
   
-	private TriggerQueue triggers;          // Queue that holds all of the triggers
-	private ArrayList<Function> functions;  // List that holds all of the functions
-	
-	private Looper mServiceLooper;          // Looper to handle the messages
-	private ServiceHandler mServiceHandler;
+	private volatile TriggerQueue triggers;          // Queue that holds all of the triggers
+	private volatile FunctionList functions;  // List that holds all of the functions
+	private int maxFunctionID = 0;
+	private int maxTriggerID = 0;
 		
 	private SettingsChanger changer;
-	
-	// Handler that receives messages from the thread
-	private final class ServiceHandler extends Handler
-	{
-      public ServiceHandler(Looper looper)
-      {
-          super(looper);
-      }
-      
-      // Handles the message to add a trigger or a function
-      @Override
-      public void handleMessage(Message msg)
-      {
-        synchronized (this)
-        {
-          synchronized(triggers)
-          {
-            changer.interrupt();
-            if(msg.arg2 == Constants.TRIGGER_TYPE)
-            {
-              triggers.push((Trigger)msg.obj);
-            }
-            else
-            {
-              functions.add((Function)msg.obj);
-            }
-          }
-          try
-          {
-            changer.join();
-          }
-          catch(InterruptedException e)
-          {
-          }
-          changer = new SettingsChanger();
-          changer.start();
-        }
-        Log.d(TAG,"Stopping handle message");
-        // Stop the service using the startId, so that we don't stop
-        // the service in the middle of handling another job
-        stopSelf(msg.arg1);
-      }
-	}
 	
 	private class SettingsChanger extends Thread
 	{
     public void run()
     {
       Trigger t = null;
-      boolean executed = false;
-      while(!currentThread().isInterrupted())
+      while(!Thread.currentThread().isInterrupted())
       {
         try
         {
           synchronized(triggers)
           {
-            // Grab the next trigger that will execute
-            t = triggers.pop();
+            t = triggers.getNextTrigger();
           }
           if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
-            Thread.sleep(t.getNextExecutionTime());
+            Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
             if(t.canExecute())
             {
-              executed = true;
-              for(Integer fID : t.getFunctions() )
+              Log.d(TAG,"Executing trigger: " + t.id + "  " + t.name);
+              synchronized(triggers)
               {
-                functions.get(fID.intValue()).execute();
+                for(Integer fID : t.getFunctions() )
+                {
+                  functions.get(fID.intValue()).execute();
+                }
+                triggers.switchState(t.id);
               }
-            }
-            // Re-insert the trigger so that it gets executed again
-            synchronized(triggers)
-            {
-              if(executed)
-              {
-                t.switchState();
-              }
-              triggers.push(t);
             }
           }
-          else // t is null because no trigger are in system
+          else // t is null because no triggers are in system
           {
             try
             {
               Thread.sleep(10000); 
             }
             catch(InterruptedException e)
-            {         
+            {
+              Log.d(TAG,"Sleep while no triggers interrupted");
             }
           }
         }
         catch(InterruptedException e)
         {
+          Log.d(TAG,"Sleep while waiting for trigger was interrupted");
         }
       } // End While
-      
-      // If we were interrupted, re-insert the trigger so it is not lost
-      synchronized(triggers)
-      {
-        if(t != null)  // Only push if a trigger was popped off earlier
-        {
-          triggers.push(t);
-        }
-      }
     } // End run()
 	}
 
 	@Override
 	public void onCreate()
 	{
-		Log.d(TAG,"Calling onCreate");
+		Log.d(TAG,"Calling onCreate()");
 		
 		triggers  = new TriggerQueue();
-		functions = new ArrayList<Function>();
+		functions = new FunctionList();
 		
 		// Only samples, need to be removed
-		/*
-		functions.add(new LowerFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		functions.add(new RaiseFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE)));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"THREE",3));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"FIVE",5));
-		functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"ONE",1));
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),"SEVEN",7));
-	  */
+		Bundle b = new Bundle();
+		b.putInt(Constants.INTENT_KEY_VOLUME,1); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F1");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,2); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F2");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,3); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F3");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,4); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F4");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
+		b.putInt(Constants.INTENT_KEY_VOLUME,5); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F5");
+		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
 		
 		Log.d(TAG,"Added Function");
 		
-		// Start up the thread running the service.  Note that we create a
-	  // separate thread because the service normally runs in the process's
-	  // main thread, which we don't want to block.  We also make it
-	  // background priority so CPU-intensive work will not disrupt our UI.
-	  HandlerThread thread = new HandlerThread("ServiceStartArguments", 10);//Process.THREAD_PRIORITY_BACKGROUND);
-	  thread.start();
-	  
-	  Log.d(TAG,"Handler Started");
-	  
 	  changer = new SettingsChanger();
 	  changer.start();
 	  
 	  Log.d(TAG,"Settings Changer Started");
-	  
-	  // Get the HandlerThread's Looper and use it for our Handler 
-	  mServiceLooper = thread.getLooper();
-	  mServiceHandler = new ServiceHandler(mServiceLooper);
+
 	  Log.d(TAG,"Finished onCreate");
 	}
 	
@@ -183,18 +115,11 @@ public class GoodVibrationsService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
     Log.d(TAG,"Starting onStartCommand");
-    // For each start request, send a message to start a job and deliver the
-	  // start ID so we know which request we're stopping when we finish the job
-    
-	  Message msg = mServiceHandler.obtainMessage();
-	  msg.arg1 = startId;
-	  
-	  Log.d(TAG,"Messaged recieved");
-	  
+
 	  Bundle b = intent.getExtras();
 	  final int intentType = b.getInt(Constants.INTENT_TYPE);
 	  final int type = b.getInt(Constants.INTENT_KEY_TYPE);
-	  
+
 	  Log.d(TAG,"Bundle Created");
 	  
 	  if(intentType == Constants.FUNCTION_TYPE)
@@ -203,13 +128,13 @@ public class GoodVibrationsService extends Service
 	    {
 	      // Add a new volume function
 	      case Constants.FUNCTION_TYPE_VOLUME:
-	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b) );
+	        functions.add( new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE),b, maxFunctionID++) );
 	        break;
 	        
 	      // Add a new ring tone function 
 	      case Constants.FUNCTION_TYPE_RINGTONE:
 	        Log.d(TAG, "New Ringtone Function");
-	        functions.add( new RingtoneFunction(getApplicationContext(),b) );
+	        functions.add( new RingtoneFunction(getApplicationContext(),b,maxFunctionID++) );
 	        break;
 	        
 	      default:
@@ -222,6 +147,19 @@ public class GoodVibrationsService extends Service
 	    switch(type)
       {   
         case Constants.TRIGGER_TYPE_TIME:
+          TimeTrigger t = new TimeTrigger(b,maxTriggerID++);
+          Log.d(TAG,"Submitting TimeTrigger To queue");
+          // Submit the trigger into the queue
+          changer.interrupt();
+          synchronized(triggers)
+          {
+            triggers.add(t);
+          }
+               
+          // Restart the settings changer
+          SettingsChanger.interrupted();
+          
+          Log.d(TAG,"TimeTrigger submitted");
           break;
           
         case Constants.TRIGGER_TYPE_LOCATION:
@@ -231,23 +169,66 @@ public class GoodVibrationsService extends Service
           //Should never happen
       }
 	    
-	    msg.arg2 = Constants.TRIGGER_TYPE;
-	    mServiceHandler.sendMessage(msg);
+	    //msg.arg2 = Constants.TRIGGER_TYPE;
+	    //mServiceHandler.sendMessage(msg);
 	  }
-	  	  
-	  
+	  else if(intentType == Constants.GET_DATA)
+    {
+	    Intent i;
+	    switch(type)
+	    {
+	      case Constants.INTENT_KEY_FUNCTION_LIST:
+	        i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+	        i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
+	        i.putExtra(Constants.INTENT_KEY_DATA_LENGTH,functions.size());
+	        i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES,functions.getNames());
+	        i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, functions.getIDs());
+	        sendBroadcast(i);
+	        Log.d(TAG,"GET FUNCTION LIST");
+	        break;
+
+	      case Constants.INTENT_KEY_TRIGGER_LIST:
+	        i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
+          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
+          i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
+          Log.d(TAG,"NT: " + triggers.size());
+          i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());
+          i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, triggers.getIDs());
+          sendBroadcast(i);
+	        Log.d(TAG,"GET TRIGGER LIST");
+	        break;
+	    }
+    }
+
+	  /*
+	  // TODO Remove the following block.  It is for testing only
 	  if(functions.size() == 2)
 	  {
 	    Log.d(TAG,"Adding Trigger");
 	    // Making a trigger
 	    // TODO Build trigger from parsed message
-	    TimeTrigger t = new TimeTrigger(5000,15000,(byte)127);
-	    t.addFunction(TimeTrigger.STATE.ACTIVE,   new Integer(0));
-	    t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(1));
+	    
+	    LocationManager LM = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+	    Criteria criteria = new Criteria();
+	    String bestProvider = LM.getBestProvider(criteria, false);
+	    
+	    Location l = new Location(bestProvider);
+
+	    l.setLatitude(0);
+	    l.setLongitude(0);
+
+	    b.putParcelable(Constants.INTENT_KEY_LOCATION, l);
+	    b.putFloat(Constants.INTENT_KEY_RADIUS, (float)10.0);
+
+	    LocationTrigger t = new LocationTrigger(getApplicationContext(),b);
+	    t.addFunction(LocationTrigger.ENTERFUNCTION, new Integer(0));
+	    t.addFunction(LocationTrigger.EXITFUNCTION,  new Integer(1));
+	    
 	    msg.obj = t;
 	    msg.arg2 = Constants.TRIGGER_TYPE;
       mServiceHandler.sendMessage(msg);
 	  }
+	  */
 	  /*
 	  else
 	  {

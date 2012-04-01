@@ -24,8 +24,10 @@ public class FunctionEditActivity extends Activity{
 	private static final String TAG = "FunctionEditActivity";
 	Intent mIntent;
 	Uri ringtone_uri;
+  
 	
-	public void onCreate(Bundle savedInstanceState){
+	public void onCreate(Bundle savedInstanceState)
+	{
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "onCreate()");
 		setContentView(R.layout.function_edit_menu);
@@ -84,7 +86,6 @@ public class FunctionEditActivity extends Activity{
       public void onClick(View v)
       {
         Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-
         startActivityForResult(i, Constants.REQUEST_CODE_RINGTONE_PICKER); 
       }
     });
@@ -111,7 +112,7 @@ public class FunctionEditActivity extends Activity{
 		        	mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVolumeVibrate.isChecked());
 		        	break;
 		        case Constants.FUNCTION_TYPE_RINGTONE:
-		        	//Use the ringtone fields
+		        	//Use the ring tone fields
 		          mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
 		          mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
 		          mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());
@@ -126,7 +127,10 @@ public class FunctionEditActivity extends Activity{
     });
 	}
 	
- @Override
+
+	
+	
+  @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);

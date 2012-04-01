@@ -10,6 +10,9 @@
     <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
+    <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" ></uses-permission> 
+    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     
      <uses-sdk android:minSdkVersion="7" />
     
@@ -20,8 +23,8 @@
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="serviceDataMessage" />
             </intent-filter>
         </activity>
         <activity 
@@ -45,7 +48,11 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".TimeTriggerSetDaysActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
-        <activity android:name=".TimeTriggerSetTimeActivity" 
+        <activity android:name=".TimeTriggerSetTimesActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".TimeTriggerSetDaysActivity" 
+            android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".LocationTriggerEditActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         
         <service android:name=".GoodVibrationsService"></service>

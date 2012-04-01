@@ -3,11 +3,12 @@ package teamwork.goodVibrations.triggers;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.os.Bundle;
 import android.util.Log;
 import teamwork.goodVibrations.Utils;
 import teamwork.goodVibrations.Constants;
 
-public class TimeTrigger implements Trigger
+public class TimeTrigger extends Trigger
 {
   private static String TAG = "TimeTrigger";
   
@@ -18,16 +19,29 @@ public class TimeTrigger implements Trigger
   private byte daysActive;                     // Holds the days that the trigger is active 1 for Sunday through 7 for Saturday
   long startTime;                              // Number of milliseconds into the day that the trigger starts
   long stopTime;                               // Number of milliseconds into the day that the trigger ends
-  
+
   // Constructor
-  public TimeTrigger(long tStartTime, long tStopTime, byte tDaysActive)
+  public TimeTrigger(Bundle b, int newID)
   {
+    id = newID;
+    name = b.getString(Constants.INTENT_KEY_NAME);
     startFunctionIDs = new ArrayList<Integer>();
     stopFunctionIDs = new ArrayList<Integer>();
     state = STATE.FIRSTSTART;
-    daysActive = tDaysActive;
-    startTime = tStartTime;
-    stopTime = tStopTime;
+    daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
+    startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
+    stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+    
+    int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
+    int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
+    for(int i = 0; i < startIDs.length; i++)
+    {
+      startFunctionIDs.add(new Integer(startIDs[i]));
+    }
+    for(int i = 0; i < stopIDs.length; i++)
+    {
+      stopFunctionIDs.add(new Integer(stopIDs[i]));
+    }
     
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     if(currentTimeInDay > stopTime)
@@ -51,7 +65,7 @@ public class TimeTrigger implements Trigger
   }
 
   // Returns the next time in milliseconds that this trigger must execute
-  public long getNextExecutionTime()
+  public long getSleepTime()
   {
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     
@@ -59,7 +73,6 @@ public class TimeTrigger implements Trigger
     if(canExecute())
     {
       long delay = 0;
-      Log.d(TAG,"currentTime" + currentTimeInDay);
       switch(state)
       {
         case FIRSTSTART:
@@ -80,10 +93,10 @@ public class TimeTrigger implements Trigger
       {
         delay = 0;
       }
-      Log.d(TAG,"delay: " + delay);
       return delay;
     }
     
+    // Cannot run today so sleep until tomorrow
     return Constants.dayInMillis - currentTimeInDay;
   }
   
