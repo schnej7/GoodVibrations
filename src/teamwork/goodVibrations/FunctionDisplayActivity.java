@@ -17,7 +17,7 @@ public class FunctionDisplayActivity extends Activity
 {
   private static String TAG = "FunctionDisplayActivity";
   
-	private ArrayAdapter <String> functionArrayAdapter;
+	private ArrayAdapter<String> functionArrayAdapter;
 	private ListView listView;
 	private DataReceiver dataReceiver;
 
