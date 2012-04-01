@@ -24,7 +24,7 @@ public class LocationTriggerEditActivity extends Activity
   protected void onStart()
   {
     super.onStart();
-    Log.d(TAG, "onStart()");
+    Log.d(TAG, "onStart()"); 
     mIntent=new Intent();
     
     //set intent type to time trigger
@@ -44,6 +44,7 @@ public class LocationTriggerEditActivity extends Activity
         Log.d(TAG,"STARTING MAPS API TO GET LOCATION");
         Intent LocationTriggerSetLocationIntent = new Intent(getApplicationContext(), MapSelector.class);
         startActivityForResult(LocationTriggerSetLocationIntent,0);
+        
       }
     });
     
@@ -69,7 +70,11 @@ public class LocationTriggerEditActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode==RESULT_OK)
     {
-      
+      //received location from map activity
+      Log.d(TAG,"Running onClick()");
+      Bundle b = data.getExtras();
+      mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+      mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));     
     }
     else
     {

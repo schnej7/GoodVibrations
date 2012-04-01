@@ -5,6 +5,7 @@ import java.util.List;
 import couk.chrisjenx.androidmaplib.AMLController;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -29,10 +30,11 @@ public class MapSelector extends MapActivity
   private String TAG = "MapSelector";
   private AMLController aml;
   private LocationManager LM;
-	private MapOverlay myLocationOverlay;
-	private MapView myMapView;
-	private MapController myController;
-	GeoPoint userLoc;
+  private MapOverlay myLocationOverlay;
+  private MapView myMapView;
+  private MapController myController;
+  private Intent mIntent;
+  GeoPoint userLoc;
 	
 	//Helper class
 	//MapOverlay will draw a point on the map and display a 
@@ -63,15 +65,14 @@ public class MapSelector extends MapActivity
       	//update position of point icon on map
       	userLoc = p;
       	Log.d(TAG, "tap detected");
-
-              Toast.makeText(getBaseContext(), 
-                             p.getLatitudeE6() / 1E6 + "," + 
-                             p.getLongitudeE6() /1E6 , 
-                             Toast.LENGTH_SHORT).show();
-          /*
-          } 
-          */                           
-          return false;
+        Toast.makeText(getBaseContext(), 
+                       p.getLatitudeE6() / 1E6 + "," + p.getLongitudeE6() /1E6 , 
+                       Toast.LENGTH_SHORT).show();
+        mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, p.getLatitudeE6() / 1E6);
+        mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, p.getLongitudeE6() / 1E6);
+        setResult(RESULT_OK, mIntent);
+        finish();  // Returns to TimeTriggerSetTimesActivity.onActivityResult()
+        return false;
       }
   }
 
@@ -80,6 +81,7 @@ public class MapSelector extends MapActivity
   {
   	Log.d(TAG, "Creating Activity");	
     super.onCreate(icicle);
+    mIntent = new Intent();
   }
 
   protected void onStart()
@@ -94,8 +96,12 @@ public class MapSelector extends MapActivity
     String bestProvider = LM.getBestProvider(criteria, false);
     Location receivedLocation = LM.getLastKnownLocation(bestProvider);
     
-    setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
-    aml = new AMLController(this, Constants.MAP_API_KEY);
+    //setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
+    //aml = new AMLController(this, Constants.MAP_API_KEY);
+    
+    setContentView(R.layout.quick_start);
+    aml = new AMLController(this, R.id.map_view);
+    
     myMapView = aml.getMapView();
     
     myMapView.setSatellite(true);
