@@ -40,10 +40,6 @@ public class Constants
   public static final String INTENT_KEY_END_TIME = "108";
   public static final String INTENT_KEY_REPEAT_DAYS_BOOL = "109";
   public static final String INTENT_KEY_REPEAT_DAYS_BYTE = "110";
-<<<<<<< HEAD
-  public static final String INTENT_KEY_RADIUS = "111";  
-  public static final String MAP_API_KEY = "0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ";
-=======
   public static final String INTENT_KEY_RADIUS = "111";
   public static final String INTENT_KEY_FUNCTIONS = "112";
   public static final String INTENT_KEY_TRIGGERS = "113";
@@ -54,7 +50,6 @@ public class Constants
   public static final String INTENT_KEY_DATA_LENGTH = "118";
   public static final String INTENT_KEY_START_FUNCTION_IDS = "119";
   public static final String INTENT_KEY_STOP_FUNCTION_IDS = "120";
->>>>>>> 126da88266436d3010ec89aed86ef444a5b3aed2
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
