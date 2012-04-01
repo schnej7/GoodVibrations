@@ -39,8 +39,10 @@ public class GoodVibrationsActivity extends TabActivity
 	public void onStart()
 	{
 		super.onStart();
-
-		/*
+		
+		//Intent i1 = new Intent(this, MapSelector.class);
+		//startActivityForResult(i1, 0);
+		
 		Log.d(TAG,"Starting Service");
 		Intent i1 = new Intent(this, GoodVibrationsService.class);
 		Intent i2 = new Intent(this, GoodVibrationsService.class);
@@ -51,7 +53,7 @@ public class GoodVibrationsActivity extends TabActivity
 		startService(i1);
 		startService(i2);
 		Log.d(TAG,"Service Started");
-		*/
+		
 		
 	}
 

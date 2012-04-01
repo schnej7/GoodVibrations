@@ -36,6 +36,7 @@ public class Constants
   public static final String INTENT_KEY_REPEAT_DAYS_BOOL = "109";
   public static final String INTENT_KEY_REPEAT_DAYS_BYTE = "110";
   public static final String INTENT_KEY_RADIUS = "111";  
+  public static final String MAP_API_KEY = "0UvdZCYV5hFgYk_rTiVtYv14xstUVf0fV2jHLhQ";
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
