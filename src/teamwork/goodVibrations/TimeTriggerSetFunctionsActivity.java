@@ -76,12 +76,10 @@ public class TimeTriggerSetFunctionsActivity extends Activity
           }
         }
         //convert to int [] from ArrayList<Integer>
-        Integer [] integerChks=null;
-        integerChks = chks.toArray(integerChks);
-        int [] intChks=new int[integerChks.length];
+        int [] intChks=new int[chks.size()];
         for(int j=0; j<intChks.length; j++)
         {
-          intChks[j]=integerChks[j].intValue();
+          intChks[j]=chks.get(j).intValue();
         }
         mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, intChks);
         setResult(RESULT_OK, mIntent);
