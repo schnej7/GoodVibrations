@@ -12,11 +12,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" ></uses-permission> 
-    <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     
      <uses-sdk android:minSdkVersion="7" />
     
-    <application>
+    <application
+        android:label="@string/applicationName">
         <uses-library android:required="true" android:name="com.google.android.maps"></uses-library>
         <activity
             android:name=".GoodVibrationsActivity"
@@ -32,9 +32,8 @@
             android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>            
+        </activity>
         <activity android:name=".TriggerDisplayActivity" 
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity android:name=".FunctionDisplayActivity" 
@@ -43,7 +42,7 @@
             android:theme="@android:style/Theme.NoTitleBar"/>
         
         <activity android:name=".TriggerEditActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar" />      	
         <activity android:name=".TimeTriggerEditActivity" 
             android:theme="@android:style/Theme.NoTitleBar"/>
         <activity android:name=".TimeTriggerSetDaysActivity" 

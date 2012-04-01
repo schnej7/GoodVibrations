@@ -43,18 +43,6 @@ public class GoodVibrationsActivity extends TabActivity
 		//Intent i1 = new Intent(this, MapSelector.class);
 		//startActivityForResult(i1, 0);
 		
-		Log.d(TAG,"Starting Service");
-		Intent i1 = new Intent(this, GoodVibrationsService.class);
-		Intent i2 = new Intent(this, GoodVibrationsService.class);
-		
-		i1.putExtra("id",1);
-		i2.putExtra("id",2);
-		
-		startService(i1);
-		startService(i2);
-		Log.d(TAG,"Service Started");
-		
-		
 	}
 
 }
