@@ -32,8 +32,10 @@ public class TimeTrigger extends Trigger
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
     
-    int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
-    int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
+    //int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
+    int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+    //int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
+    int [] stopIDs = {0}; // Hard coded for Product stakeholder review 1
     for(int i = 0; i < startIDs.length; i++)
     {
       startFunctionIDs.add(new Integer(startIDs[i]));
