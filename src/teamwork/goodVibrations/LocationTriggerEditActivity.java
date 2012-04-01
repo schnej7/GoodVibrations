@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.location.Location;
 
 public class LocationTriggerEditActivity extends Activity
 {
@@ -44,7 +45,6 @@ public class LocationTriggerEditActivity extends Activity
         Log.d(TAG,"STARTING MAPS API TO GET LOCATION");
         Intent LocationTriggerSetLocationIntent = new Intent(getApplicationContext(), MapSelector.class);
         startActivityForResult(LocationTriggerSetLocationIntent,0);
-        
       }
     });
     
@@ -60,7 +60,7 @@ public class LocationTriggerEditActivity extends Activity
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
         //start
         setResult(RESULT_OK, mIntent);
-        finish();  // Returns to FunctionDisplayActivity.onActivityResult()
+        finish();  // Returns to TriggerDisplayActivity.onActivityResult()
       }
     });  
   }
