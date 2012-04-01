@@ -22,7 +22,7 @@ public class TimeTriggerSetFunctionsActivity extends Activity
   TimeTriggerFunctionAdapter arrayAdapter;
   ArrayList<FunctionForUI> funcs = null;
   DataReceiver dataReceiver;
-  Intent mIntent;
+  Intent mIntent = new Intent();
   
   @Override
   public void onCreate(Bundle savedInstanceState)
@@ -77,7 +77,7 @@ public class TimeTriggerSetFunctionsActivity extends Activity
         }
         //convert to int [] from ArrayList<Integer>
         int [] intChks=new int[chks.size()];
-        for(int j=0; j<intChks.length; j++)
+        for(int j=0; j< chks.size(); j++)
         {
           intChks[j]=chks.get(j).intValue();
         }
