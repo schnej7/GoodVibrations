@@ -8,10 +8,10 @@ public class Utils
   {
     Calendar c = Calendar.getInstance();
     
-    return //c.get(Calendar.HOUR_OF_DAY)*3600000 +
-           //c.get(Calendar.MINUTE)*60000 +
-           (c.get(Calendar.SECOND)*1000 +
-           c.get(Calendar.MILLISECOND))%30000;
+    return c.get(Calendar.HOUR_OF_DAY)*3600000 +
+           c.get(Calendar.MINUTE)*60000 +
+           c.get(Calendar.SECOND)*1000 +
+           c.get(Calendar.MILLISECOND);
   }
   
   public static long calculateTimeInMillis(int hour, int minute)
