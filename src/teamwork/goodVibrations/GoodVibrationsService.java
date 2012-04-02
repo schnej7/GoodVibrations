@@ -45,6 +45,7 @@ public class GoodVibrationsService extends Service
           if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
+            Log.d(TAG,"Sleeping for " + t.getSleepTime());
             Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
             if(t.canExecute())
@@ -64,6 +65,7 @@ public class GoodVibrationsService extends Service
           {
             try
             {
+              Log.d(TAG,"No triggers Sleeping for 10000");
               Thread.sleep(10000); 
             }
             catch(InterruptedException e)
@@ -90,15 +92,9 @@ public class GoodVibrationsService extends Service
 		
 		// Only samples, need to be removed
 		Bundle b = new Bundle();
-		b.putInt(Constants.INTENT_KEY_VOLUME,1); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F1");
+		b.putInt(Constants.INTENT_KEY_VOLUME,0); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"Volume 0");
 		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
-		b.putInt(Constants.INTENT_KEY_VOLUME,2); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F2");
-		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
-		b.putInt(Constants.INTENT_KEY_VOLUME,3); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F3");
-		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
-		b.putInt(Constants.INTENT_KEY_VOLUME,4); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F4");
-		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
-		b.putInt(Constants.INTENT_KEY_VOLUME,5); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"F5");
+		b.putInt(Constants.INTENT_KEY_VOLUME,7); b.putBoolean(Constants.INTENT_KEY_VIBRATE,true); b.putString(Constants.INTENT_KEY_NAME,"Volume 7");
 		functions.add(new SetVolumeFunction((AudioManager)getSystemService(Context.AUDIO_SERVICE),b,maxFunctionID++));
 		
 		Log.d(TAG,"Added Function");
