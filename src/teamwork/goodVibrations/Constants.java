@@ -2,11 +2,9 @@ package teamwork.goodVibrations;
 
 public class Constants
 {
-  // TODO CHANGE BACK TO A FULL DAY
-  
   // Controls the length of a day in the TimeTrigger
-  //public static long dayInMillis = 86400000;
-  public static final long dayInMillis = 30000;
+  public static long dayInMillis = 86400000;
+  //public static final long dayInMillis = 30000; // A 30-second day.
   
   // A String label for the type of intent
   public static final String INTENT_TYPE = "INTENT_TYPE";
@@ -52,7 +50,6 @@ public class Constants
   public static final String INTENT_KEY_STOP_FUNCTION_IDS = "120";
   public static final String INTENT_KEY_LONGITUDE = "121";
   public static final String INTENT_KEY_LATITUDE = "122";
-  //public static final String MAP_API_KEY = "0Fo9_za044J9HOqtG5xlbqG9ORCGKE1uXvj3m5Q";
   
   // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
   public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
