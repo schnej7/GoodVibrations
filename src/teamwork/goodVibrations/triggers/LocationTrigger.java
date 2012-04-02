@@ -50,7 +50,6 @@ public class LocationTrigger extends Trigger
     for(int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
-      Log.d(TAG, "LOCFID: " + enterIDs[i]);
     }
     for(int i = 0; i < exitIDs.length; i++)
     {
