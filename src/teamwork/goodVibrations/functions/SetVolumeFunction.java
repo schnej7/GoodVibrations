@@ -28,7 +28,6 @@ public class SetVolumeFunction extends Function
   public void execute()
   {
     Log.d(TAG,"EXECUTING " + name);
-    AM.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI | AudioManager.FLAG_ALLOW_RINGER_MODES | AudioManager.FLAG_VIBRATE);
     if(volume > 0)
     {
       AM.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -37,6 +36,7 @@ public class SetVolumeFunction extends Function
     {
       AM.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
     }
+    AM.setStreamVolume(AudioManager.STREAM_RING, volume, AudioManager.FLAG_SHOW_UI | AudioManager.FLAG_ALLOW_RINGER_MODES | AudioManager.FLAG_VIBRATE);
     /*
     // TODO Implement a silent setting
     if(volume == 0 && silent)
@@ -55,5 +55,4 @@ public class SetVolumeFunction extends Function
 
     Log.d(TAG,"execute() - Setting to " + volume);
   }
-
 }
