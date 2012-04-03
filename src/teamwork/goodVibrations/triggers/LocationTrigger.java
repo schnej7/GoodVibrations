@@ -14,8 +14,8 @@ import android.util.Log;
 
 public class LocationTrigger extends Trigger
 {  
-  private static String TAG = "LocationTrigger";
   
+  private static String TAG = "LocationTrigger";
   private boolean isInside;
   private Context mC;
   private LocationManager LM;
@@ -30,24 +30,10 @@ public class LocationTrigger extends Trigger
   
   public static boolean ENTERFUNCTION = true;
   public static boolean EXITFUNCTION = false;
-  LocationListener listener;   
+  GPSLocationListener listener;
+  
   public LocationTrigger(Context c,Bundle b, int newID)
   {
-    listener = new LocationListener()
-    {
-      public void onLocationChanged(Location location) 
-      {
-        // Called when a new location is found by the network location provider.
-        //LM.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
-        //Log.d(TAG, "LOCATION!!!!!");
-        myLocation = location;
-      }
-
-      public void onStatusChanged(String provider, int status, Bundle extras) {}
-      public void onProviderEnabled(String provider) {}
-      public void onProviderDisabled(String provider) {}
-    };
-
     isInside = false;
     mC = c;
     name = b.getString(Constants.INTENT_KEY_NAME);
@@ -80,9 +66,12 @@ public class LocationTrigger extends Trigger
     bestProvider = LM.getBestProvider(criteria, true);
     myLocation = new Location(bestProvider);
     myLocation = LM.getLastKnownLocation(bestProvider);
-    // Define a listener that responds to location updates
-    
 
+    // Define a listener that responds to location updates
+    listener = new GPSLocationListener();
+    Log.d(TAG,"BEST: " + bestProvider);
+    LM.requestLocationUpdates(bestProvider, 0, 0, listener);
+    
     //Location recievedLocation = new Location(bestProvider);
     //recievedLocation.setLatitude(0);
     //recievedLocation.setLongitude(0);
@@ -96,27 +85,6 @@ public class LocationTrigger extends Trigger
     l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
     l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
     center = l;
-    
-    /*
-    if(recievedLocation != null)
-    {
-      if(recievedLocation.distanceTo(center) > radius)
-      {
-        lastLocation = false;
-        currentLocation = false;
-      }
-      else
-      {
-        lastLocation = true;
-        currentLocation = true;
-      }
-    }
-    
-    else
-    {
-      Log.d(TAG,"Location not recieved");
-    }
-    */
   }
   
   public void removeFunction(Integer id)
@@ -136,29 +104,10 @@ public class LocationTrigger extends Trigger
 
   public ArrayList<Integer> getFunctions()
   {
-    /*
-  	if (lastLocation && !currentLocation)
-	  {
-	     return exitFunctionIDs;
-	  }
-	  
-    if(currentLocation == lastLocation)
-    {
-      return null;
-    }
-    
-    if (!lastLocation && currentLocation)
-    {
-      return enterFunctionIDs;
-    }
-    
-    return null;
-    */
     if (myLocation.distanceTo(center) > radius)
     {
        return exitFunctionIDs;
     }
-    
     else
     {
       return enterFunctionIDs;
@@ -172,37 +121,34 @@ public class LocationTrigger extends Trigger
 
   public boolean canExecute()
   {
+    Log.d(TAG,"canExecute()");
     if (myLocation!= null)
-      {
-      LM.requestLocationUpdates(bestProvider, 0, 0, listener);
-      //LM.requestLocationUpdates(bestProvider, 0, 0, listener);
-      Log.d(TAG,"canExecute()");
+    {
       //Get new location and calculate distance to target
-      
       Log.d(TAG,"LAT/LON " + myLocation.getLatitude() + "/" + myLocation.getLongitude());
       double dist = myLocation.distanceTo(center);
       boolean isNowInside = (dist < radius);
       Log.d(TAG, "center: " + center);
       Log.d(TAG, "dist: " + dist + " Radius: " + radius);
       Log.d(TAG, "IsnowInside: " + isNowInside);
-      LM.removeUpdates(listener);
       
       if(isNowInside != isInside)
       {
         isInside = isNowInside;
         return true;
       }
-      
       else
       {
         return false;
       }
-      
-      //return false;
+
     }
     else 
+    {
       return false;
+    }
   }
+  
   //Adds a functionID to either the start or stop list
   public boolean addFunction(boolean type, Integer f)
   {
@@ -217,6 +163,19 @@ public class LocationTrigger extends Trigger
      return true;
   }
   
-  
-  
+  private class GPSLocationListener implements LocationListener 
+  {
+    public void onLocationChanged(Location location)
+    {
+      Log.d(TAG,"Location Listener Called");
+      if (location != null)
+      {
+        myLocation = location;
+      }
+    }
+
+    public void onProviderDisabled(String arg0) {}
+    public void onProviderEnabled(String provider) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+  }
 }
