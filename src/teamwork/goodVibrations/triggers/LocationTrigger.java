@@ -70,7 +70,7 @@ public class LocationTrigger extends Trigger
     // Define a listener that responds to location updates
     listener = new GPSLocationListener();
     Log.d(TAG,"BEST: " + bestProvider);
-    LM.requestLocationUpdates(bestProvider, 0, 0, listener);
+    LM.requestLocationUpdates(bestProvider, 10000, 0, listener);
     
     //Location recievedLocation = new Location(bestProvider);
     //recievedLocation.setLatitude(0);
@@ -99,7 +99,7 @@ public class LocationTrigger extends Trigger
     //return 300000;
     
     //Check location every 10 seconds 
-    return 3000;
+    return 60000;
   }
 
   public ArrayList<Integer> getFunctions()
