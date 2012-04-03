@@ -7,34 +7,34 @@ import teamwork.goodVibrations.Constants;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
 public class LocationTrigger extends Trigger
-{
+{  
   
   private static String TAG = "LocationTrigger";
-  
-  private boolean lastLocation;    // True - inside
-  private boolean currentLocation; // True - inside
+  private boolean isInside;
   private Context mC;
   private LocationManager LM;
   private List<String> providers;
+  private Location myLocation;
   private Location center;
   private float radius;
   private ArrayList<Integer> enterFunctionIDs;       // The functions that will be executed on start
   private ArrayList<Integer> exitFunctionIDs;  // The functions that will be executed on stop
   private Criteria criteria;
+  private String bestProvider;
   
   public static boolean ENTERFUNCTION = true;
   public static boolean EXITFUNCTION = false;
-  
-  private int lat = 0;
-  private int lon = 0;
+  GPSLocationListener listener;
   
   public LocationTrigger(Context c,Bundle b, int newID)
   {
+    isInside = false;
     mC = c;
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
@@ -62,37 +62,29 @@ public class LocationTrigger extends Trigger
     Log.d(TAG, "Got providers");
     Log.d(TAG,"PROVIDERS:" + providers);
     criteria = new Criteria();
-    String bestProvider = LM.getBestProvider(criteria, false);
-    //Location recievedLocation = LM.getLastKnownLocation(bestProvider);
-    Location recievedLocation = new Location(bestProvider);
+    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+    bestProvider = LM.getBestProvider(criteria, true);
+    myLocation = new Location(bestProvider);
+    myLocation = LM.getLastKnownLocation(bestProvider);
+
+    // Define a listener that responds to location updates
+    listener = new GPSLocationListener();
+    Log.d(TAG,"BEST: " + bestProvider);
+    LM.requestLocationUpdates(bestProvider, 0, 0, listener);
+    
+    //Location recievedLocation = new Location(bestProvider);
     //recievedLocation.setLatitude(0);
     //recievedLocation.setLongitude(0);
     
-    Log.d(TAG,"Got location" + recievedLocation);
-    radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
+    Log.d(TAG,"Got location" + myLocation);
+    Log.d(TAG, "Proider: " + bestProvider);
+    //radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
+    //Constant value of 50 for radius
+    radius = 50;
     Location l = new Location("");
     l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
     l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
     center = l;
-    
-    if(recievedLocation != null)
-    {
-      if(recievedLocation.distanceTo(center) > radius)
-      {
-        lastLocation = false;
-        currentLocation = false;
-      }
-      else
-      {
-        lastLocation = true;
-        currentLocation = true;
-      }
-    }
-    else
-    {
-      Log.d(TAG,"Location not recieved");
-    }
-    
   }
   
   public void removeFunction(Integer id)
@@ -105,27 +97,21 @@ public class LocationTrigger extends Trigger
   {
     // Check location every 5 minutes
     //return 300000;
-    return 10000;
+    
+    //Check location every 10 seconds 
+    return 3000;
   }
 
   public ArrayList<Integer> getFunctions()
   {
-	if (lastLocation && !currentLocation)
-	{
-	   return exitFunctionIDs;
-	}
-	  
-    if(currentLocation == lastLocation)
+    if (myLocation.distanceTo(center) > radius)
     {
-      return null;
+       return exitFunctionIDs;
     }
-    
-    if (!lastLocation && currentLocation)
+    else
     {
       return enterFunctionIDs;
     }
-    
-    return null;
   }
 
   public void switchState()
@@ -136,62 +122,31 @@ public class LocationTrigger extends Trigger
   public boolean canExecute()
   {
     Log.d(TAG,"canExecute()");
-    //Get new location and calculate distance to target
-    String bestProvider = LM.getBestProvider(criteria, false);
-    //Location recievedLocation = LM.getLastKnownLocation(bestProvider);
-    Location recievedLocation = new Location(bestProvider);
-    if(lat > 5)
+    if (myLocation!= null)
     {
-      lat = -2;
-      lon = -2;
-    }
-    recievedLocation.setLatitude(lat++);
-    recievedLocation.setLongitude(lon++);
-    
-    Log.d(TAG,"LAT/LON " + lat);
-    
-    if(recievedLocation == null)
-    {
-      Log.d(TAG,"Location not recieved");
-      return false;
-    }
-    else
-    {
-      double dist = recievedLocation.distanceTo(center); 
+      //Get new location and calculate distance to target
+      Log.d(TAG,"LAT/LON " + myLocation.getLatitude() + "/" + myLocation.getLongitude());
+      double dist = myLocation.distanceTo(center);
+      boolean isNowInside = (dist < radius);
+      Log.d(TAG, "center: " + center);
+      Log.d(TAG, "dist: " + dist + " Radius: " + radius);
+      Log.d(TAG, "IsnowInside: " + isNowInside);
       
-      //make the current location the new location since we're updating current location
-      lastLocation = currentLocation;
-      
-      //update location based in distance to target
-      if(dist < radius)
+      if(isNowInside != isInside)
       {
-        currentLocation = true;
+        isInside = isNowInside;
+        return true;
       }
       else
       {
-        currentLocation = false;
-      }
-      
-      //Return true if we've moved into the target area
-      if(!lastLocation  && currentLocation)
-      {
-        currentLocation = true;
-        return true;
-      }
-      
-      //Also return true if we've moved out of the target area
-      if(lastLocation && !currentLocation)
-      {
-        return true;
-      }
-      
-      //otherwise, we haved moved in our out of target area
-      if(currentLocation == lastLocation)
-      {
         return false;
       }
+
     }
-    return false;
+    else 
+    {
+      return false;
+    }
   }
   
   //Adds a functionID to either the start or stop list
@@ -208,4 +163,19 @@ public class LocationTrigger extends Trigger
      return true;
   }
   
+  private class GPSLocationListener implements LocationListener 
+  {
+    public void onLocationChanged(Location location)
+    {
+      Log.d(TAG,"Location Listener Called");
+      if (location != null)
+      {
+        myLocation = location;
+      }
+    }
+
+    public void onProviderDisabled(String arg0) {}
+    public void onProviderEnabled(String provider) {}
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+  }
 }

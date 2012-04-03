@@ -11,7 +11,6 @@
         android:layout_above="@+id/text1"
         android:layout_weight="1"
         android:apiKey="0Fo9_za044J9HOqtG5xlbqG9ORCGKE1uXvj3m5Q" />
-    
 
     <TextView
         android:id="@+id/text1"

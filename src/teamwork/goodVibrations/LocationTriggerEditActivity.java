@@ -68,6 +68,7 @@ public class LocationTriggerEditActivity extends Activity
         //sets the name in the intent
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
+        //mIntent.putExtra(Constants.INTENT_KEY_RADIUS, 50);
         //start
         setResult(RESULT_OK, mIntent);
         finish();  // Returns to TriggerDisplayActivity.onActivityResult()

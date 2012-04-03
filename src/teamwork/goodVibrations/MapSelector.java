@@ -93,7 +93,9 @@ public class MapSelector extends MapActivity
     Context c = getApplicationContext();
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
     Criteria criteria = new Criteria();
-    String bestProvider = LM.getBestProvider(criteria, false);
+    criteria.setAccuracy(Criteria.ACCURACY_FINE);
+    String bestProvider = LM.getBestProvider(criteria, true);
+    Log.d(TAG,"BEST: " + bestProvider);
     Location receivedLocation = LM.getLastKnownLocation(bestProvider);
     
     //setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
