@@ -94,6 +94,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_green"
-        android:text="@+id/addFunctionTxt" />
+        android:text="@string/addFunctionTxt" />
 
 </LinearLayout>
