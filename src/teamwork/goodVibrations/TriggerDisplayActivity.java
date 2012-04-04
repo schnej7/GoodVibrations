@@ -16,7 +16,6 @@ import android.widget.Toast;
 public class TriggerDisplayActivity extends Activity
 {
   private static String TAG = "TriggerDisplayActivity";
-  private static int triggerentered = 0;
   private ArrayAdapter<String> triggerArrayAdapter;
   private ListView listView;
   private DataReceiver dataReceiver;
@@ -26,8 +25,7 @@ public class TriggerDisplayActivity extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.trigger_tab);
 
-    triggerArrayAdapter = new ArrayAdapter<String>(this,
-        R.layout.trigger_list_item);
+    triggerArrayAdapter = new ArrayAdapter<String>(this,R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
     listView.setAdapter(triggerArrayAdapter);
 

@@ -15,6 +15,7 @@ public class FunctionList
   
   public FunctionList()
   {
+    Log.d(TAG,"FunctionList()");
     functions = new ArrayList<Function>();
   }
   

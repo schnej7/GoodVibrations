@@ -51,15 +51,13 @@ public class Constants
   public static final String INTENT_KEY_LONGITUDE = "121";
   public static final String INTENT_KEY_LATITUDE = "122";
   
-  // Intent request codes.  Used in onActivityResult functions to determine which activity was returned
-  public static final int REQUEST_CODE_RINGTONE_PICKER = 0;
-  
   // Intent request codes.  Used in onActivityResult triggers to determine which activity was returned
   public static final int REQUEST_CODE_LOCATION = 0;
   public static final int REQUEST_CODE_TIME = 1;
   public static final int REQUEST_CODE_SET_TIMES_ACTIVITY = 2;
   public static final int REQUEST_CODE_DAY_PICKER = 3;
   public static final int REQUEST_CODE_SET_FUNCTION_IDS = 4;
+  public static final int REQUEST_CODE_RINGTONE_PICKER = 5;
   
   // Used to broadcast messages from the service to the activity
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";

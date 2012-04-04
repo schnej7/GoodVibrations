@@ -17,7 +17,6 @@ public class LocationTrigger extends Trigger
   
   private static String TAG = "LocationTrigger";
   private boolean isInside;
-  private Context mC;
   private LocationManager LM;
   private List<String> providers;
   private Location myLocation;
@@ -35,7 +34,6 @@ public class LocationTrigger extends Trigger
   public LocationTrigger(Context c,Bundle b, int newID)
   {
     isInside = false;
-    mC = c;
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
     // Get the location manager

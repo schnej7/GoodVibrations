@@ -6,16 +6,9 @@ import teamwork.goodVibrations.functions.*;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.location.Criteria;
-import android.location.Location;
-import android.location.LocationManager;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.Looper;
-import android.os.Message;
 import android.util.Log;
 
 public class GoodVibrationsService extends Service

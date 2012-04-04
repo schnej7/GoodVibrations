@@ -9,7 +9,7 @@
             android:id="@+id/addFunction"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Add Function"
+            android:text="@string/addFunctionTxt"
             android:background="@drawable/btn_green"
             style = "@style/ButtonText" />
 

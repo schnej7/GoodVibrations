@@ -25,6 +25,8 @@
 	    <string name="selectTone">Select Ringtone</string>
 	    <string name="setFunctions">Set Functions</string>
 	    <string name="done">Done</string>
+	    <string name="addFunctionTxt">Add Function</string>
+	    <string name="addTriggerTxt">Add Trigger</string>
 	    <!-- for time triggers-->
 	    <string name="startTime">Start Time</string>
 	    <string name="endTime">End Time</string>
