@@ -34,8 +34,7 @@ public class SetFunctionsActivity extends Activity
     // initialize array list
     funcs = new ArrayList<FunctionForUI>();
     // initialize array adapter
-    arrayAdapter = new SetFunctionsAdapter(SetFunctionsActivity.this,
-        R.layout.time_trigger_functions_items, funcs);
+    arrayAdapter = new SetFunctionsAdapter(SetFunctionsActivity.this, R.layout.time_trigger_functions_items, funcs);
 
     // Set the above adapter as the adapter of choice for the list
     lview.setAdapter(arrayAdapter);
@@ -62,17 +61,17 @@ public class SetFunctionsActivity extends Activity
         Log.d(TAG, "Running onClick()");
         int count = arrayAdapter.getCount();
         ArrayList<Integer> chks = new ArrayList<Integer>();
-        for (int i = 0; i < count; i++)
+        for(int i = 0; i < count; i++)
         {
           FunctionForUI f = arrayAdapter.getItem(i);
-          if (f.chkbx.isChecked())
+          if(f.chkbx.isChecked())
           {
             chks.add(f.id);
           }
         }
         // convert to int [] from ArrayList<Integer>
         int[] intChks = new int[chks.size()];
-        for (int j = 0; j < chks.size(); j++)
+        for(int j = 0; j < chks.size(); j++)
         {
           intChks[j] = chks.get(j).intValue();
         }
@@ -114,15 +113,13 @@ public class SetFunctionsActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      if (b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
-        String[] functionNames = b
-            .getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        String[] functionNames = b.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
         int[] functionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-        for (int i = 0; i < functionNames.length; i++)
+        for(int i = 0; i < functionNames.length; i++)
         {
-          FunctionForUI fTemp = new FunctionForUI(functionIDs[i],
-              functionNames[i]);
+          FunctionForUI fTemp = new FunctionForUI(functionIDs[i], functionNames[i]);
           funcs.add(fTemp);
         }
         // notify array adapter of changes

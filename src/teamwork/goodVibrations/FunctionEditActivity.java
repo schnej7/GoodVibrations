@@ -53,37 +53,34 @@ public class FunctionEditActivity extends Activity
     final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
 
     final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
-    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
-        R.layout.spinner_list_item, array_spinner);
+    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
     spinnerType.setAdapter(spinnerAdapter);
-    spinnerType
-        .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+    spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+    {
+      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+      {
+        switch(i)
         {
-          public void onItemSelected(AdapterView<?> adapterView, View view,
-              int i, long l)
-          {
-            switch (i)
-            {
-              case 0:
-                llVolumeOptions.setVisibility(View.VISIBLE);
-                llRingtoneOptions.setVisibility(View.GONE);
-                break;
-              case 1:
-                llVolumeOptions.setVisibility(View.GONE);
-                llRingtoneOptions.setVisibility(View.VISIBLE);
-                break;
-              default:
-                llVolumeOptions.setVisibility(View.GONE);
-                llRingtoneOptions.setVisibility(View.GONE);
-                break;
-            }
-          }
+          case 0:
+            llVolumeOptions.setVisibility(View.VISIBLE);
+            llRingtoneOptions.setVisibility(View.GONE);
+            break;
+          case 1:
+            llVolumeOptions.setVisibility(View.GONE);
+            llRingtoneOptions.setVisibility(View.VISIBLE);
+            break;
+          default:
+            llVolumeOptions.setVisibility(View.GONE);
+            llRingtoneOptions.setVisibility(View.GONE);
+            break;
+        }
+      }
 
-          public void onNothingSelected(AdapterView<?> adapterView)
-          {
-            return;
-          }
-        });
+      public void onNothingSelected(AdapterView<?> adapterView)
+      {
+        return;
+      }
+    });
 
     // The Select Ringtone button
     final Button buttonSelectRingtone = (Button) findViewById(R.id.buttonSelectRingtone);
@@ -105,32 +102,25 @@ public class FunctionEditActivity extends Activity
       {
         int i = spinnerType.getSelectedItemPosition();
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText()
-            .toString());
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
-        switch (i)
+        switch(i)
         {
           case Constants.FUNCTION_TYPE_VOLUME:
             // Use the volume fields
             // Convert 0-99 volume to 0 to MaxVol
             float progress = (float) sliderVolume.getProgress();
-            float maxVol = (float) ((AudioManager) getBaseContext()
-                .getSystemService(Context.AUDIO_SERVICE))
-                .getStreamMaxVolume(AudioManager.STREAM_RING);
+            float maxVol = (float) ((AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
             int volume = (int) Math.round(maxVol * (progress / 100.0));
-            mIntent.putExtra(Constants.INTENT_KEY_TYPE,
-                Constants.FUNCTION_TYPE_VOLUME);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_VOLUME);
             mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
-            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
-                chkVolumeVibrate.isChecked());
+            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVolumeVibrate.isChecked());
             break;
           case Constants.FUNCTION_TYPE_RINGTONE:
             // Use the ring tone fields
-            mIntent.putExtra(Constants.INTENT_KEY_TYPE,
-                Constants.FUNCTION_TYPE_RINGTONE);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
             mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
-            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
-                chkRingtoneVibrate.isChecked());
+            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());
             break;
           default:
             // Do nothing, this should never happen
@@ -146,13 +136,12 @@ public class FunctionEditActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK)
+    if(resultCode == RESULT_OK)
     {
       // If the ringtone picker was returned
-      if (requestCode == Constants.REQUEST_CODE_RINGTONE_PICKER)
+      if(requestCode == Constants.REQUEST_CODE_RINGTONE_PICKER)
       {
-        ringtone_uri = data
-            .getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+        ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
         Log.d(TAG, "uri " + ringtone_uri);
         Toast.makeText(this, "" + ringtone_uri, Toast.LENGTH_LONG).show();
       }

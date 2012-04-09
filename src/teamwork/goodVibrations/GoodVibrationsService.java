@@ -29,26 +29,26 @@ public class GoodVibrationsService extends Service
     public void run()
     {
       Trigger t = null;
-      while (!Thread.currentThread().isInterrupted())
+      while(!Thread.currentThread().isInterrupted())
       {
         try
         {
-          synchronized (triggers)
+          synchronized(triggers)
           {
             t = triggers.getNextTrigger();
           }
-          if (t != null) // Make sure we have a trigger to process
+          if(t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
             Log.d(TAG, "Sleeping for " + t.getSleepTime());
             Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
-            if (t.canExecute())
+            if(t.canExecute())
             {
               Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name);
-              synchronized (triggers)
+              synchronized(triggers)
               {
-                for (Integer fID : t.getFunctions())
+                for(Integer fID : t.getFunctions())
                 {
                   functions.get(fID.intValue()).execute();
                 }
@@ -64,13 +64,13 @@ public class GoodVibrationsService extends Service
               Log.d(TAG, "No triggers Sleeping for 10000");
               Thread.sleep(10000);
             }
-            catch (InterruptedException e)
+            catch(InterruptedException e)
             {
               Log.d(TAG, "Sleep while no triggers interrupted");
             }
           }
         }
-        catch (InterruptedException e)
+        catch(InterruptedException e)
         {
           Log.d(TAG, "Sleep while waiting for trigger was interrupted");
         }
@@ -91,15 +91,11 @@ public class GoodVibrationsService extends Service
     b.putInt(Constants.INTENT_KEY_VOLUME, 0);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
-    functions.add(new SetVolumeFunction(
-        (AudioManager) getSystemService(Context.AUDIO_SERVICE), b,
-        maxFunctionID++));
+    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
     b.putInt(Constants.INTENT_KEY_VOLUME, 7);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
-    functions.add(new SetVolumeFunction(
-        (AudioManager) getSystemService(Context.AUDIO_SERVICE), b,
-        maxFunctionID++));
+    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
 
     Log.d(TAG, "Added Function");
 
@@ -122,22 +118,19 @@ public class GoodVibrationsService extends Service
 
     Log.d(TAG, "Bundle Created");
 
-    if (intentType == Constants.FUNCTION_TYPE)
+    if(intentType == Constants.FUNCTION_TYPE)
     {
-      switch (type)
+      switch(type)
       {
       // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
-          functions.add(new SetVolumeFunction(
-              (AudioManager) getSystemService(Context.AUDIO_SERVICE), b,
-              maxFunctionID++));
+          functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
           break;
 
         // Add a new ring tone function
         case Constants.FUNCTION_TYPE_RINGTONE:
           Log.d(TAG, "New Ringtone Function");
-          functions.add(new RingtoneFunction(getApplicationContext(), b,
-              maxFunctionID++));
+          functions.add(new RingtoneFunction(getApplicationContext(), b, maxFunctionID++));
           break;
 
         default:
@@ -145,10 +138,10 @@ public class GoodVibrationsService extends Service
           break;
       }
     }
-    else if (intentType == Constants.TRIGGER_TYPE)
+    else if(intentType == Constants.TRIGGER_TYPE)
     {
       Trigger t = null;
-      switch (type)
+      switch(type)
       {
         case Constants.TRIGGER_TYPE_TIME:
           t = new TimeTrigger(b, maxTriggerID++);
@@ -165,7 +158,7 @@ public class GoodVibrationsService extends Service
       Log.d(TAG, "Submitting TimeTrigger To queue");
       // Submit the trigger into the queue
       changer.interrupt();
-      synchronized (triggers)
+      synchronized(triggers)
       {
         triggers.add(t);
       }
@@ -175,15 +168,14 @@ public class GoodVibrationsService extends Service
 
       Log.d(TAG, "Trigger submitted");
     }
-    else if (intentType == Constants.GET_DATA)
+    else if(intentType == Constants.GET_DATA)
     {
       Intent i;
-      switch (type)
+      switch(type)
       {
         case Constants.INTENT_KEY_FUNCTION_LIST:
           i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
-          i.putExtra(Constants.INTENT_KEY_NAME,
-              Constants.INTENT_KEY_FUNCTION_LIST);
+          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, functions.size());
           i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES, functions.getNames());
           i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, functions.getIDs());
@@ -193,8 +185,7 @@ public class GoodVibrationsService extends Service
 
         case Constants.INTENT_KEY_TRIGGER_LIST:
           i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
-          i.putExtra(Constants.INTENT_KEY_NAME,
-              Constants.INTENT_KEY_TRIGGER_LIST);
+          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
           Log.d(TAG, "NT: " + triggers.size());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());

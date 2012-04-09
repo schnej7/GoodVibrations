@@ -18,8 +18,7 @@ public class RaiseFunction extends Function
 
   public void execute()
   {
-    AM.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_RAISE,
-        AudioManager.FLAG_SHOW_UI);
+    AM.adjustStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
     Log.d("vorsth", "Addtion Function ");
   }
 

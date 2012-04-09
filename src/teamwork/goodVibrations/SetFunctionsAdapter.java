@@ -17,8 +17,7 @@ public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
   int resource;
   Context context;
 
-  public SetFunctionsAdapter(Context context, int resource,
-      List<FunctionForUI> items)
+  public SetFunctionsAdapter(Context context, int resource, List<FunctionForUI> items)
   {
     super(context, resource, items);
     this.resource = resource;
@@ -32,7 +31,7 @@ public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
     FunctionForUI f = getItem(position);
 
     // inflate the view
-    if (convertView == null)
+    if(convertView == null)
     {
       funcView = new LinearLayout(getContext());
       String inflater = Context.LAYOUT_INFLATER_SERVICE;
@@ -45,10 +44,8 @@ public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
       funcView = (LinearLayout) convertView;
     }
     // get items from time_trigger_functions_items.xml
-    TextView funcName = (TextView) funcView
-        .findViewById(R.id.timeTriggerFunctionName);
-    f.chkbx = (CheckBox) funcView
-        .findViewById(R.id.timeTriggerFunctionCheckBox);
+    TextView funcName = (TextView) funcView.findViewById(R.id.timeTriggerFunctionName);
+    f.chkbx = (CheckBox) funcView.findViewById(R.id.timeTriggerFunctionCheckBox);
 
     // assign appropriate data
     funcName.setText(f.name);

@@ -31,10 +31,10 @@ public class FunctionList
   public Function get(int i)
   {
     Iterator<Function> iter = functions.iterator();
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       Function f = iter.next();
-      if (f.id == i)
+      if(f.id == i)
       {
         return f;
       }
@@ -47,7 +47,7 @@ public class FunctionList
     Iterator<Function> iter = functions.iterator();
     int[] IDs = new int[functions.size()];
     int i = 0;
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       IDs[i] = iter.next().id;
       i++;
@@ -60,7 +60,7 @@ public class FunctionList
     Iterator<Function> iter = functions.iterator();
     String[] names = new String[functions.size()];
     int i = 0;
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       names[i] = iter.next().name;
       i++;

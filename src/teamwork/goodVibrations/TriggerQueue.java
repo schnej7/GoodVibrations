@@ -22,7 +22,7 @@ public class TriggerQueue
     {
       public int compare(Trigger t1, Trigger t2)
       {
-        if (t1.getSleepTime() == t2.getSleepTime())
+        if(t1.getSleepTime() == t2.getSleepTime())
         {
           return 0;
         }
@@ -49,7 +49,7 @@ public class TriggerQueue
     {
       return Collections.min(triggers, comparator);
     }
-    catch (NoSuchElementException e)
+    catch(NoSuchElementException e)
     {
       return null;
     }
@@ -58,10 +58,10 @@ public class TriggerQueue
   public void switchState(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       Trigger t = iter.next();
-      if (t.id == id)
+      if(t.id == id)
       {
         t.switchState();
         return;
@@ -74,7 +74,7 @@ public class TriggerQueue
     Iterator<Trigger> iter = triggers.iterator();
     int[] IDs = new int[triggers.size()];
     int i = 0;
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       IDs[i] = iter.next().id;
       i++;
@@ -88,7 +88,7 @@ public class TriggerQueue
     Iterator<Trigger> iter = triggers.iterator();
     String[] names = new String[triggers.size()];
     int i = 0;
-    while (iter.hasNext())
+    while(iter.hasNext())
     {
       names[i] = iter.next().name;
       i++;

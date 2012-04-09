@@ -26,8 +26,7 @@ public class FunctionDisplayActivity extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.function_tab);
 
-    functionArrayAdapter = new ArrayAdapter<String>(this,
-        R.layout.function_list_item);
+    functionArrayAdapter = new ArrayAdapter<String>(this, R.layout.function_list_item);
     listView = (ListView) findViewById(R.id.listViewFunctions);
     listView.setAdapter(functionArrayAdapter);
 
@@ -36,8 +35,7 @@ public class FunctionDisplayActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent functionEditIntent = new Intent(getApplicationContext(),
-            FunctionEditActivity.class);
+        Intent functionEditIntent = new Intent(getApplicationContext(), FunctionEditActivity.class);
         startActivityForResult(functionEditIntent, 0);
       }
     });
@@ -67,29 +65,27 @@ public class FunctionDisplayActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK)
+    if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
-      if (b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE) // Should
-                                                                      // always
-                                                                      // be true
-                                                                      // but
-                                                                      // just to
-                                                                      // double
-                                                                      // check
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE) // Should
+                                                                     // always
+                                                                     // be true
+                                                                     // but
+                                                                     // just to
+                                                                     // double
+                                                                     // check
       {
         // Add name to the list of functions with a different format depending
         // on the function type
-        switch (b.getInt(Constants.INTENT_KEY_TYPE))
+        switch(b.getInt(Constants.INTENT_KEY_TYPE))
         {
           case Constants.FUNCTION_TYPE_VOLUME:
-            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME)
-                + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
+            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
             break;
 
           case Constants.FUNCTION_TYPE_RINGTONE:
-            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME)
-                + "  Tone: " + b.getParcelable(Constants.INTENT_KEY_URI));
+            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Tone: " + b.getParcelable(Constants.INTENT_KEY_URI));
             break;
         }
       }
@@ -119,17 +115,15 @@ public class FunctionDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      if (b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         functionArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
-        String[] functionNames = b
-            .getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        String[] functionNames = b.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
         int[] functionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
-          functionArrayAdapter.add("(" + functionIDs[i] + ")  "
-              + functionNames[i]);
+          functionArrayAdapter.add("(" + functionIDs[i] + ")  " + functionNames[i]);
         }
       }
     }

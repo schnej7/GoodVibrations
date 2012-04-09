@@ -28,10 +28,8 @@ public class TriggerEditActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent TimeTriggerEditIntent = new Intent(getApplicationContext(),
-            TimeTriggerEditActivity.class);
-        startActivityForResult(TimeTriggerEditIntent,
-            Constants.REQUEST_CODE_TIME);
+        Intent TimeTriggerEditIntent = new Intent(getApplicationContext(), TimeTriggerEditActivity.class);
+        startActivityForResult(TimeTriggerEditIntent, Constants.REQUEST_CODE_TIME);
       }
     });
 
@@ -40,10 +38,8 @@ public class TriggerEditActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent LocationTriggerEditIntent = new Intent(getApplicationContext(),
-            LocationTriggerEditActivity.class);
-        startActivityForResult(LocationTriggerEditIntent,
-            Constants.REQUEST_CODE_LOCATION);
+        Intent LocationTriggerEditIntent = new Intent(getApplicationContext(), LocationTriggerEditActivity.class);
+        startActivityForResult(LocationTriggerEditIntent, Constants.REQUEST_CODE_LOCATION);
       }
     });
   }
@@ -53,10 +49,10 @@ public class TriggerEditActivity extends Activity
   {
     super.onActivityResult(requestCode, resultCode, data);
     Log.d(TAG, "onActivityResult()");
-    if (resultCode == RESULT_OK)
+    if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
-      switch (requestCode)
+      switch(requestCode)
       {
         case Constants.REQUEST_CODE_TIME:
           Log.d(TAG, "ST: " + b.getLong(Constants.INTENT_KEY_START_TIME));

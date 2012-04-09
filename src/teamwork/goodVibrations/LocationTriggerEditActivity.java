@@ -28,8 +28,7 @@ public class LocationTriggerEditActivity extends Activity
 
     // set intent type to time trigger
     mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
-    mIntent
-        .putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
+    mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
 
     // name text box
     final EditText txtName = (EditText) findViewById(R.id.editTextTriggerName);
@@ -42,10 +41,8 @@ public class LocationTriggerEditActivity extends Activity
       {
         // START THE MAPS API TO GET THE RESULT
         Log.d(TAG, "STARTING MAPS API TO GET LOCATION");
-        Intent LocationTriggerSetLocationIntent = new Intent(
-            getApplicationContext(), MapSelector.class);
-        startActivityForResult(LocationTriggerSetLocationIntent,
-            Constants.REQUEST_CODE_LOCATION);
+        Intent LocationTriggerSetLocationIntent = new Intent(getApplicationContext(), MapSelector.class);
+        startActivityForResult(LocationTriggerSetLocationIntent, Constants.REQUEST_CODE_LOCATION);
       }
     });
 
@@ -56,10 +53,8 @@ public class LocationTriggerEditActivity extends Activity
       {
         // Add the selected functions to the bundle so they can be automatically
         // checked
-        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(),
-            SetFunctionsActivity.class);
-        startActivityForResult(TimeTriggerSetFunctions,
-            Constants.REQUEST_CODE_SET_FUNCTION_IDS);
+        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), SetFunctionsActivity.class);
+        startActivityForResult(TimeTriggerSetFunctions, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });
 
@@ -70,10 +65,8 @@ public class LocationTriggerEditActivity extends Activity
       public void onClick(View v)
       {
         // sets the name in the intent
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText()
-            .toString());
-        mIntent.putExtra(Constants.INTENT_KEY_TYPE,
-            Constants.TRIGGER_TYPE_LOCATION);
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
         // mIntent.putExtra(Constants.INTENT_KEY_RADIUS, 50);
         // start
         setResult(RESULT_OK, mIntent);
@@ -86,22 +79,19 @@ public class LocationTriggerEditActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK)
+    if(resultCode == RESULT_OK)
     {
       // received location from map activity
       Log.d(TAG, "Running onClick()");
       Bundle b = data.getExtras();
-      if (requestCode == Constants.REQUEST_CODE_LOCATION)
+      if(requestCode == Constants.REQUEST_CODE_LOCATION)
       {
-        mIntent.putExtra(Constants.INTENT_KEY_LATITUDE,
-            b.getDouble(Constants.INTENT_KEY_LATITUDE));
-        mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE,
-            b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+        mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+        mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
       }
-      else if (requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
+      else if(requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
       {
-        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS,
-            b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
       }
     }
     else

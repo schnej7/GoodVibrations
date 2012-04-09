@@ -8,8 +8,7 @@ public class Utils
   {
     Calendar c = Calendar.getInstance();
 
-    return c.get(Calendar.HOUR_OF_DAY) * 3600000 + c.get(Calendar.MINUTE)
-        * 60000 + c.get(Calendar.SECOND) * 1000 + c.get(Calendar.MILLISECOND);
+    return c.get(Calendar.HOUR_OF_DAY) * 3600000 + c.get(Calendar.MINUTE) * 60000 + c.get(Calendar.SECOND) * 1000 + c.get(Calendar.MILLISECOND);
   }
 
   public static long calculateTimeInMillis(int hour, int minute)
@@ -20,7 +19,7 @@ public class Utils
   public static byte getDayOfWeekBitMask(int dayOfWeek)
   {
     int res = 1;
-    for (int i = 1; i < dayOfWeek; i++)
+    for(int i = 1; i < dayOfWeek; i++)
     {
       res = res * 2;
     }

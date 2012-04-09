@@ -14,8 +14,7 @@ public class FunctionForUI extends Function
   }
 
   public void execute()
-  {
-  }
+  {}
 
   @Override
   public String getInternalSaveString()

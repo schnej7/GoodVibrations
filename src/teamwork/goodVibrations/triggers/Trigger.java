@@ -31,17 +31,15 @@ public abstract class Trigger
 
   public static Trigger reconstitute(String s)
   {
-    if (s == null)
+    if(s == null)
       return null;
     try
     {
       String[] a = s.split("%");
       int i = Integer.valueOf(a[0]);
-      return (Trigger) TriggerType.getType(i).getTriggerClass()
-          .getConstructor(new Class<?>[] { String.class })
-          .newInstance(s.substring(a[0].length()));
+      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
     }
-    catch (Exception e)
+    catch(Exception e)
     {
       e.printStackTrace();
     }
@@ -50,13 +48,14 @@ public abstract class Trigger
 
   public enum TriggerType
   {
-    TIME(0, TimeTrigger.class), LOCATION(1, LocationTrigger.class);
+    TIME(0, TimeTrigger.class),
+    LOCATION(1, LocationTrigger.class);
 
     private static HashMap<Integer, TriggerType> lookup;
 
     static
     {
-      for (TriggerType t : EnumSet.allOf(TriggerType.class))
+      for(TriggerType t : EnumSet.allOf(TriggerType.class))
       {
         lookup.put(t.type, t);
       }

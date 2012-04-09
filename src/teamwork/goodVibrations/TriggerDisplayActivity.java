@@ -25,8 +25,7 @@ public class TriggerDisplayActivity extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.trigger_tab);
 
-    triggerArrayAdapter = new ArrayAdapter<String>(this,
-        R.layout.trigger_list_item);
+    triggerArrayAdapter = new ArrayAdapter<String>(this, R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
     listView.setAdapter(triggerArrayAdapter);
 
@@ -35,8 +34,7 @@ public class TriggerDisplayActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent TriggerEditIntent = new Intent(getApplicationContext(),
-            TriggerEditActivity.class);
+        Intent TriggerEditIntent = new Intent(getApplicationContext(), TriggerEditActivity.class);
         startActivityForResult(TriggerEditIntent, 0);
       }
     });
@@ -94,23 +92,22 @@ public class TriggerDisplayActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if (resultCode == RESULT_OK)
+    if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
       // Add name to the list of functions with a different format depending on
       // the function type
-      if (b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should
-                                                                     // always
-                                                                     // be true,
-                                                                     // but just
-                                                                     // double
-                                                                     // checking
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should
+                                                                    // always
+                                                                    // be true,
+                                                                    // but just
+                                                                    // double
+                                                                    // checking
       {
-        switch (b.getInt(Constants.INTENT_KEY_TYPE))
+        switch(b.getInt(Constants.INTENT_KEY_TYPE))
         {
           case Constants.TRIGGER_TYPE_TIME:
-            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)
-                + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
+            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME) + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
             break;
 
           case Constants.TRIGGER_TYPE_LOCATION:
@@ -143,21 +140,18 @@ public class TriggerDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: "
-          + Constants.INTENT_KEY_TRIGGER_LIST);
+      Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: " + Constants.INTENT_KEY_TRIGGER_LIST);
 
-      if (b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_TRIGGER_LIST)
+      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_TRIGGER_LIST)
       {
         triggerArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
-        String[] triggerNames = b
-            .getStringArray(Constants.INTENT_KEY_TRIGGER_NAMES);
+        String[] triggerNames = b.getStringArray(Constants.INTENT_KEY_TRIGGER_NAMES);
         int[] triggerIDs = b.getIntArray(Constants.INTENT_KEY_TRIGGER_IDS);
         Log.d(TAG, "LENGTH: " + length);
-        for (int i = 0; i < length; i++)
+        for(int i = 0; i < length; i++)
         {
-          triggerArrayAdapter
-              .add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
+          triggerArrayAdapter.add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
         }
       }
     }

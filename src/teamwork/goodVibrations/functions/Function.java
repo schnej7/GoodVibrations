@@ -21,17 +21,15 @@ public abstract class Function
 
   public static Function reconstitute(String s)
   {
-    if (s == null)
+    if(s == null)
       return null;
     try
     {
       String[] a = s.split(delim);
       int i = Integer.valueOf(a[0]);
-      return (Function) FunctionType.getType(i).getFunctionClass()
-          .getConstructor(new Class<?>[] { String.class })
-          .newInstance(s.substring(a[0].length()));
+      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
     }
-    catch (Exception e)
+    catch(Exception e)
     {
       e.printStackTrace();
     }
@@ -40,15 +38,17 @@ public abstract class Function
 
   public enum FunctionType
   {
-    RINGTONE(0, RingtoneFunction.class), UI(1, FunctionForUI.class), LOWER(2,
-        LowerFunction.class), RAISE(3, RaiseFunction.class), VOLUME(4,
-        SetVolumeFunction.class);
+    RINGTONE(0, RingtoneFunction.class),
+    UI(1, FunctionForUI.class),
+    LOWER(2, LowerFunction.class),
+    RAISE(3, RaiseFunction.class),
+    VOLUME(4, SetVolumeFunction.class);
 
     private static HashMap<Integer, FunctionType> lookup;
 
     static
     {
-      for (FunctionType t : EnumSet.allOf(FunctionType.class))
+      for(FunctionType t : EnumSet.allOf(FunctionType.class))
       {
         lookup.put(t.type, t);
       }

@@ -14,7 +14,10 @@ public class TimeTrigger extends Trigger
 
   public static enum STATE
   {
-    FIRSTSTART, FIRSTSTOP, ACTIVE, INACTIVE
+    FIRSTSTART,
+    FIRSTSTOP,
+    ACTIVE,
+    INACTIVE
   };
 
   private ArrayList<Integer> startFunctionIDs; // The functions that will be
@@ -43,18 +46,18 @@ public class TimeTrigger extends Trigger
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
     // int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
-    int[] stopIDs = { 0 }; // Hard coded for Product stakeholder review 1
-    for (int i = 0; i < startIDs.length; i++)
+    int[] stopIDs = {0}; // Hard coded for Product stakeholder review 1
+    for(int i = 0; i < startIDs.length; i++)
     {
       startFunctionIDs.add(new Integer(startIDs[i]));
     }
-    for (int i = 0; i < stopIDs.length; i++)
+    for(int i = 0; i < stopIDs.length; i++)
     {
       stopFunctionIDs.add(new Integer(stopIDs[i]));
     }
 
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
-    if (currentTimeInDay > stopTime)
+    if(currentTimeInDay > stopTime)
     {
       state = STATE.FIRSTSTOP;
     }
@@ -63,11 +66,11 @@ public class TimeTrigger extends Trigger
   // Adds a functionID to either the start or stop list
   public boolean addFunction(STATE type, Integer f)
   {
-    if (type == STATE.ACTIVE)
+    if(type == STATE.ACTIVE)
     {
       startFunctionIDs.add(f);
     }
-    else if (type == STATE.INACTIVE)
+    else if(type == STATE.INACTIVE)
     {
       stopFunctionIDs.add(f);
     }
@@ -80,10 +83,10 @@ public class TimeTrigger extends Trigger
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
 
     // If current day is in daysActive
-    if (canExecute())
+    if(canExecute())
     {
       long delay = 0;
-      switch (state)
+      switch(state)
       {
         case FIRSTSTART:
           delay = startTime - currentTimeInDay;
@@ -99,7 +102,7 @@ public class TimeTrigger extends Trigger
           break;
       }
 
-      if (delay < 0)
+      if(delay < 0)
       {
         delay = 0;
       }
@@ -119,7 +122,7 @@ public class TimeTrigger extends Trigger
     byte cDayOfWeek = Utils.getDayOfWeekBitMask(dayOfWeek);
 
     // If current day is in daysActive
-    if ((daysActive & cDayOfWeek) != 0)
+    if((daysActive & cDayOfWeek) != 0)
     {
       return true;
     }
@@ -129,11 +132,11 @@ public class TimeTrigger extends Trigger
   // Gets the functions of the specified state
   public ArrayList<Integer> getFunctions(STATE type)
   {
-    if (type == STATE.ACTIVE || type == STATE.FIRSTSTART)
+    if(type == STATE.ACTIVE || type == STATE.FIRSTSTART)
     {
       return startFunctionIDs;
     }
-    else if (type == STATE.INACTIVE)
+    else if(type == STATE.INACTIVE)
     {
       return stopFunctionIDs;
     }
@@ -143,12 +146,11 @@ public class TimeTrigger extends Trigger
   // Gets the functions of the current state
   public ArrayList<Integer> getFunctions()
   {
-    if (state == STATE.INACTIVE || state == STATE.FIRSTSTART
-        || state == STATE.FIRSTSTOP)
+    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART || state == STATE.FIRSTSTOP)
     {
       return startFunctionIDs;
     }
-    else if (state == STATE.ACTIVE)
+    else if(state == STATE.ACTIVE)
     {
       return stopFunctionIDs;
     }
@@ -158,12 +160,11 @@ public class TimeTrigger extends Trigger
   // Changes the state of the trigger.
   public void switchState()
   {
-    if (state == STATE.INACTIVE || state == STATE.FIRSTSTART
-        || state == STATE.FIRSTSTOP)
+    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART || state == STATE.FIRSTSTOP)
     {
       state = STATE.ACTIVE;
     }
-    else if (state == STATE.ACTIVE)
+    else if(state == STATE.ACTIVE)
     {
       state = STATE.INACTIVE;
     }

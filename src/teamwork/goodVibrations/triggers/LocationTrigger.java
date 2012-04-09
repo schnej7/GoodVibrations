@@ -47,12 +47,12 @@ public class LocationTrigger extends Trigger
     Log.d(TAG, "Made Location Manager");
 
     int[] enterIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    int[] exitIDs = { 1 }; // Hardcoded for Product stakeholder review 1
-    for (int i = 0; i < enterIDs.length; i++)
+    int[] exitIDs = {1}; // Hardcoded for Product stakeholder review 1
+    for(int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
     }
-    for (int i = 0; i < exitIDs.length; i++)
+    for(int i = 0; i < exitIDs.length; i++)
     {
       exitFunctionIDs.add(new Integer(exitIDs[i]));
     }
@@ -105,7 +105,7 @@ public class LocationTrigger extends Trigger
 
   public ArrayList<Integer> getFunctions()
   {
-    if (myLocation.distanceTo(center) > radius)
+    if(myLocation.distanceTo(center) > radius)
     {
       return exitFunctionIDs;
     }
@@ -123,20 +123,17 @@ public class LocationTrigger extends Trigger
   public boolean canExecute()
   {
     Log.d(TAG, "canExecute()");
-    if (myLocation != null)
+    if(myLocation != null)
     {
       // Get new location and calculate distance to target
-      Log.d(
-          TAG,
-          "LAT/LON " + myLocation.getLatitude() + "/"
-              + myLocation.getLongitude());
+      Log.d(TAG, "LAT/LON " + myLocation.getLatitude() + "/" + myLocation.getLongitude());
       double dist = myLocation.distanceTo(center);
       boolean isNowInside = (dist < radius);
       Log.d(TAG, "center: " + center);
       Log.d(TAG, "dist: " + dist + " Radius: " + radius);
       Log.d(TAG, "IsnowInside: " + isNowInside);
 
-      if (isNowInside != isInside)
+      if(isNowInside != isInside)
       {
         isInside = isNowInside;
         return true;
@@ -156,11 +153,11 @@ public class LocationTrigger extends Trigger
   // Adds a functionID to either the start or stop list
   public boolean addFunction(boolean type, Integer f)
   {
-    if (type == ENTERFUNCTION)
+    if(type == ENTERFUNCTION)
     {
       enterFunctionIDs.add(f);
     }
-    else if (type == EXITFUNCTION)
+    else if(type == EXITFUNCTION)
     {
       exitFunctionIDs.add(f);
     }
@@ -172,23 +169,20 @@ public class LocationTrigger extends Trigger
     public void onLocationChanged(Location location)
     {
       Log.d(TAG, "Location Listener Called");
-      if (location != null)
+      if(location != null)
       {
         myLocation = location;
       }
     }
 
     public void onProviderDisabled(String arg0)
-    {
-    }
+    {}
 
     public void onProviderEnabled(String provider)
-    {
-    }
+    {}
 
     public void onStatusChanged(String provider, int status, Bundle extras)
-    {
-    }
+    {}
   }
 
   @Override

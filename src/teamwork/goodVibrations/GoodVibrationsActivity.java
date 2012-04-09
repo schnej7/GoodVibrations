@@ -24,16 +24,14 @@ public class GoodVibrationsActivity extends TabActivity
     intent = new Intent().setClass(this, TriggerDisplayActivity.class);
 
     // Initialize a TabSpec for each tab and add it to the TabHost
-    spec = tabHost.newTabSpec("triggers").setIndicator("Triggers")
-        .setContent(intent);
+    spec = tabHost.newTabSpec("triggers").setIndicator("Triggers").setContent(intent);
     tabHost.addTab(spec);
 
     // Create an Intent to launch an Activity for the tab (to be reused)
     intent = new Intent().setClass(this, FunctionDisplayActivity.class);
 
     // Initialize a TabSpec for each tab and add it to the TabHost
-    spec = tabHost.newTabSpec("functions").setIndicator("Functions")
-        .setContent(intent);
+    spec = tabHost.newTabSpec("functions").setIndicator("Functions").setContent(intent);
     tabHost.addTab(spec);
   }
 

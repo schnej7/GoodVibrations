@@ -34,7 +34,7 @@ public class PersistentStorage
   {
     ArrayList<Function> ret = new ArrayList<Function>();
 
-    for (File f : listDirectory(funcDirPath, funcList))
+    for(File f : listDirectory(funcDirPath, funcList))
     {
       ret.add(Function.reconstitute(readFile(f)));
     }
@@ -44,7 +44,7 @@ public class PersistentStorage
 
   public static void saveFunctions(ArrayList<Function> functions)
   {
-    for (File f : listDirectory(funcDirPath, funcList))
+    for(File f : listDirectory(funcDirPath, funcList))
     {
       f.delete();
     }
@@ -55,20 +55,22 @@ public class PersistentStorage
       int i = 0;
       PrintWriter out = null;
       File outputFile;
-      for (Function f : functions)
+      PrintWriter outList = new PrintWriter(funcList);
+      for(Function f : functions)
       {
         outputFile = new File(funcDirPath, "function" + i + ".txt");
+        outList.write("function" + i + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(f.getSaveString());
       }
-      if (out != null)
+      if(out != null)
       {
-        out.flush();
         out.close();
+        outList.close();
       }
     }
-    catch (IOException e)
+    catch(IOException e)
     {
       e.printStackTrace();
     }
@@ -78,7 +80,7 @@ public class PersistentStorage
   {
     ArrayList<Trigger> ret = new ArrayList<Trigger>();
 
-    for (File f : listDirectory(trigDirPath, trigList))
+    for(File f : listDirectory(trigDirPath, trigList))
     {
       ret.add(Trigger.reconstitute(readFile(f)));
     }
@@ -88,7 +90,7 @@ public class PersistentStorage
 
   public static void saveTriggers(ArrayList<Trigger> triggers)
   {
-    for (File f : listDirectory(trigDirPath, trigList))
+    for(File f : listDirectory(trigDirPath, trigList))
     {
       f.delete();
     }
@@ -98,21 +100,23 @@ public class PersistentStorage
       trigList.createNewFile();
       int i = 0;
       PrintWriter out = null;
+      PrintWriter outList = new PrintWriter(trigList);
       File outputFile;
-      for (Trigger t : triggers)
+      for(Trigger t : triggers)
       {
         outputFile = new File(trigDirPath, "trigger" + i + ".txt");
+        outList.write("trigger" + i + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(t.getSaveString());
       }
-      if (out != null)
+      if(out != null)
       {
-        out.flush();
         out.close();
+        outList.close();
       }
     }
-    catch (IOException e)
+    catch(IOException e)
     {
       e.printStackTrace();
     }
@@ -129,12 +133,12 @@ public class PersistentStorage
     trigList = new File(trigDirPath, trigListName);
     try
     {
-      if (!funcList.exists())
+      if(!funcList.exists())
         funcList.createNewFile();
-      if (!trigList.exists())
+      if(!trigList.exists())
         trigList.createNewFile();
     }
-    catch (IOException e)
+    catch(IOException e)
     {
       e.printStackTrace();
     }
@@ -149,7 +153,7 @@ public class PersistentStorage
       StringBuilder stringBuilder = new StringBuilder();
       String ls = System.getProperty("line.separator");
 
-      while ((line = reader.readLine()) != null)
+      while((line = reader.readLine()) != null)
       {
         stringBuilder.append(line);
         stringBuilder.append(ls);
@@ -157,7 +161,7 @@ public class PersistentStorage
       reader.close();
       return stringBuilder.toString();
     }
-    catch (IOException e)
+    catch(IOException e)
     {
       e.printStackTrace();
     }
@@ -171,23 +175,23 @@ public class PersistentStorage
     try
     {
       BufferedReader in = new BufferedReader(new FileReader(list));
-      ArrayList<String> functions = new ArrayList<String>();
+      ArrayList<String> names = new ArrayList<String>();
       String s;
-      while ((s = in.readLine()) != null)
+      while((s = in.readLine()) != null)
       {
-        functions.add(s);
+        names.add(s);
       }
       in.close();
-      for (String name : functions)
+      for(String name : names)
       {
         ret.add(new File(dirPath, name));
       }
     }
-    catch (FileNotFoundException e)
+    catch(FileNotFoundException e)
     {
       e.printStackTrace();
     }
-    catch (IOException e)
+    catch(IOException e)
     {
       e.printStackTrace();
     }

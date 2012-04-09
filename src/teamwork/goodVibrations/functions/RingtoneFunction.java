@@ -63,24 +63,21 @@ public class RingtoneFunction extends Function
     {
       // RingtoneManager.getRingtone(mC, mUri).play();
       // Log.d(TAG,"Ringtone playing");
-      RingtoneManager.setActualDefaultRingtoneUri(mC,
-          RingtoneManager.TYPE_RINGTONE, mUri);
+      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
     }
-    catch (Exception e)
+    catch(Exception e)
     {
       Log.d(TAG, "Error executing set ringtone");
       // error handling goes here -- also, use something other than Throwable
     }
 
-    if (vibrate)
+    if(vibrate)
     {
-      AM.setVibrateSetting(AudioManager.STREAM_RING,
-          AudioManager.VIBRATE_SETTING_ON);
+      AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_ON);
     }
     else
     {
-      AM.setVibrateSetting(AudioManager.STREAM_RING,
-          AudioManager.VIBRATE_SETTING_OFF);
+      AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_OFF);
     }
 
     /*
