@@ -13,8 +13,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class LocationTrigger extends Trigger
-{  
-  
+{
+
   private static String TAG = "LocationTrigger";
   private boolean isInside;
   private LocationManager LM;
@@ -22,16 +22,18 @@ public class LocationTrigger extends Trigger
   private Location myLocation;
   private Location center;
   private float radius;
-  private ArrayList<Integer> enterFunctionIDs;       // The functions that will be executed on start
-  private ArrayList<Integer> exitFunctionIDs;  // The functions that will be executed on stop
+  private ArrayList<Integer> enterFunctionIDs; // The functions that will be
+                                               // executed on start
+  private ArrayList<Integer> exitFunctionIDs; // The functions that will be
+                                              // executed on stop
   private Criteria criteria;
   private String bestProvider;
-  
+
   public static boolean ENTERFUNCTION = true;
   public static boolean EXITFUNCTION = false;
   GPSLocationListener listener;
-  
-  public LocationTrigger(Context c,Bundle b, int newID)
+
+  public LocationTrigger(Context c, Bundle b, int newID)
   {
     isInside = false;
     name = b.getString(Constants.INTENT_KEY_NAME);
@@ -40,25 +42,26 @@ public class LocationTrigger extends Trigger
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
     enterFunctionIDs = new ArrayList<Integer>();
     exitFunctionIDs = new ArrayList<Integer>();
-    
-    Log.d(TAG,"Made Location Manager");
-    
+    type = Trigger.TriggerType.LOCATION;
+
+    Log.d(TAG, "Made Location Manager");
+
     int[] enterIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    int[] exitIDs = {1}; // Hardcoded for Product stakeholder review 1
-    for(int i = 0; i < enterIDs.length; i++)
+    int[] exitIDs = { 1 }; // Hardcoded for Product stakeholder review 1
+    for (int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
     }
-    for(int i = 0; i < exitIDs.length; i++)
+    for (int i = 0; i < exitIDs.length; i++)
     {
       exitFunctionIDs.add(new Integer(exitIDs[i]));
     }
     // List all providers:Log
     providers = new ArrayList<String>();
     providers = LM.getAllProviders();
-    
+
     Log.d(TAG, "Got providers");
-    Log.d(TAG,"PROVIDERS:" + providers);
+    Log.d(TAG, "PROVIDERS:" + providers);
     criteria = new Criteria();
     criteria.setAccuracy(Criteria.ACCURACY_FINE);
     bestProvider = LM.getBestProvider(criteria, true);
@@ -67,36 +70,36 @@ public class LocationTrigger extends Trigger
 
     // Define a listener that responds to location updates
     listener = new GPSLocationListener();
-    Log.d(TAG,"BEST: " + bestProvider);
+    Log.d(TAG, "BEST: " + bestProvider);
     LM.requestLocationUpdates(bestProvider, 10000, 0, listener);
-    
-    //Location recievedLocation = new Location(bestProvider);
-    //recievedLocation.setLatitude(0);
-    //recievedLocation.setLongitude(0);
-    
-    Log.d(TAG,"Got location" + myLocation);
+
+    // Location recievedLocation = new Location(bestProvider);
+    // recievedLocation.setLatitude(0);
+    // recievedLocation.setLongitude(0);
+
+    Log.d(TAG, "Got location" + myLocation);
     Log.d(TAG, "Proider: " + bestProvider);
-    //radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
-    //Constant value of 50 for radius
+    // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
+    // Constant value of 50 for radius
     radius = 50;
     Location l = new Location("");
     l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
     l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
     center = l;
   }
-  
+
   public void removeFunction(Integer id)
   {
     // TODO Auto-generated method stub
-    
+
   }
 
   public long getSleepTime()
   {
     // Check location every 5 minutes
-    //return 300000;
-    
-    //Check location every 10 seconds 
+    // return 300000;
+
+    // Check location every 10 seconds
     return 60000;
   }
 
@@ -104,7 +107,7 @@ public class LocationTrigger extends Trigger
   {
     if (myLocation.distanceTo(center) > radius)
     {
-       return exitFunctionIDs;
+      return exitFunctionIDs;
     }
     else
     {
@@ -119,18 +122,21 @@ public class LocationTrigger extends Trigger
 
   public boolean canExecute()
   {
-    Log.d(TAG,"canExecute()");
-    if (myLocation!= null)
+    Log.d(TAG, "canExecute()");
+    if (myLocation != null)
     {
-      //Get new location and calculate distance to target
-      Log.d(TAG,"LAT/LON " + myLocation.getLatitude() + "/" + myLocation.getLongitude());
+      // Get new location and calculate distance to target
+      Log.d(
+          TAG,
+          "LAT/LON " + myLocation.getLatitude() + "/"
+              + myLocation.getLongitude());
       double dist = myLocation.distanceTo(center);
       boolean isNowInside = (dist < radius);
       Log.d(TAG, "center: " + center);
       Log.d(TAG, "dist: " + dist + " Radius: " + radius);
       Log.d(TAG, "IsnowInside: " + isNowInside);
-      
-      if(isNowInside != isInside)
+
+      if (isNowInside != isInside)
       {
         isInside = isNowInside;
         return true;
@@ -141,39 +147,54 @@ public class LocationTrigger extends Trigger
       }
 
     }
-    else 
+    else
     {
       return false;
     }
   }
-  
-  //Adds a functionID to either the start or stop list
+
+  // Adds a functionID to either the start or stop list
   public boolean addFunction(boolean type, Integer f)
   {
-    if(type == ENTERFUNCTION)
+    if (type == ENTERFUNCTION)
     {
       enterFunctionIDs.add(f);
     }
-    else if(type == EXITFUNCTION)
+    else if (type == EXITFUNCTION)
     {
       exitFunctionIDs.add(f);
     }
-     return true;
+    return true;
   }
-  
-  private class GPSLocationListener implements LocationListener 
+
+  private class GPSLocationListener implements LocationListener
   {
     public void onLocationChanged(Location location)
     {
-      Log.d(TAG,"Location Listener Called");
+      Log.d(TAG, "Location Listener Called");
       if (location != null)
       {
         myLocation = location;
       }
     }
 
-    public void onProviderDisabled(String arg0) {}
-    public void onProviderEnabled(String provider) {}
-    public void onStatusChanged(String provider, int status, Bundle extras) {}
+    public void onProviderDisabled(String arg0)
+    {
+    }
+
+    public void onProviderEnabled(String provider)
+    {
+    }
+
+    public void onStatusChanged(String provider, int status, Bundle extras)
+    {
+    }
+  }
+
+  @Override
+  String getInternalSaveString()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 }
