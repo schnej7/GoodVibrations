@@ -4,8 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import teamwork.goodVibrations.functions.Function;
@@ -35,8 +36,7 @@ public class PersistentStorage
 		
 		for(File f : listDirectory(funcDirPath, funcList))
 		{
-			readFile(f);
-			//TODO create function from string
+			ret.add(Function.reconstitute(readFile(f)));
 		}
 		
 		return ret;
@@ -51,6 +51,21 @@ public class PersistentStorage
 		try
 		{
 			funcList.createNewFile();
+			int i = 0;
+			PrintWriter out = null;
+			File outputFile;
+			for(Function f : functions)
+			{
+				outputFile = new File(funcDirPath, "function" + i + ".txt");
+				outputFile.createNewFile();
+				out = new PrintWriter(new FileWriter(outputFile));
+				out.write(f.getSaveString());
+			}
+			if(out != null)
+			{
+				out.flush();
+				out.close();
+			}
 		}
 		catch(IOException e){e.printStackTrace();}
 	}
@@ -60,15 +75,38 @@ public class PersistentStorage
 		
 		for(File f : listDirectory(trigDirPath, trigList))
 		{
-			readFile(f);
-			//TODO create function from string
+			ret.add(Trigger.reconstitute(readFile(f)));
 		}
 		
 		return ret;
 	}
 	public static void saveTriggers(ArrayList<Trigger> triggers)
 	{
-		
+		for(File f : listDirectory(trigDirPath, trigList))
+		{
+			f.delete();
+		}
+		trigList.delete();
+		try
+		{
+			trigList.createNewFile();
+			int i = 0;
+			PrintWriter out = null;
+			File outputFile;
+			for(Trigger t : triggers)
+			{
+				outputFile = new File(trigDirPath, "trigger" + i + ".txt");
+				outputFile.createNewFile();
+				out = new PrintWriter(new FileWriter(outputFile));
+				out.write(t.getSaveString());
+			}
+			if(out != null)
+			{
+				out.flush();
+				out.close();
+			}
+		}
+		catch(IOException e){e.printStackTrace();}
 	}
 	private static void initStorage()
 	{
