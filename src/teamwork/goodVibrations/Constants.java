@@ -68,6 +68,10 @@ public class Constants
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
   public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
   
+  public static final String LIST_DELIM = "#";
+  public static final String CATEGORY_DELIM = "@";
+  public static final String SAVE_STRING_DELIM = "%";
+  
   public static final String TEAM_DIR_PATH = "teamwork";
   public static final String FUNC_DIR_PATH = "teamwork/functions";
   public static final String TRIG_DIR_PATH = "teamwork/triggers";
