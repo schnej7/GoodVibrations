@@ -1,5 +1,6 @@
 package teamwork.goodVibrations.persistence;
 
+import teamwork.goodVibrations.Constants;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,12 +15,6 @@ import teamwork.goodVibrations.triggers.Trigger;
 
 public class PersistentStorage
 {
-  private static final String teamDirPath = "teamwork";
-  private static final String funcDirPath = teamDirPath + "/functions";
-  private static final String trigDirPath = teamDirPath + "/triggers";
-  private static final String funcListName = "Function List.txt";
-  private static final String trigListName = "Trigger List.txt";
-
   private static File trigDir;
   private static File funcDir;
   private static File funcList;
@@ -34,7 +29,7 @@ public class PersistentStorage
   {
     ArrayList<Function> ret = new ArrayList<Function>();
 
-    for(File f : listDirectory(funcDirPath, funcList))
+    for(File f : listDirectory(Constants.FUNC_DIR_PATH, funcList))
     {
       ret.add(Function.reconstitute(readFile(f)));
     }
@@ -44,7 +39,7 @@ public class PersistentStorage
 
   public static void saveFunctions(ArrayList<Function> functions)
   {
-    for(File f : listDirectory(funcDirPath, funcList))
+    for(File f : listDirectory(Constants.FUNC_DIR_PATH, funcList))
     {
       f.delete();
     }
@@ -58,7 +53,7 @@ public class PersistentStorage
       PrintWriter outList = new PrintWriter(funcList);
       for(Function f : functions)
       {
-        outputFile = new File(funcDirPath, "function" + i + ".txt");
+        outputFile = new File(Constants.FUNC_DIR_PATH, "function" + i + ".txt");
         outList.write("function" + i + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
@@ -80,7 +75,7 @@ public class PersistentStorage
   {
     ArrayList<Trigger> ret = new ArrayList<Trigger>();
 
-    for(File f : listDirectory(trigDirPath, trigList))
+    for(File f : listDirectory(Constants.TRIG_DIR_PATH, trigList))
     {
       ret.add(Trigger.reconstitute(readFile(f)));
     }
@@ -90,7 +85,7 @@ public class PersistentStorage
 
   public static void saveTriggers(ArrayList<Trigger> triggers)
   {
-    for(File f : listDirectory(trigDirPath, trigList))
+    for(File f : listDirectory(Constants.TRIG_DIR_PATH, trigList))
     {
       f.delete();
     }
@@ -104,7 +99,7 @@ public class PersistentStorage
       File outputFile;
       for(Trigger t : triggers)
       {
-        outputFile = new File(trigDirPath, "trigger" + i + ".txt");
+        outputFile = new File(Constants.TRIG_DIR_PATH, "trigger" + i + ".txt");
         outList.write("trigger" + i + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
@@ -124,13 +119,13 @@ public class PersistentStorage
 
   private static void initStorage()
   {
-    trigDir = new File(trigDirPath);
-    funcDir = new File(funcDirPath);
+    trigDir = new File(Constants.TRIG_DIR_PATH);
+    funcDir = new File(Constants.FUNC_DIR_PATH);
     trigDir.mkdirs();
     funcDir.mkdirs();
 
-    funcList = new File(funcDirPath, funcListName);
-    trigList = new File(trigDirPath, trigListName);
+    funcList = new File(Constants.FUNC_DIR_PATH, Constants.FUNC_LIST_NAME);
+    trigList = new File(Constants.TRIG_DIR_PATH, Constants.TRIG_LIST_NAME);
     try
     {
       if(!funcList.exists())
