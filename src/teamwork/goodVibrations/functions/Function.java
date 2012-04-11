@@ -3,9 +3,10 @@ package teamwork.goodVibrations.functions;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import teamwork.goodVibrations.Constants;
+
 public abstract class Function
 {
-  private static final String delim = "%";
   public int id;
   public String name;
   protected FunctionType type;
@@ -16,7 +17,7 @@ public abstract class Function
 
   public String getSaveString()
   {
-    return type.getTypeInt() + delim + getInternalSaveString();
+    return type.getTypeInt() + Constants.SAVE_STRING_DELIM + getInternalSaveString();
   }
 
   public static Function reconstitute(String s)
@@ -25,8 +26,9 @@ public abstract class Function
       return null;
     try
     {
-      String[] a = s.split(delim);
+      String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
+      // TODO should s.substring at end of line be a[1] not a[0]
       return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
     }
     catch(Exception e)
@@ -42,9 +44,9 @@ public abstract class Function
     UI(1, FunctionForUI.class),
     LOWER(2, LowerFunction.class),
     RAISE(3, RaiseFunction.class),
-    VOLUME(4, SetVolumeFunction.class);
+    RING_VOLUME(4, SetVolumeFunction.class);
 
-    private static HashMap<Integer, FunctionType> lookup;
+    private static HashMap<Integer, FunctionType> lookup = new HashMap<Integer, FunctionType>();
 
     static
     {
