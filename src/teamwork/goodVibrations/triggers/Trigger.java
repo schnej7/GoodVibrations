@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import teamwork.goodVibrations.Constants;
+
 public abstract class Trigger
 {
-  private static final String delim = "%";
 
   public int id;
   public String name;
@@ -26,7 +27,7 @@ public abstract class Trigger
 
   public String getSaveString()
   {
-    return type.getTypeInt() + delim + getInternalSaveString();
+    return type.getTypeInt() + Constants.SAVE_STRING_DELIM + getInternalSaveString();
   }
 
   public static Trigger reconstitute(String s)
@@ -35,7 +36,7 @@ public abstract class Trigger
       return null;
     try
     {
-      String[] a = s.split("%");
+      String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
       return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
     }
@@ -51,7 +52,7 @@ public abstract class Trigger
     TIME(0, TimeTrigger.class),
     LOCATION(1, LocationTrigger.class);
 
-    private static HashMap<Integer, TriggerType> lookup;
+    private static HashMap<Integer, TriggerType> lookup = new HashMap<Integer,TriggerType>();
 
     static
     {

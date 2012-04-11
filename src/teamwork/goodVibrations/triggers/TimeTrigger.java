@@ -33,6 +33,7 @@ public class TimeTrigger extends Trigger
   // Constructor
   public TimeTrigger(Bundle b, int newID)
   {
+    Log.d(TAG,"TimeTrigger()");
     id = newID;
     name = b.getString(Constants.INTENT_KEY_NAME);
     startFunctionIDs = new ArrayList<Integer>();
@@ -41,8 +42,9 @@ public class TimeTrigger extends Trigger
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+    Log.d(TAG,"BEFORE");
     type = Trigger.TriggerType.TIME;
-
+    Log.d(TAG,"AFTER");
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
     // int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
@@ -61,6 +63,35 @@ public class TimeTrigger extends Trigger
     {
       state = STATE.FIRSTSTOP;
     }
+  }
+  
+  public TimeTrigger(String s)
+  {
+    startFunctionIDs = new ArrayList<Integer>();
+    stopFunctionIDs = new ArrayList<Integer>();
+    
+    type = Trigger.TriggerType.TIME;
+    
+    String[] categories = s.split(Constants.CATEGORY_DELIM);
+    
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    
+    String[] startIDsString = categories[2].split(Constants.LIST_DELIM);
+    for(String stringID : startIDsString)
+    {
+      startFunctionIDs.add(new Integer(stringID).intValue());
+    }
+    
+    String[] stopIDsString = categories[3].split(Constants.LIST_DELIM);
+    for(String stringID : stopIDsString)
+    {
+      stopFunctionIDs.add(new Integer(stringID).intValue());
+    }
+    
+    startTime = new Long(categories[4]).longValue();
+    stopTime =  new Long(categories[5]).longValue();
+    daysActive = new Byte(categories[6]).byteValue(); 
   }
 
   // Adds a functionID to either the start or stop list
@@ -179,8 +210,37 @@ public class TimeTrigger extends Trigger
   @Override
   String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    // Name
+    // id
+    // Start FunctionIDs
+    // Stop FunctionIDs
+    // StartTime
+    // EndTime
+    // Daysrepeated
+    
+    String saveString = new String();
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    
+    // Save the start function ids
+    for(Integer i : startFunctionIDs)
+    {
+      saveString += i.toString() + Constants.LIST_DELIM;
+    }
+    saveString += Constants.CATEGORY_DELIM;
+    
+    // Save the stop function ids
+    for(Integer i : stopFunctionIDs)
+    {
+      saveString += i.toString() + Constants.LIST_DELIM;
+    }
+    saveString += Constants.CATEGORY_DELIM;
+    
+    saveString += Long.toString(startTime) + Constants.CATEGORY_DELIM;
+    saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
+    saveString += Byte.toString(daysActive);
+        
+    return saveString;
   }
 
 }

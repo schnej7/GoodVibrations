@@ -30,6 +30,19 @@ public class RingtoneFunction extends Function
     id = newID;
     type = Function.FunctionType.RINGTONE;
   }
+  
+  public RingtoneFunction(Context c, String s)
+  {
+    mC = c;
+    type = Function.FunctionType.RINGTONE;
+    
+    String [] categories = s.split(Constants.CATEGORY_DELIM);
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    mUri = Uri.parse(categories[2]);
+    vibrate = new Boolean(categories[3]).booleanValue();
+
+  }
 
   // this is used to regenerate your object. All Parcelables must have a CREATOR
   // that implements these two methods
@@ -104,8 +117,14 @@ public class RingtoneFunction extends Function
   @Override
   public String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String saveString = new String();
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += mUri.toString();
+    saveString += Constants.CATEGORY_DELIM;    
+    saveString += new Boolean(vibrate).toString(); 
+    
+    return saveString;
   }
 
 }

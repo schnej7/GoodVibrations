@@ -16,13 +16,25 @@ public class SetVolumeFunction extends Function
 
   public SetVolumeFunction(AudioManager tAM, Bundle b, int newID)
   {
+    
     volume = b.getInt(Constants.INTENT_KEY_VOLUME);
     Log.d(TAG, "Volume: " + volume);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
     AM = tAM;
     id = newID;
-    type = Function.FunctionType.VOLUME;
+    type = Function.FunctionType.RING_VOLUME;
+  }
+  
+  public SetVolumeFunction(AudioManager tAM, String s)
+  {
+    AM = tAM;
+    String[] categories = s.split(Constants.CATEGORY_DELIM);
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    volume = new Integer(categories[2]).intValue();
+    vibrate = new Boolean(categories[3]).booleanValue();
+    type = Function.FunctionType.RING_VOLUME;
   }
 
   @Override
@@ -57,7 +69,18 @@ public class SetVolumeFunction extends Function
   @Override
   public String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    //name
+    //id
+    //volume
+    //vibrate
+    
+    String saveString = new String();
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += new Integer(volume).toString();
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += new Boolean(vibrate).toString();  
+    
+    return saveString;
   }
 }

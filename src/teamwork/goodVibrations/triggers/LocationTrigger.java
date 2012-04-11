@@ -35,13 +35,11 @@ public class LocationTrigger extends Trigger
 
   public LocationTrigger(Context c, Bundle b, int newID)
   {
+    initLocationTrigger(c);
+    
     isInside = false;
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
-    // Get the location manager
-    LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
-    enterFunctionIDs = new ArrayList<Integer>();
-    exitFunctionIDs = new ArrayList<Integer>();
     type = Trigger.TriggerType.LOCATION;
 
     Log.d(TAG, "Made Location Manager");
@@ -56,6 +54,55 @@ public class LocationTrigger extends Trigger
     {
       exitFunctionIDs.add(new Integer(exitIDs[i]));
     }
+
+    // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
+    // Constant value of 50 for radius
+    radius = 50;
+    Location l = new Location("");
+    l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
+    l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+    center = l;
+  }
+  
+  public LocationTrigger(Context c, String s)
+  {
+    initLocationTrigger(c);
+    isInside = false;
+    
+    String[] categories = s.split(Constants.CATEGORY_DELIM);
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    String[] enterIDsString = categories[2].split(Constants.LIST_DELIM);
+    for(String stringID : enterIDsString)
+    {
+      enterFunctionIDs.add(new Integer(stringID).intValue());
+    }
+    String[] exitIDsString = categories[3].split(Constants.LIST_DELIM);
+    for(String stringID : exitIDsString)
+    {
+      exitFunctionIDs.add(new Integer(stringID).intValue());
+    }
+    
+    Location l = new Location("");
+    l.setLatitude(new Double(categories[4]));
+    l.setLongitude(new Double(categories[5]));
+    center = l;
+    
+    radius = new Float(categories[6]);
+    
+    Log.d(TAG,name);
+    Log.d(TAG, new Integer(id).toString());
+    Log.d(TAG,enterFunctionIDs.toString());
+    Log.d(TAG,exitFunctionIDs.toString());
+    Log.d(TAG,l.toString());
+    Log.d(TAG,new Float(radius).toString());
+  }
+  
+  private void initLocationTrigger(Context c)
+  {
+    type = Trigger.TriggerType.LOCATION;
+    // Get the location manager
+    LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
     // List all providers:Log
     providers = new ArrayList<String>();
     providers = LM.getAllProviders();
@@ -79,13 +126,9 @@ public class LocationTrigger extends Trigger
 
     Log.d(TAG, "Got location" + myLocation);
     Log.d(TAG, "Proider: " + bestProvider);
-    // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
-    // Constant value of 50 for radius
-    radius = 50;
-    Location l = new Location("");
-    l.setLatitude(b.getDouble(Constants.INTENT_KEY_LATITUDE));
-    l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
-    center = l;
+    
+    enterFunctionIDs = new ArrayList<Integer>();
+    exitFunctionIDs = new ArrayList<Integer>();
   }
 
   public void removeFunction(Integer id)
@@ -158,7 +201,7 @@ public class LocationTrigger extends Trigger
       enterFunctionIDs.add(f);
     }
     else if(type == EXITFUNCTION)
-    {
+    {    
       exitFunctionIDs.add(f);
     }
     return true;
@@ -188,7 +231,37 @@ public class LocationTrigger extends Trigger
   @Override
   String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    // name
+    // id
+    // enterFunctionIDs
+    // exitFunctionIDs
+    // radius
+    // center
+    
+    String saveString;
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    
+    // Save the start function ids
+    for(Integer i : enterFunctionIDs)
+    {
+      saveString += i.toString() + Constants.LIST_DELIM;
+    }
+    saveString += Constants.CATEGORY_DELIM;
+    
+    // Save the stop function ids
+    for(Integer i : exitFunctionIDs)
+    {
+      saveString += i.toString() + Constants.LIST_DELIM;
+    }
+    saveString += Constants.CATEGORY_DELIM;
+    
+    saveString += new Double(center.getLatitude()).toString();
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += new Double(center.getLongitude()).toString();
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += new Float(radius).toString();
+    
+    return saveString;
   }
 }
