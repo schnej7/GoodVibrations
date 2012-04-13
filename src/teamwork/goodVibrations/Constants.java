@@ -54,6 +54,7 @@ public class Constants
   public static final String INTENT_KEY_STOP_FUNCTION_IDS = "120";
   public static final String INTENT_KEY_LONGITUDE = "121";
   public static final String INTENT_KEY_LATITUDE = "122";
+  public static final String INTENT_KEY_VOLUME_TYPES = "123";
 
   // Intent request codes. Used in onActivityResult triggers to determine which
   // activity was returned

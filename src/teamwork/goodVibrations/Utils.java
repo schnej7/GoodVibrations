@@ -25,5 +25,17 @@ public class Utils
     }
     return (byte) res;
   }
+  
+  public static byte booleanToByte(boolean a)
+  {
+    if(a)
+    {
+      return (byte)1;
+    }
+    else
+    {
+      return (byte)0;
+    }
+  }
 
 }

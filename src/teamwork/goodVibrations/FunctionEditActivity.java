@@ -51,6 +51,10 @@ public class FunctionEditActivity extends Activity
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
     final CheckBox chkRingtoneVibrate = (CheckBox) findViewById(R.id.chkRingtoneVibrate);
     final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
+    final CheckBox chkRingtoneVolume = (CheckBox) findViewById(R.id.chkRingtone);
+    final CheckBox chkMediaVolume = (CheckBox) findViewById(R.id.chkMedia);
+    final CheckBox chkAlarmVolume = (CheckBox) findViewById(R.id.chkAlarm);
+    final CheckBox chkNotificationVolume = (CheckBox) findViewById(R.id.chkNotification);
 
     final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
@@ -110,11 +114,22 @@ public class FunctionEditActivity extends Activity
             // Use the volume fields
             // Convert 0-99 volume to 0 to MaxVol
             float progress = (float) sliderVolume.getProgress();
-            float maxVol = (float) ((AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE)).getStreamMaxVolume(AudioManager.STREAM_RING);
-            int volume = (int) Math.round(maxVol * (progress / 100.0));
+            int volume = new Float(progress).intValue();
+            Log.d(TAG,"PROGRESS: " + progress + " VOLUME: " + volume);
             mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_VOLUME);
             mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
             mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVolumeVibrate.isChecked());
+            
+            byte volumeTypes = (byte)0;
+            volumeTypes |= Utils.booleanToByte(chkRingtoneVolume.isChecked());
+            volumeTypes |= Utils.booleanToByte(chkMediaVolume.isChecked()) << 1;
+            volumeTypes |= Utils.booleanToByte(chkAlarmVolume.isChecked()) << 2;
+            volumeTypes |= Utils.booleanToByte(chkNotificationVolume.isChecked()) << 3;
+            
+            Log.d(TAG,"VOLUMETYPES " + volumeTypes);
+            
+            mIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, volumeTypes);
+            
             break;
           case Constants.FUNCTION_TYPE_RINGTONE:
             // Use the ring tone fields
@@ -131,6 +146,7 @@ public class FunctionEditActivity extends Activity
       }
     });
   }
+
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)

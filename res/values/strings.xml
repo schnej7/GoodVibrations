@@ -19,7 +19,7 @@
 		<string name="applicationName">Good Vibrations</string>
 	    <string name="name">Name</string>
 	    <string name="type">Type</string>
-	    <string name="volume">Ring Volume</string>
+	    <string name="volume">Volume</string>
 	    <string name="vibrate">Vibrate</string>
 	    <string name="toneName">Ringtone</string>
 	    <string name="selectTone">Select Ringtone</string>
@@ -27,6 +27,10 @@
 	    <string name="done">Done</string>
 	    <string name="addFunctionTxt">Add Function</string>
 	    <string name="addTriggerTxt">Add Trigger</string>
+	    <string name="Ringtone">Ringtone Volume</string>
+	    <string name="Media">Media Volume</string>
+	    <string name="Alarm">Alarm Volume</string>
+	    <string name="Notification">Notification Volume</string>
 	    <!-- for time triggers-->
 	    <string name="startTime">Start Time</string>
 	    <string name="endTime">End Time</string>
