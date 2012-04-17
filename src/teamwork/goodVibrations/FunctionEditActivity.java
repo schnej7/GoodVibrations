@@ -2,15 +2,11 @@ package teamwork.goodVibrations;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.WallpaperManager;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -18,7 +14,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -45,47 +40,7 @@ public class FunctionEditActivity extends Activity
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
     
-    final Button buttonSelectWallpaper = (Button) findViewById(R.id.btn_choose);
-    buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
-    {
-
-      public void onClick(View v)
-      {
-        
-        
-        builder.setTitle("Select Image");
-        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-           public void onClick( DialogInterface dialog, int item ) { 
-             if (item == 0) {
-               Intent intent = new Intent();
-             
-               intent.setType("image/*");
-               intent.setAction(Intent.ACTION_GET_CONTENT);
-       
-               startActivityForResult(Intent.createChooser(intent, "Complete action using"), Constants.PICK_FROM_FILE); 
-             } 
-           }
-        } );
-        
-       dialog = builder.create();
-       
-       Button button   = (Button) findViewById(R.id.btn_choose);
-       //ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
-       
-       ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
-           public void onClick(View v) {
-               dialog.show();
-           }
-       });
-       button.setOnClickListener(new View.OnClickListener() {
-         public void onClick(View v) {
-          dialog.show();
-         }
-      });
-
-      }
-      
-    });
+    
     
   }
 
@@ -94,6 +49,8 @@ public class FunctionEditActivity extends Activity
     super.onStart();
     Log.d(TAG, "onStart()");
     mIntent = new Intent();
+    
+    
 
     String array_spinner[];
     array_spinner = new String[3];
@@ -150,6 +107,48 @@ public class FunctionEditActivity extends Activity
       {
         return;
       }
+    });
+    
+    final Button buttonSelectWallpaper = (Button) findViewById(R.id.btn_choose);
+    buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
+    {
+
+      public void onClick(View v)
+      {
+        
+        
+        builder.setTitle("Select Image");
+        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+           public void onClick( DialogInterface dialog, int item ) { 
+             if (item == 0) {
+               Intent intent = new Intent();
+             
+               intent.setType("image/*");
+               intent.setAction(Intent.ACTION_GET_CONTENT);
+       
+               startActivityForResult(Intent.createChooser(intent, "Complete action using"), Constants.PICK_FROM_FILE); 
+             } 
+           }
+        } );
+        
+       dialog = builder.create();
+       
+       Button button   = (Button) findViewById(R.id.btn_choose);
+       //ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
+       
+       ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
+           public void onClick(View v) {
+               dialog.show();
+           }
+       });
+       button.setOnClickListener(new View.OnClickListener() {
+         public void onClick(View v) {
+          dialog.show();
+         }
+      });
+
+      }
+      
     });
 
     // The Select Ringtone button
