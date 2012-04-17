@@ -90,8 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.35"
         android:orientation="vertical"
-        android:visibility = "gone" >
-
+        android:visibility = "gone" >
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
@@ -111,6 +110,34 @@
             android:text="@string/vibrate" />
 
     </LinearLayout>
+    
+     <LinearLayout
+        android:id="@+id/llWallpaper"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:visibility = "gone" >
+        
+        <Button
+            android:id="@+id/buttonSelectWallpaper"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/selectWallpaper" />
+        <Button 
+			android:id="@+id/btn_choose"
+			android:layout_width="fill_parent" 		 
+			android:layout_height="wrap_content"
+			android:text="@string/selectImage" />
+
+		<ImageView
+			android:id="@+id/iv_photo"
+			android:layout_marginTop="10dp"
+			android:layout_gravity="center_horizontal"
+			android:layout_width="fill_parent" 		 
+			android:layout_height="200dp"/>
+        
+     </LinearLayout>
 
     <Button
         android:id="@+id/buttonDoneTriggerEdit"

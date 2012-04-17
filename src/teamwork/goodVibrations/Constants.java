@@ -21,6 +21,7 @@ public class Constants
   // Function types for INTENT_KEY_TYPE
   public static final int FUNCTION_TYPE_VOLUME = 0;
   public static final int FUNCTION_TYPE_RINGTONE = 1;
+  public static final int FUNCTION_TYPE_WALLPAPER = 2;
 
   // Trigger types for INTENT_KEY_TYPE
   public static final int TRIGGER_TYPE_TIME = 0;
@@ -29,6 +30,9 @@ public class Constants
   // GetData types for INTENT_KEY_TYPE
   public static final int INTENT_KEY_TRIGGER_LIST = 0;
   public static final int INTENT_KEY_FUNCTION_LIST = 1;
+  
+  //GetData types for Image Selection
+  public static final int PICK_FROM_FILE = 0;
 
   // Labels for different types of values that are packed into intents
   public static final String INTENT_KEY_TYPE = "100";
@@ -55,6 +59,7 @@ public class Constants
   public static final String INTENT_KEY_LONGITUDE = "121";
   public static final String INTENT_KEY_LATITUDE = "122";
   public static final String INTENT_KEY_VOLUME_TYPES = "123";
+  public static final String INTENT_KEY_IMAGEURI = "124";
 
   // Intent request codes. Used in onActivityResult triggers to determine which
   // activity was returned
@@ -64,6 +69,7 @@ public class Constants
   public static final int REQUEST_CODE_DAY_PICKER = 3;
   public static final int REQUEST_CODE_SET_FUNCTION_IDS = 4;
   public static final int REQUEST_CODE_RINGTONE_PICKER = 5;
+  public static final int REQUEST_CODE_WALLPAPER_PICKER = 6;
 
   // Used to broadcast messages from the service to the activity
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";

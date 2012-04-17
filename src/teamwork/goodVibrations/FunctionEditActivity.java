@@ -1,12 +1,16 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
@@ -23,14 +28,64 @@ public class FunctionEditActivity extends Activity
 {
 
   private static final String TAG = "FunctionEditActivity";
+  final String [] wallpaperItems = new String [] {"Select from Gallery"};
   Intent mIntent;
   Uri ringtone_uri;
+  Uri imageUri;
+  //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
+    
+    final Button buttonSelectWallpaper = (Button) findViewById(R.id.buttonSelectWallpaper);
+    buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
+    {
+
+      @Override
+      public void onClick(View v)
+      {
+        ArrayAdapter<String> adapter = new ArrayAdapter<String> (getApplicationContext(), 
+                                                                 android.R.layout.select_dialog_item, wallpaperItems);
+        AlertDialog.Builder builder  = new AlertDialog.Builder(getApplicationContext());
+        
+        builder.setTitle("Select Image");
+        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
+           public void onClick( DialogInterface dialog, int item ) { 
+             if (item == 0) {
+               Intent intent = new Intent();
+             
+               intent.setType("image/*");
+               intent.setAction(Intent.ACTION_GET_CONTENT);
+       
+               startActivityForResult(Intent.createChooser(intent, "Complete action using"), Constants.PICK_FROM_FILE); 
+             } 
+           }
+        } );
+        
+       final AlertDialog dialog = builder.create();
+       
+       Button button   = (Button) findViewById(R.id.btn_choose);
+       ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
+       
+       ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               dialog.show();
+           }
+       });
+       button.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+          dialog.show();
+         }
+      });
+
+      }
+      
+    });
   }
 
   protected void onStart()
@@ -40,12 +95,14 @@ public class FunctionEditActivity extends Activity
     mIntent = new Intent();
 
     String array_spinner[];
-    array_spinner = new String[2];
+    array_spinner = new String[3];
     array_spinner[Constants.FUNCTION_TYPE_VOLUME] = "Volume";
     array_spinner[Constants.FUNCTION_TYPE_RINGTONE] = "Ringtone";
+    array_spinner[Constants.FUNCTION_TYPE_WALLPAPER] = "Wallpaper";
 
     final LinearLayout llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
     final LinearLayout llRingtoneOptions = (LinearLayout) findViewById(R.id.llRingTone);
+    final LinearLayout llWallpaperOptions = (LinearLayout) findViewById(R.id.llWallpaper);
 
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
@@ -73,6 +130,10 @@ public class FunctionEditActivity extends Activity
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.VISIBLE);
             break;
+          case 2:
+            llVolumeOptions.setVisibility(View.GONE);
+            llRingtoneOptions.setVisibility(View.GONE);
+            llWallpaperOptions.setVisibility(View.VISIBLE);
           default:
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.GONE);
@@ -98,6 +159,8 @@ public class FunctionEditActivity extends Activity
         startActivityForResult(i, Constants.REQUEST_CODE_RINGTONE_PICKER);
       }
     });
+    
+    
 
     final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
     buttonAdd.setOnClickListener(new View.OnClickListener()
@@ -137,6 +200,9 @@ public class FunctionEditActivity extends Activity
             mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
             mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());
             break;
+          case Constants.FUNCTION_TYPE_WALLPAPER:
+            mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
+            break;
           default:
             // Do nothing, this should never happen
             break;
@@ -154,13 +220,17 @@ public class FunctionEditActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode == RESULT_OK)
     {
-      // If the ringtone picker was returned
-      if(requestCode == Constants.REQUEST_CODE_RINGTONE_PICKER)
-      {
-        ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
-        Log.d(TAG, "uri " + ringtone_uri);
-        Toast.makeText(this, "" + ringtone_uri, Toast.LENGTH_LONG).show();
-      }
+      switch (requestCode) {
+        case Constants.PICK_FROM_FILE:
+          imageUri = data.getData();
+          break;
+        case Constants.REQUEST_CODE_RINGTONE_PICKER:
+          ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+          Log.d(TAG, "uri " + ringtone_uri);
+          Toast.makeText(this, "" + ringtone_uri, Toast.LENGTH_LONG).show();
+        default:
+          break;
+       }
     }
     else
     {

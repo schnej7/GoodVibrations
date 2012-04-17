@@ -3,11 +3,13 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.util.Log;
 
 public class WallpaperFunction extends Function
@@ -15,13 +17,14 @@ public class WallpaperFunction extends Function
   private String TAG = "Wallpaper Function";
   private Context mC;
   private WallpaperManager WM;
-  private int resourceID;
+  private Uri imageUri;
+ 
   public WallpaperFunction(Context c, Bundle b,int newID)
   {
     Log.d(TAG,"RingtoneFunction() Constructor");
     mC = c;
     WM = WallpaperManager.getInstance(mC);
-    resourceID = b.getParcelable(Constants.INTENT_KEY_RESID);
+    imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
   }
@@ -54,13 +57,16 @@ public class WallpaperFunction extends Function
   @Override
   public void execute()
   {
-    Log.d(TAG, "execute() - Setting Wallpaper to " + mUri);
+    Log.d(TAG, "execute() - Setting Wallpaper to " + imageUri);
     
     try
     {
       // RingtoneManager.getRingtone(mC, mUri).play();
       // Log.d(TAG,"Ringtone playing");
-      WM.setResource(resourceID);
+      
+      //Convert uri to bitmap... this is fluffing retarded.
+      Bitmap bitmap = MediaStore.Images.Media.getBitmap(mC.getContentResolver(), imageUri);
+      WM.setBitmap(bitmap);
     }
     catch(Exception e)
     {

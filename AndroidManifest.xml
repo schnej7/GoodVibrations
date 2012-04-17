@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" ></uses-permission>
 	<uses-permission android:name="android.permission.CHANGE_CONFIGURATION" ></uses-permission>
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" ></uses-permission>
+    <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.INTERNET" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" ></uses-permission>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" ></uses-permission>
