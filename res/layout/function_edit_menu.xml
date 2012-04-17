@@ -58,6 +58,30 @@
             android:layout_height="wrap_content"
             android:text="@string/vibrate" />
 
+        <CheckBox
+            android:id="@+id/chkRingtone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Ringtone" />
+
+        <CheckBox
+            android:id="@+id/chkMedia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Media" />
+
+        <CheckBox
+            android:id="@+id/chkAlarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Alarm" />
+
+        <CheckBox
+            android:id="@+id/chkNotification"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Notification" />
+
     </LinearLayout>
     
      <LinearLayout
@@ -69,7 +93,7 @@
         android:visibility = "gone" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/toneName"
@@ -94,6 +118,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/btn_green"
-        android:text="Add Function" />
+        android:text="@string/addFunctionTxt" />
 
 </LinearLayout>

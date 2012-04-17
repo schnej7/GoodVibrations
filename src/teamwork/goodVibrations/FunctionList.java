@@ -5,29 +5,29 @@ import java.util.Iterator;
 
 import android.util.Log;
 
-
 import teamwork.goodVibrations.functions.Function;
 
 public class FunctionList
 {
   private static String TAG = "FunctionList";
   ArrayList<Function> functions;
-  
+
   public FunctionList()
   {
+    Log.d(TAG, "FunctionList()");
     functions = new ArrayList<Function>();
   }
-  
+
   public void add(Function f)
   {
     functions.add(f);
   }
-  
+
   public int size()
   {
     return functions.size();
   }
-  
+
   public Function get(int i)
   {
     Iterator<Function> iter = functions.iterator();
@@ -41,7 +41,7 @@ public class FunctionList
     }
     return null;
   }
-  
+
   public int[] getIDs()
   {
     Iterator<Function> iter = functions.iterator();
@@ -54,7 +54,7 @@ public class FunctionList
     }
     return IDs;
   }
-  
+
   public String[] getNames()
   {
     Iterator<Function> iter = functions.iterator();
@@ -67,5 +67,5 @@ public class FunctionList
     }
     return names;
   }
-  
+
 }

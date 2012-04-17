@@ -29,15 +29,15 @@ public class TriggerQueue
         return t1.getSleepTime() < t2.getSleepTime() ? -1 : 1;
       }
     };
-    
+
     triggers = new ArrayList<Trigger>();
   }
-  
+
   public void add(Trigger t)
   {
     triggers.add(t);
   }
-  
+
   public void remove(int index)
   {
     triggers.remove(index);
@@ -47,14 +47,14 @@ public class TriggerQueue
   {
     try
     {
-      return Collections.min(triggers,comparator);
+      return Collections.min(triggers, comparator);
     }
-    catch(NoSuchElementException e) 
+    catch(NoSuchElementException e)
     {
       return null;
     }
   }
-  
+
   public void switchState(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -68,7 +68,7 @@ public class TriggerQueue
       }
     }
   }
-  
+
   public int[] getIDs()
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -79,10 +79,10 @@ public class TriggerQueue
       IDs[i] = iter.next().id;
       i++;
     }
-    Log.d(TAG,"IDS: " + i);
+    Log.d(TAG, "IDS: " + i);
     return IDs;
   }
-  
+
   public String[] getNames()
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -93,13 +93,12 @@ public class TriggerQueue
       names[i] = iter.next().name;
       i++;
     }
-    Log.d(TAG,"Names: " + i);
+    Log.d(TAG, "Names: " + i);
     return names;
   }
-  
+
   public int size()
   {
     return triggers.size();
   }
 }
-
