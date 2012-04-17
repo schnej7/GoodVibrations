@@ -28,7 +28,10 @@ public class FunctionEditActivity extends Activity
 {
 
   private static final String TAG = "FunctionEditActivity";
-  final String [] wallpaperItems = new String [] {"Select from Gallery"};
+  final String [] wallpaperItems = new String [] {"Select from Gallery", "Select from File"};
+  private ArrayAdapter<String> adapter;
+  AlertDialog dialog;
+  AlertDialog.Builder builder;
   Intent mIntent;
   Uri ringtone_uri;
   Uri imageUri;
@@ -36,20 +39,20 @@ public class FunctionEditActivity extends Activity
 
   public void onCreate(Bundle savedInstanceState)
   {
+    adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, wallpaperItems);
+    builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
     
-    final Button buttonSelectWallpaper = (Button) findViewById(R.id.buttonSelectWallpaper);
+    final Button buttonSelectWallpaper = (Button) findViewById(R.id.btn_choose);
     buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
     {
 
       @Override
       public void onClick(View v)
       {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String> (getApplicationContext(), 
-                                                                 android.R.layout.select_dialog_item, wallpaperItems);
-        AlertDialog.Builder builder  = new AlertDialog.Builder(getApplicationContext());
+        
         
         builder.setTitle("Select Image");
         builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
@@ -65,10 +68,10 @@ public class FunctionEditActivity extends Activity
            }
         } );
         
-       final AlertDialog dialog = builder.create();
+       dialog = builder.create();
        
        Button button   = (Button) findViewById(R.id.btn_choose);
-       ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
+       //ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
        
        ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
            @Override
@@ -125,10 +128,12 @@ public class FunctionEditActivity extends Activity
           case 0:
             llVolumeOptions.setVisibility(View.VISIBLE);
             llRingtoneOptions.setVisibility(View.GONE);
+            llWallpaperOptions.setVisibility(View.GONE);
             break;
           case 1:
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.VISIBLE);
+            llWallpaperOptions.setVisibility(View.GONE);
             break;
           case 2:
             llVolumeOptions.setVisibility(View.GONE);
@@ -137,6 +142,8 @@ public class FunctionEditActivity extends Activity
           default:
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.GONE);
+            //This is weird, IDK whats up with this...
+            llWallpaperOptions.setVisibility(View.VISIBLE);
             break;
         }
       }
@@ -222,7 +229,9 @@ public class FunctionEditActivity extends Activity
     {
       switch (requestCode) {
         case Constants.PICK_FROM_FILE:
+          //This is witchcraft... I have no idea...
           imageUri = data.getData();
+          Toast.makeText(this, "" + imageUri, Toast.LENGTH_LONG).show();
           break;
         case Constants.REQUEST_CODE_RINGTONE_PICKER:
           ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
