@@ -44,7 +44,6 @@ public class FunctionEditActivity extends Activity
     buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
     {
 
-      @Override
       public void onClick(View v)
       {
         ArrayAdapter<String> adapter = new ArrayAdapter<String> (getApplicationContext(), 
@@ -71,13 +70,11 @@ public class FunctionEditActivity extends Activity
        ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
        
        ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
-           @Override
            public void onClick(View v) {
                dialog.show();
            }
        });
        button.setOnClickListener(new View.OnClickListener() {
-         @Override
          public void onClick(View v) {
           dialog.show();
          }
@@ -86,6 +83,7 @@ public class FunctionEditActivity extends Activity
       }
       
     });
+    
   }
 
   protected void onStart()
@@ -156,6 +154,7 @@ public class FunctionEditActivity extends Activity
       public void onClick(View v)
       {
         Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
+        i.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,RingtoneManager.TYPE_ALL);
         startActivityForResult(i, Constants.REQUEST_CODE_RINGTONE_PICKER);
       }
     });
