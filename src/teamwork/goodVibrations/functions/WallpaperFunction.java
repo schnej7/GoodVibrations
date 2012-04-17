@@ -3,9 +3,11 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import android.app.WallpaperManager;
 import android.content.Context;
-import android.media.AudioManager;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 public class WallpaperFunction extends Function
@@ -13,22 +15,65 @@ public class WallpaperFunction extends Function
   private String TAG = "Wallpaper Function";
   private Context mC;
   private WallpaperManager WM;
-  private Uri mUri;
+  private int resourceID;
   public WallpaperFunction(Context c, Bundle b,int newID)
   {
     Log.d(TAG,"RingtoneFunction() Constructor");
     mC = c;
     WM = WallpaperManager.getInstance(mC);
-    mUri = b.getParcelable(Constants.INTENT_KEY_URI);
+    resourceID = b.getParcelable(Constants.INTENT_KEY_RESID);
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
   }
+  
+  // this is used to regenerate your object. All Parcelables must have a CREATOR
+  // that implements these two methods
+  //not sure what I'm supposed to do with these
+  /*
+  public static final Parcelable.Creator<RingtoneFunction> CREATOR = new Parcelable.Creator<WalpaperFunction>()
+  {
+    public WallpaperFunction createFromParcel(Parcel in)
+    {
+      return new WallpaperFunction(in);
+    }
 
+    public RingtoneFunction[] newArray(int size)
+    {
+      return new RingtoneFunction[size];
+    }
+  };
+  
+  
+*/
+  private WallpaperFunction(Parcel in)
+  {
+    name = in.readString();
+    id = in.readInt();
+  }
+  
   @Override
   public void execute()
   {
-    // TODO Auto-generated method stub
+    Log.d(TAG, "execute() - Setting Wallpaper to " + mUri);
     
+    try
+    {
+      // RingtoneManager.getRingtone(mC, mUri).play();
+      // Log.d(TAG,"Ringtone playing");
+      WM.setResource(resourceID);
+    }
+    catch(Exception e)
+    {
+      Log.d(TAG, "Error executing set ringtone");
+      // error handling goes here -- also, use something other than Throwable
+    }
+  }
+
+  @Override
+  public String getInternalSaveString()
+  {
+    // TODO Auto-generated method stub
+    return null;
   }
 
 }
