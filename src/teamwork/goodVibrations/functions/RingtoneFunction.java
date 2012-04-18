@@ -43,7 +43,8 @@ public class RingtoneFunction extends Function
     id = new Integer(categories[1]).intValue();
     mUri = Uri.parse(categories[2]);
     vibrate = new Boolean(categories[3]).booleanValue();
-
+    toneTypes = new Byte(categories[4]).byteValue();
+    type = Function.FunctionType.RINGTONE;
   }
 
   // this is used to regenerate your object. All Parcelables must have a CREATOR
@@ -135,7 +136,9 @@ public class RingtoneFunction extends Function
     saveString += id  + Constants.CATEGORY_DELIM;
     saveString += mUri.toString();
     saveString += Constants.CATEGORY_DELIM;    
-    saveString += new Boolean(vibrate).toString(); 
+    saveString += new Boolean(vibrate).toString();
+    saveString += Constants.CATEGORY_DELIM;    
+    saveString += new Byte(toneTypes);
     
     return saveString;
   }
