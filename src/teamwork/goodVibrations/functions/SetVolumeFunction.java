@@ -41,8 +41,13 @@ public class SetVolumeFunction extends Function
     id = new Integer(categories[1]).intValue();
     volume = new Integer(categories[2]).intValue();
     vibrate = new Boolean(categories[3]).booleanValue();
+    Log.d(TAG,"cat4: " + categories[4]);
     volumeTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RING_VOLUME;
+    
+    Log.d(TAG,"NAME: " + name);
+    Log.d(TAG,"ID: " + id);
+    
   }
 
   // execute
@@ -136,6 +141,7 @@ public class SetVolumeFunction extends Function
     saveString += new Boolean(vibrate).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Byte(volumeTypes).toString();
+    saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
   }

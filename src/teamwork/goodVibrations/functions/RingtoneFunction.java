@@ -48,6 +48,10 @@ public class RingtoneFunction extends Function
     vibrate = new Boolean(categories[3]).booleanValue();
     toneTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RINGTONE;
+    
+    Log.d(TAG,"NAME: " + name);
+    Log.d(TAG,"ID: " + id);
+    
   }
 
   // execute
@@ -96,8 +100,9 @@ public class RingtoneFunction extends Function
     saveString += mUri.toString();
     saveString += Constants.CATEGORY_DELIM;    
     saveString += new Boolean(vibrate).toString();
-    saveString += Constants.CATEGORY_DELIM;    
+    saveString += Constants.CATEGORY_DELIM; 
     saveString += new Byte(toneTypes);
+    saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
   }

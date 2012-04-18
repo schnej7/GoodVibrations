@@ -27,6 +27,7 @@ public class PersistentStorage
 
   public static ArrayList<Function> loadFunctions()
   {
+    Log.d(TAG,"loadFunction()");
     ArrayList<Function> ret = new ArrayList<Function>();
 
     for(File f : new File(Constants.FUNC_DIR_PATH).listFiles())

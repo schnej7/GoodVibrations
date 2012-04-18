@@ -251,6 +251,7 @@ public class TimeTrigger extends Trigger
     saveString += Long.toString(startTime) + Constants.CATEGORY_DELIM;
     saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
     saveString += Byte.toString(daysActive);
+    saveString += Constants.CATEGORY_DELIM;
         
     return saveString;
   }

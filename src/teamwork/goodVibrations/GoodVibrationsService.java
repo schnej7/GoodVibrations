@@ -93,6 +93,9 @@ public class GoodVibrationsService extends Service
     
     c = getApplicationContext();
     
+    //triggers = new TriggerQueue();
+    //functions = new FunctionList();
+    
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     functions = new FunctionList(PersistentStorage.loadFunctions());
 
