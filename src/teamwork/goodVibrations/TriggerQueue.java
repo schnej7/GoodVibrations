@@ -16,6 +16,8 @@ public class TriggerQueue
   private ArrayList<Trigger> triggers;
   private Comparator<Trigger> comparator;
 
+  // TriggerQueue
+  // Constructor, defines the comparator, initializes the ArrayList
   public TriggerQueue()
   {
     comparator = new Comparator<Trigger>()
@@ -33,16 +35,22 @@ public class TriggerQueue
     triggers = new ArrayList<Trigger>();
   }
 
+  // add
+  // Adds a trigger to the queue
   public void add(Trigger t)
   {
     triggers.add(t);
   }
 
+  // remove
+  // Removes a trigger from the queue defined by index
   public void remove(int index)
   {
     triggers.remove(index);
   }
 
+  // getNextTrigger
+  // Returns the trigger that must execute next, determined by the comparator
   public Trigger getNextTrigger()
   {
     try
@@ -55,6 +63,8 @@ public class TriggerQueue
     }
   }
 
+  // switchState
+  // Switches the state of the trigger whose id is 'id'
   public void switchState(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -69,6 +79,8 @@ public class TriggerQueue
     }
   }
 
+  // getIDs
+  // Gets an array of all the trigger ids in the queue
   public int[] getIDs()
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -83,6 +95,8 @@ public class TriggerQueue
     return IDs;
   }
 
+  // getNames
+  // Gets a string array of all the trigger names
   public String[] getNames()
   {
     Iterator<Trigger> iter = triggers.iterator();
@@ -97,6 +111,8 @@ public class TriggerQueue
     return names;
   }
 
+  // size
+  // Returns the number of triggers in the queue
   public int size()
   {
     return triggers.size();

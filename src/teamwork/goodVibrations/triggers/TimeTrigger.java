@@ -30,7 +30,8 @@ public class TimeTrigger extends Trigger
   long startTime; // Number of milliseconds into the day that the trigger starts
   long stopTime; // Number of milliseconds into the day that the trigger ends
 
-  // Constructor
+  // TimeTrigger
+  // Constructor for making a time trigger from the GUI
   public TimeTrigger(Bundle b, int newID)
   {
     Log.d(TAG,"TimeTrigger()");
@@ -63,6 +64,8 @@ public class TimeTrigger extends Trigger
     }
   }
   
+  // TimeTrigger
+  // Constructor for making a time trigger from the persistent storage
   public TimeTrigger(String s)
   {
     startFunctionIDs = new ArrayList<Integer>();
@@ -92,6 +95,7 @@ public class TimeTrigger extends Trigger
     daysActive = new Byte(categories[6]).byteValue(); 
   }
 
+  // addFunction
   // Adds a functionID to either the start or stop list
   public boolean addFunction(STATE type, Integer f)
   {
@@ -106,6 +110,7 @@ public class TimeTrigger extends Trigger
     return true;
   }
 
+  // getSleepTime
   // Returns the next time in milliseconds that this trigger must execute
   public long getSleepTime()
   {
@@ -142,6 +147,8 @@ public class TimeTrigger extends Trigger
     return Constants.dayInMillis - currentTimeInDay;
   }
 
+  // canExecute
+  // Determines if the trigger can execute on the current day of the week
   public boolean canExecute()
   {
     Calendar c = Calendar.getInstance();
@@ -158,6 +165,7 @@ public class TimeTrigger extends Trigger
     return false;
   }
 
+  // getFunctions
   // Gets the functions of the specified state
   public ArrayList<Integer> getFunctions(STATE type)
   {
@@ -172,6 +180,7 @@ public class TimeTrigger extends Trigger
     return null;
   }
 
+  // getFunctions
   // Gets the functions of the current state
   public ArrayList<Integer> getFunctions()
   {
@@ -186,6 +195,7 @@ public class TimeTrigger extends Trigger
     return null;
   }
 
+  // switchState
   // Changes the state of the trigger.
   public void switchState()
   {
@@ -200,11 +210,15 @@ public class TimeTrigger extends Trigger
     Log.d(TAG, "STATE: " + state);
   }
 
+  // removeFunction
+  // Removes the function with id 'id' from the trigger
   public void removeFunction(Integer id)
   {
     // TODO Auto-generated method stub
   }
 
+  // getInternalSaveString
+  // Builds the save string for persistent storage
   @Override
   String getInternalSaveString()
   {

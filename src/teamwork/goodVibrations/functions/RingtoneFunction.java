@@ -6,8 +6,6 @@ import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
 public class RingtoneFunction extends Function
@@ -20,6 +18,8 @@ public class RingtoneFunction extends Function
   private byte toneTypes;
   Context mC;
 
+  // RingtoneFunction
+  // Constructor for making ringtone functions through GUI
   public RingtoneFunction(Context c, Bundle b, int newID)
   {
     Log.d(TAG, "RingtoneFunction() Constructor");
@@ -33,9 +33,10 @@ public class RingtoneFunction extends Function
     type = Function.FunctionType.RINGTONE;
   }
   
+  // RingtoneFunction
+  // Constructor for making ringtones from persistent storage
   public RingtoneFunction(Context c, String s)
   {
-    // TODO Redo string parsing
     mC = c;
     type = Function.FunctionType.RINGTONE;
     String [] categories = s.split(Constants.CATEGORY_DELIM);
@@ -47,36 +48,30 @@ public class RingtoneFunction extends Function
     type = Function.FunctionType.RINGTONE;
   }
 
+  // execute
+  // Does the changing of the tones
   public void execute()
   {
 
     Log.d(TAG, "execute() - Setting Ringtone to " + mUri);
-
-    // Toast.makeText(mC, "executing()", Toast.LENGTH_LONG).show();
-
-    try
+  
+    // If the Ringtone was selected
+    if((toneTypes & (byte)1) != 0)
     {
-      // RingtoneManager.getRingtone(mC, mUri).play();
-      // Log.d(TAG,"Ringtone playing");
-      if((toneTypes & (byte)1) != 0)
-      {
-        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
-      }
-      if((toneTypes & (byte)2) != 0)
-      {
-        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_ALARM, mUri);
-      }
-      if((toneTypes & (byte)4) != 0)
-      {
-        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_NOTIFICATION, mUri);
-      }
+      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
     }
-    catch(Exception e)
+    // If the Alarm tone was selected
+    if((toneTypes & (byte)2) != 0)
     {
-      Log.d(TAG, "Error executing set ringtone");
-      // error handling goes here -- also, use something other than Throwable
+      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_ALARM, mUri);
+    }
+    // If the notification tone was selected
+    if((toneTypes & (byte)4) != 0)
+    {
+      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_NOTIFICATION, mUri);
     }
 
+    // If the vibrate checkbox was checked
     if(vibrate)
     {
       AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_ON);
@@ -88,6 +83,8 @@ public class RingtoneFunction extends Function
 
   }
 
+  // getInternalSaveString
+  // Builds the string for persistent storage
   @Override
   public String getInternalSaveString()
   {
