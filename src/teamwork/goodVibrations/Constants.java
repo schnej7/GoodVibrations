@@ -89,7 +89,5 @@ public class Constants
   public static final String TEAM_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork";
   public static final String FUNC_DIR_PATH = TEAM_DIR_PATH+"/functions";
   public static final String TRIG_DIR_PATH = TEAM_DIR_PATH+"/triggers";
-  public static final String FUNC_LIST_NAME = "FunctionList.txt";
-  public static final String TRIG_LIST_NAME = "TriggerList.txt";
 
 }
