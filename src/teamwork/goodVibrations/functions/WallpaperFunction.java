@@ -1,6 +1,7 @@
 package teamwork.goodVibrations.functions;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.GoodVibrationsService;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -19,10 +20,10 @@ public class WallpaperFunction extends Function
   private WallpaperManager WM;
   private Uri imageUri;
  
-  public WallpaperFunction(Context c, Bundle b,int newID)
+  public WallpaperFunction(Bundle b,int newID)
   {
     Log.d(TAG,"RingtoneFunction() Constructor");
-    mC = c;
+    mC = GoodVibrationsService.c;
     WM = WallpaperManager.getInstance(mC);
     imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
