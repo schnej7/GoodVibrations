@@ -122,20 +122,3 @@ public class TimeTriggerEditActivity extends Activity
     }
   }
 }
-/*
-public class DataReceiver extends BroadcastReceiver
-{
-  @Override
-  public void onReceive(Context context, Intent intent) //PUT IT IN THE MANIFEST
-  {
-    Log.d(TAG, "RECEIVED BROADCAST MESSAGE");
-    
-    Bundle b = intent.getExtras();
-    
-    if(b.getInt(Constants.INTENT_KEY_TYPE)== Constants.TRIGGER_TYPE_TIME)
-    {
-      
-    }
-    
-  }
-}*/
