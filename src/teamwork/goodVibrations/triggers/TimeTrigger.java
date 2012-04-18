@@ -92,7 +92,14 @@ public class TimeTrigger extends Trigger
     
     startTime = new Long(categories[4]).longValue();
     stopTime =  new Long(categories[5]).longValue();
-    daysActive = new Byte(categories[6]).byteValue(); 
+    daysActive = new Byte(categories[6]).byteValue();
+    
+    state = STATE.FIRSTSTART;
+    long currentTimeInDay = Utils.getTimeOfDayInMillis();
+    if(currentTimeInDay > stopTime)
+    {
+      state = STATE.FIRSTSTOP;
+    }
   }
 
   // addFunction
@@ -251,6 +258,7 @@ public class TimeTrigger extends Trigger
     saveString += Long.toString(startTime) + Constants.CATEGORY_DELIM;
     saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
     saveString += Byte.toString(daysActive);
+    saveString += Constants.CATEGORY_DELIM;
         
     return saveString;
   }

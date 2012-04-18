@@ -286,6 +286,7 @@ public class LocationTrigger extends Trigger
     saveString += new Double(center.getLongitude()).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Float(radius).toString();
+    saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
   }

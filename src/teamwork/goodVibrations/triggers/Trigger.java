@@ -38,7 +38,7 @@ public abstract class Trigger
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
+      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
     catch(Exception e)
     {

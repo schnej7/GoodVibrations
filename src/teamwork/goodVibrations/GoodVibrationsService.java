@@ -93,11 +93,14 @@ public class GoodVibrationsService extends Service
     
     c = getApplicationContext();
     
-    triggers = new TriggerQueue();
-    functions = new FunctionList();
+
+
+    //triggers = new TriggerQueue();
+    //functions = new FunctionList();
     
-    //triggers = new TriggerQueue(PersistentStorage.loadTriggers());
-    //functions = new FunctionList(PersistentStorage.loadFunctions());
+    functions = new FunctionList(PersistentStorage.loadFunctions());
+    triggers = new TriggerQueue(PersistentStorage.loadTriggers());
+
 
     // Only samples, need to be removed
     Bundle b = new Bundle();
