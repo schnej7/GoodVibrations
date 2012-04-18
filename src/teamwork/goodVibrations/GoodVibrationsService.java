@@ -1,5 +1,6 @@
 package teamwork.goodVibrations;
 
+import teamwork.goodVibrations.persistence.PersistentStorage;
 import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
 
@@ -87,8 +88,8 @@ public class GoodVibrationsService extends Service
   {
     Log.d(TAG, "Calling onCreate()");
 
-    triggers = new TriggerQueue();
-    functions = new FunctionList();
+    triggers = new TriggerQueue(PersistentStorage.loadTriggers());
+    functions = new FunctionList(PersistentStorage.loadFunctions());
 
     // Only samples, need to be removed
     Bundle b = new Bundle();
@@ -150,6 +151,7 @@ public class GoodVibrationsService extends Service
           Log.d(TAG, "Default Function");
           break;
       }
+      PersistentStorage.saveFunctions(functions.functions);
     }
     else if(intentType == Constants.TRIGGER_TYPE)
     {
@@ -182,7 +184,8 @@ public class GoodVibrationsService extends Service
       {
         changer.notify();
       }
-
+      
+      PersistentStorage.saveTriggers(triggers.getTriggers());
       Log.d(TAG, "Trigger submitted");
     }
     else if(intentType == Constants.GET_DATA)

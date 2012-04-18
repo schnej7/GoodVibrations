@@ -1,6 +1,7 @@
 package teamwork.goodVibrations;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 import android.util.Log;
@@ -16,6 +17,14 @@ public class FunctionList
   {
     Log.d(TAG, "FunctionList()");
     functions = new ArrayList<Function>();
+  }
+  public FunctionList(Collection<Function> c)
+  {
+    this();
+    for(Function f : c)
+    {
+      add(f);
+    }
   }
 
   public void add(Function f)
