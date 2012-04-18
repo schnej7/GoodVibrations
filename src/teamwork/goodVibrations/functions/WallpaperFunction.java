@@ -5,6 +5,7 @@ import teamwork.goodVibrations.GoodVibrationsService;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,19 @@ public class WallpaperFunction extends Function
     imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
+  }
+  
+  public WallpaperFunction(String s)
+  {
+    mC = GoodVibrationsService.c;
+    WM = WallpaperManager.getInstance(mC);
+    type = Function.FunctionType.RINGTONE;
+    String [] categories = s.split(Constants.CATEGORY_DELIM);
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    imageUri = Uri.parse(categories[2]);
+
+    type = Function.FunctionType.WALLPAPER;
   }
   
   @Override
@@ -55,8 +69,12 @@ public class WallpaperFunction extends Function
   @Override
   public String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String saveString = new String();
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += imageUri.toString();
+    
+    return saveString;
   }
 
 }
