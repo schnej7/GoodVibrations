@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -89,7 +90,9 @@ public class GoodVibrationsService extends Service
   public void onCreate()
   {
     Log.d(TAG, "Calling onCreate()");
-
+    
+    c = getApplicationContext();
+    
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     functions = new FunctionList(PersistentStorage.loadFunctions());
 

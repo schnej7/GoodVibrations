@@ -10,11 +10,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.functions.Function;
 import teamwork.goodVibrations.triggers.Trigger;
 
 public class PersistentStorage
 {
+  private static final String TAG = "PersistentStorage";
   private static File trigDir;
   private static File funcDir;
   private static File funcList;
@@ -124,6 +127,8 @@ public class PersistentStorage
     trigDir.mkdirs();
     funcDir.mkdirs();
 
+    Log.d(TAG,Constants.FUNC_DIR_PATH);
+    
     funcList = new File(Constants.FUNC_DIR_PATH, Constants.FUNC_LIST_NAME);
     trigList = new File(Constants.TRIG_DIR_PATH, Constants.TRIG_LIST_NAME);
     try
