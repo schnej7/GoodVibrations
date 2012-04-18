@@ -59,25 +59,25 @@
             android:text="@string/vibrate" />
 
         <CheckBox
-            android:id="@+id/chkRingtone"
+            android:id="@+id/chkRingtoneVol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Ringtone" />
 
         <CheckBox
-            android:id="@+id/chkMedia"
+            android:id="@+id/chkMediaVol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Media" />
 
         <CheckBox
-            android:id="@+id/chkAlarm"
+            android:id="@+id/chkAlarmVol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Alarm" />
 
         <CheckBox
-            android:id="@+id/chkNotification"
+            android:id="@+id/chkNotificationVol"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Notification" />
@@ -108,6 +108,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/vibrate" />
+        
+        <CheckBox
+            android:id="@+id/chkRingtoneTone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/RingtoneTone" />
+        
+        <CheckBox
+            android:id="@+id/chkAlarmTone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/AlarmTone" />
+
+        <CheckBox
+            android:id="@+id/chkNotificationTone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/NotificationTone" />
 
     </LinearLayout>
     

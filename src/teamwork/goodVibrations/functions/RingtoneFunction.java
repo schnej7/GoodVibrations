@@ -17,6 +17,7 @@ public class RingtoneFunction extends Function
   private Uri mUri;
   private boolean vibrate;
   private AudioManager AM;
+  private byte toneTypes;
   Context mC;
 
   public RingtoneFunction(Context c, Bundle b, int newID)
@@ -27,15 +28,16 @@ public class RingtoneFunction extends Function
     mUri = b.getParcelable(Constants.INTENT_KEY_URI);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
+    toneTypes = b.getByte(Constants.INTENT_KEY_TONE_TYPES);
     id = newID;
     type = Function.FunctionType.RINGTONE;
   }
   
   public RingtoneFunction(Context c, String s)
   {
+    // TODO Redo string parsing
     mC = c;
     type = Function.FunctionType.RINGTONE;
-    
     String [] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
@@ -76,7 +78,18 @@ public class RingtoneFunction extends Function
     {
       // RingtoneManager.getRingtone(mC, mUri).play();
       // Log.d(TAG,"Ringtone playing");
-      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
+      if((toneTypes & (byte)1) != 0)
+      {
+        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
+      }
+      if((toneTypes & (byte)2) != 0)
+      {
+        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_ALARM, mUri);
+      }
+      if((toneTypes & (byte)4) != 0)
+      {
+        RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_NOTIFICATION, mUri);
+      }
     }
     catch(Exception e)
     {

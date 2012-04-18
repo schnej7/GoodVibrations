@@ -66,10 +66,15 @@ public class FunctionEditActivity extends Activity
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
     final CheckBox chkRingtoneVibrate = (CheckBox) findViewById(R.id.chkRingtoneVibrate);
     final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
-    final CheckBox chkRingtoneVolume = (CheckBox) findViewById(R.id.chkRingtone);
-    final CheckBox chkMediaVolume = (CheckBox) findViewById(R.id.chkMedia);
-    final CheckBox chkAlarmVolume = (CheckBox) findViewById(R.id.chkAlarm);
-    final CheckBox chkNotificationVolume = (CheckBox) findViewById(R.id.chkNotification);
+    // Ringvolume Checkboxes
+    final CheckBox chkRingtoneVolume = (CheckBox) findViewById(R.id.chkRingtoneVol);
+    final CheckBox chkMediaVolume = (CheckBox) findViewById(R.id.chkMediaVol);
+    final CheckBox chkAlarmVolume = (CheckBox) findViewById(R.id.chkAlarmVol);
+    final CheckBox chkNotificationVolume = (CheckBox) findViewById(R.id.chkNotificationVol);
+    // Ringtone Checkboxes
+    final CheckBox chkRingtoneTone = (CheckBox) findViewById(R.id.chkRingtoneTone);
+    final CheckBox chkAlarmTone = (CheckBox) findViewById(R.id.chkAlarmTone);
+    final CheckBox chkNotificationTone = (CheckBox) findViewById(R.id.chkNotificationTone);
 
     final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
@@ -204,6 +209,13 @@ public class FunctionEditActivity extends Activity
             mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
             mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
             mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());
+            
+            byte toneTypes = (byte)0;
+            toneTypes |= Utils.booleanToByte(chkRingtoneTone.isChecked());
+            toneTypes |= Utils.booleanToByte(chkAlarmTone.isChecked()) << 1;
+            toneTypes |= Utils.booleanToByte(chkNotificationTone.isChecked()) << 2;
+            mIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
+            
             break;
           case Constants.FUNCTION_TYPE_WALLPAPER:
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
