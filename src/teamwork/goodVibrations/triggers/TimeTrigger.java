@@ -92,7 +92,14 @@ public class TimeTrigger extends Trigger
     
     startTime = new Long(categories[4]).longValue();
     stopTime =  new Long(categories[5]).longValue();
-    daysActive = new Byte(categories[6]).byteValue(); 
+    daysActive = new Byte(categories[6]).byteValue();
+    
+    state = STATE.FIRSTSTART;
+    long currentTimeInDay = Utils.getTimeOfDayInMillis();
+    if(currentTimeInDay > stopTime)
+    {
+      state = STATE.FIRSTSTOP;
+    }
   }
 
   // addFunction
