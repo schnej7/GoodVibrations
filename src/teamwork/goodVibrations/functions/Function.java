@@ -28,8 +28,7 @@ public abstract class Function
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      // TODO should s.substring at end of line be a[1] not a[0]
-      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
+      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
     catch(Exception e)
     {
