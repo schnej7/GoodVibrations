@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -89,7 +90,9 @@ public class GoodVibrationsService extends Service
   public void onCreate()
   {
     Log.d(TAG, "Calling onCreate()");
-
+    
+    c = getApplicationContext();
+    
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     functions = new FunctionList(PersistentStorage.loadFunctions());
 
@@ -147,6 +150,11 @@ public class GoodVibrationsService extends Service
         case Constants.FUNCTION_TYPE_RINGTONE:
           Log.d(TAG, "New Ringtone Function");
           functions.add(new RingtoneFunction(b, maxFunctionID++));
+          break;
+          
+        case Constants.FUNCTION_TYPE_WALLPAPER:
+          Log.d(TAG, "New Wallpaper Function");
+          functions.add(new WallpaperFunction(b, maxFunctionID++));
           break;
 
         default:

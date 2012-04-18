@@ -1,5 +1,7 @@
 package teamwork.goodVibrations;
 
+import android.os.Environment;
+
 public class Constants
 {
   // Controls the length of a day in the TimeTrigger
@@ -60,7 +62,9 @@ public class Constants
   public static final String INTENT_KEY_LATITUDE = "122";
   public static final String INTENT_KEY_VOLUME_TYPES = "123";
   public static final String INTENT_KEY_IMAGEURI = "124";
-  public static final String INTENT_KEY_TONE_TYPES = "125";
+  public static final String INTENT_KEY_CALLED_IMAGE_SELECTOR = "125";
+  public static final String INTENT_KEY_TONE_TYPES = "126";
+
 
   // Intent request codes. Used in onActivityResult triggers to determine which
   // activity was returned
@@ -80,10 +84,12 @@ public class Constants
   public static final String CATEGORY_DELIM = "@";
   public static final String SAVE_STRING_DELIM = "%";
   
-  public static final String TEAM_DIR_PATH = "teamwork";
-  public static final String FUNC_DIR_PATH = "teamwork/functions";
-  public static final String TRIG_DIR_PATH = "teamwork/triggers";
-  public static final String FUNC_LIST_NAME = "Function List.txt";
-  public static final String TRIG_LIST_NAME = "Trigger List.txt";
+  
+  
+  public static final String TEAM_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork";
+  public static final String FUNC_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork/functions";
+  public static final String TRIG_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork/triggers";
+  public static final String FUNC_LIST_NAME = "FunctionList.txt";
+  public static final String TRIG_LIST_NAME = "TriggerList.txt";
 
 }
