@@ -47,27 +47,6 @@ public class RingtoneFunction extends Function
     type = Function.FunctionType.RINGTONE;
   }
 
-  // this is used to regenerate your object. All Parcelables must have a CREATOR
-  // that implements these two methods
-  public static final Parcelable.Creator<RingtoneFunction> CREATOR = new Parcelable.Creator<RingtoneFunction>()
-  {
-    public RingtoneFunction createFromParcel(Parcel in)
-    {
-      return new RingtoneFunction(in);
-    }
-
-    public RingtoneFunction[] newArray(int size)
-    {
-      return new RingtoneFunction[size];
-    }
-  };
-
-  private RingtoneFunction(Parcel in)
-  {
-    name = in.readString();
-    id = in.readInt();
-  }
-
   public void execute()
   {
 
@@ -107,25 +86,6 @@ public class RingtoneFunction extends Function
       AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_OFF);
     }
 
-    /*
-     * try { RingtoneManager.setActualDefaultRingtoneUri(c,
-     * RingtoneManager.TYPE_NOTIFICATION, nuri); } catch (Throwable t) { //
-     * error handling goes here -- also, use something other than Throwable }
-     */
-
-    /*
-     * AudioManager AM =
-     * (AudioManager)c.getSystemService(Context.AUDIO_SERVICE);
-     * AM.setRingerMode(AudioManager.RINGER_MODE_NORMAL); for (int volumeType:
-     * (new int[] {
-     * AudioManager.STREAM_SYSTEM,AudioManager.STREAM_RING,AudioManager
-     * .STREAM_NOTIFICATION, AudioManager.STREAM_ALARM } )) { //int maxVolume =
-     * AM.getStreamMaxVolume(volumeType); int vol =
-     * AM.getStreamVolume(AudioManager.STREAM_RING);
-     * AM.setStreamVolume(volumeType, vol, AudioManager.FLAG_PLAY_SOUND |
-     * AudioManager.FLAG_VIBRATE); AM.setStreamMute(volumeType, false);
-     * AM.setVibrateSetting(volumeType,AudioManager.VIBRATE_SETTING_ON); }
-     */
   }
 
   @Override
