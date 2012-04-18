@@ -24,6 +24,8 @@ public class GoodVibrationsService extends Service
 
   private SettingsChanger changer;
   
+  public static Context c;
+  
   private class SettingsChanger extends Thread
   {
     public void run()
@@ -87,6 +89,8 @@ public class GoodVibrationsService extends Service
   {
     Log.d(TAG, "Calling onCreate()");
 
+    c = getApplicationContext();
+    
     triggers = new TriggerQueue();
     functions = new FunctionList();
 
@@ -96,12 +100,12 @@ public class GoodVibrationsService extends Service
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
     b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
     b.putInt(Constants.INTENT_KEY_VOLUME, 100);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
     b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
 
     Log.d(TAG, "Added Function");
 
@@ -137,13 +141,13 @@ public class GoodVibrationsService extends Service
       {
       // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
-          functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+          functions.add(new SetVolumeFunction(b, maxFunctionID++));
           break;
 
         // Add a new ring tone function
         case Constants.FUNCTION_TYPE_RINGTONE:
           Log.d(TAG, "New Ringtone Function");
-          functions.add(new RingtoneFunction(getApplicationContext(), b, maxFunctionID++));
+          functions.add(new RingtoneFunction(b, maxFunctionID++));
           break;
 
         default:
