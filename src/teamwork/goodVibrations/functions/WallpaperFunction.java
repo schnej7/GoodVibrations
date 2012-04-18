@@ -29,18 +29,17 @@ public class WallpaperFunction extends Function
     imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
+    type = Function.FunctionType.WALLPAPER;
   }
   
   public WallpaperFunction(String s)
   {
     mC = GoodVibrationsService.c;
     WM = WallpaperManager.getInstance(mC);
-    type = Function.FunctionType.RINGTONE;
     String [] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     imageUri = Uri.parse(categories[2]);
-
     type = Function.FunctionType.WALLPAPER;
   }
   
