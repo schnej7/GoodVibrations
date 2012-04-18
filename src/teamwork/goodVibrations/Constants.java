@@ -62,7 +62,9 @@ public class Constants
   public static final String INTENT_KEY_LATITUDE = "122";
   public static final String INTENT_KEY_VOLUME_TYPES = "123";
   public static final String INTENT_KEY_IMAGEURI = "124";
-  public static final String INTENT_KEY_TONE_TYPES = "125";
+  public static final String INTENT_KEY_CALLED_IMAGE_SELECTOR = "125";
+  public static final String INTENT_KEY_TONE_TYPES = "126";
+
 
   // Intent request codes. Used in onActivityResult triggers to determine which
   // activity was returned

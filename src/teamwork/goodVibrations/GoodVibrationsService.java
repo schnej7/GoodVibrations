@@ -151,6 +151,11 @@ public class GoodVibrationsService extends Service
           Log.d(TAG, "New Ringtone Function");
           functions.add(new RingtoneFunction(b, maxFunctionID++));
           break;
+          
+        case Constants.FUNCTION_TYPE_WALLPAPER:
+          Log.d(TAG, "New Wallpaper Function");
+          functions.add(new WallpaperFunction(b, maxFunctionID++));
+          break;
 
         default:
           Log.d(TAG, "Default Function");
