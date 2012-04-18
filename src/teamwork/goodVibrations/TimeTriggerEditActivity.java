@@ -1,6 +1,8 @@
 package teamwork.goodVibrations;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +14,7 @@ public class TimeTriggerEditActivity extends Activity
 {
   private static final String TAG = "TimeTriggerEditActivity";
   Intent mIntent;
+  EditText txtName;
 
   public void onCreate(Bundle savedInstanceState)
   {
@@ -39,7 +42,7 @@ public class TimeTriggerEditActivity extends Activity
     mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
 
     // name text box
-    final EditText txtName = (EditText) findViewById(R.id.editTextTriggerName);
+    txtName = (EditText) findViewById(R.id.editTextTriggerName);
     // button to set times
     final Button buttonSetTimes = (Button) findViewById(R.id.buttonTimeTriggerSetTimes);
     buttonSetTimes.setOnClickListener(new View.OnClickListener()
@@ -52,6 +55,8 @@ public class TimeTriggerEditActivity extends Activity
           Bundle b = mIntent.getExtras();
           TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
           TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
+          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
         }
         catch(NullPointerException e)
         {
@@ -71,8 +76,18 @@ public class TimeTriggerEditActivity extends Activity
       {
         // Add the selected functions to the bundle so they can be automatically
         // checked
-        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), SetFunctionsActivity.class);
-        startActivityForResult(TimeTriggerSetFunctions, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
+        Intent TimeTriggerSetFunctionsIntent = new Intent(getApplicationContext(), SetFunctionsActivity.class);
+        try
+        {
+          Bundle b = mIntent.getExtras();
+          TimeTriggerSetFunctionsIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        }
+        catch(NullPointerException e)
+        {
+          // If we get a NullPointerException that means that this hasn't been
+          // called so there is no data to be passed anyway.
+        }
+        startActivityForResult(TimeTriggerSetFunctionsIntent, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });
 
@@ -121,21 +136,20 @@ public class TimeTriggerEditActivity extends Activity
       Log.d(TAG, "onActivityResult() Failed");
     }
   }
-}
-
-public class DataReceiver extends BroadcastReceiver
-{
-  @Override
-  public void onReceive(Context context, Intent intent) //PUT IT IN THE MANIFEST
+  public class DataReceiver extends BroadcastReceiver
   {
-    Log.d(TAG, "RECEIVED BROADCAST MESSAGE");
-    
-    Bundle b = intent.getExtras();
-    
-    if(b.getInt(Constants.INTENT_KEY_TYPE)== Constants.TRIGGER_TYPE_TIME)
+    @Override
+    public void onReceive(Context context, Intent intent) //PUT IT IN THE MANIFEST
     {
+      Log.d(TAG, "RECEIVED BROADCAST MESSAGE");
+      
+      Bundle b = intent.getExtras();
+      
+      if(b.getInt(Constants.INTENT_KEY_TYPE)== Constants.TRIGGER_TYPE_TIME)
+      {
+        txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
+      }
       
     }
-    
   }
 }

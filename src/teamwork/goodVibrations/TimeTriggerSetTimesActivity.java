@@ -11,7 +11,7 @@ import android.widget.TimePicker;
 public class TimeTriggerSetTimesActivity extends Activity
 {
   private static final String TAG = "TimeTriggerSetTimeActivity";
-  Intent mIntent;
+  Intent mIntent = new Intent();
 
   public void onCreate(Bundle savedInstanceState)
   {
@@ -67,6 +67,22 @@ public class TimeTriggerSetTimesActivity extends Activity
         finish(); // Return to TimeTriggerEditActivity.onActivityResult()
       }
     });
+    
+    //Look for bundle with time data in it
+    try{
+      Log.d( TAG, "Trying to get intent");
+      Bundle b = getIntent().getExtras();
+      long startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
+      long endTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+      startTimePicker.setCurrentHour(Utils.getHoursFromMillis(startTime));
+      Log.d(TAG,  "Start hour: " + Utils.getHoursFromMillis(startTime));
+      startTimePicker.setCurrentMinute(Utils.getMinutesFromMillis(startTime));
+      endTimePicker.setCurrentHour(Utils.getHoursFromMillis(endTime));
+      endTimePicker.setCurrentMinute(Utils.getMinutesFromMillis(endTime));
+    }
+    catch(NullPointerException e){
+      Log.d( TAG, "No bundle to set to");
+    }
   }
 
   @Override
