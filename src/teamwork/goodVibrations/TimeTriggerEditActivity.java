@@ -122,7 +122,7 @@ public class TimeTriggerEditActivity extends Activity
     }
   }
 }
-
+/*
 public class DataReceiver extends BroadcastReceiver
 {
   @Override
@@ -138,4 +138,4 @@ public class DataReceiver extends BroadcastReceiver
     }
     
   }
-}
+}*/

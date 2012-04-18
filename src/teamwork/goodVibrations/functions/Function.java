@@ -44,7 +44,8 @@ public abstract class Function
     UI(1, FunctionForUI.class),
     LOWER(2, LowerFunction.class),
     RAISE(3, RaiseFunction.class),
-    RING_VOLUME(4, SetVolumeFunction.class);
+    RING_VOLUME(4, SetVolumeFunction.class),
+    WALLPAPER(5, WallpaperFunction.class);
 
     private static HashMap<Integer, FunctionType> lookup = new HashMap<Integer, FunctionType>();
 
