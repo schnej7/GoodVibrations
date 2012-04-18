@@ -33,6 +33,8 @@ public class LocationTrigger extends Trigger
   public static boolean EXITFUNCTION = false;
   GPSLocationListener listener;
 
+  // LocationTrigger
+  // Constructor for creating a location trigger through the GUI
   public LocationTrigger(Context c, Bundle b, int newID)
   {
     initLocationTrigger(c);
@@ -64,6 +66,8 @@ public class LocationTrigger extends Trigger
     center = l;
   }
   
+  // LocationTrigger
+  // Constructor for creating location trigger from the persistent storage
   public LocationTrigger(Context c, String s)
   {
     initLocationTrigger(c);
@@ -98,6 +102,9 @@ public class LocationTrigger extends Trigger
     Log.d(TAG,new Float(radius).toString());
   }
   
+  // initLocationTrigger
+  // Called by both constructors to get the GPS started and
+  // some variables initialized
   private void initLocationTrigger(Context c)
   {
     type = Trigger.TriggerType.LOCATION;
@@ -131,14 +138,19 @@ public class LocationTrigger extends Trigger
     exitFunctionIDs = new ArrayList<Integer>();
   }
 
+  // removeFunction
+  // Removes a function that is called by this location trigger
   public void removeFunction(Integer id)
   {
     // TODO Auto-generated method stub
-
   }
 
+  // getSleepTime
+  // Returns how long the location trigger sleeps before being checked again
   public long getSleepTime()
   {
+    // TODO Should sleep time depend on the last time the trigger was called?
+    
     // Check location every 5 minutes
     // return 300000;
 
@@ -146,6 +158,9 @@ public class LocationTrigger extends Trigger
     return 60000;
   }
 
+  // getFunctions
+  // Retuns the list of functions that should be executed depending
+  // current location
   public ArrayList<Integer> getFunctions()
   {
     if(myLocation.distanceTo(center) > radius)
@@ -158,11 +173,16 @@ public class LocationTrigger extends Trigger
     }
   }
 
+  // switchState
+  // Not needed?
   public void switchState()
   {
     // TODO Auto-generated method stub
   }
 
+  // canExecute
+  // Determines if the trigger should execute.  Based on the last exectued
+  // location and the current location
   public boolean canExecute()
   {
     Log.d(TAG, "canExecute()");
@@ -193,6 +213,7 @@ public class LocationTrigger extends Trigger
     }
   }
 
+  // addFunction
   // Adds a functionID to either the start or stop list
   public boolean addFunction(boolean type, Integer f)
   {
@@ -207,6 +228,8 @@ public class LocationTrigger extends Trigger
     return true;
   }
 
+  // This class changes the local location variable whenever the 
+  // phones location is updated
   private class GPSLocationListener implements LocationListener
   {
     public void onLocationChanged(Location location)
@@ -228,6 +251,8 @@ public class LocationTrigger extends Trigger
     {}
   }
 
+  // getInternalSaveString
+  // Builds the string to save the location trigger
   @Override
   String getInternalSaveString()
   {

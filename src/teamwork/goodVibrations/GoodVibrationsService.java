@@ -67,6 +67,10 @@ public class GoodVibrationsService extends Service
             catch(InterruptedException e)
             {
               Log.d(TAG, "Sleep while no triggers interrupted");
+              synchronized(this)
+              {
+                this.wait();
+              }
             }
           }
         }
@@ -91,10 +95,12 @@ public class GoodVibrationsService extends Service
     b.putInt(Constants.INTENT_KEY_VOLUME, 0);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
     functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
-    b.putInt(Constants.INTENT_KEY_VOLUME, 7);
+    b.putInt(Constants.INTENT_KEY_VOLUME, 100);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
     functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
 
     Log.d(TAG, "Added Function");
@@ -172,6 +178,10 @@ public class GoodVibrationsService extends Service
 
       // Restart the settings changer
       SettingsChanger.interrupted();
+      synchronized(changer)
+      {
+        changer.notify();
+      }
 
       Log.d(TAG, "Trigger submitted");
     }
