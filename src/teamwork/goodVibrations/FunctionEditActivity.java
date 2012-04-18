@@ -21,18 +21,18 @@ import android.widget.Toast;
 
 public class FunctionEditActivity extends Activity
 {
-
   private static final String TAG = "FunctionEditActivity";
   final String [] wallpaperItems = new String [] {"Select from Gallery", "Select from File"};
   private ArrayAdapter<String> adapter;
   AlertDialog dialog;
   AlertDialog.Builder builder;
-  Intent mIntent;
+  Intent mIntent = new Intent();
   Uri ringtone_uri;
   Uri imageUri;
   LinearLayout llVolumeOptions;
   LinearLayout llRingtoneOptions; 
   LinearLayout llWallpaperOptions; 
+  int returnedFromImageSelector;
   //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
@@ -48,7 +48,6 @@ public class FunctionEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    mIntent = new Intent();
     
     
     llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
@@ -59,7 +58,7 @@ public class FunctionEditActivity extends Activity
     array_spinner[Constants.FUNCTION_TYPE_VOLUME] = "Volume";
     array_spinner[Constants.FUNCTION_TYPE_RINGTONE] = "Ringtone";
     array_spinner[Constants.FUNCTION_TYPE_WALLPAPER] = "Wallpaper";
-    final int returnedFromImageSelector = mIntent.getIntExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
+    returnedFromImageSelector = mIntent.getIntExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
     
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
@@ -89,6 +88,8 @@ public class FunctionEditActivity extends Activity
          i = 2; 
          spinnerType.setSelection(2);
         }
+        returnedFromImageSelector = 0;
+        mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
         switch(i)
         {
           case 0:
@@ -226,6 +227,7 @@ public class FunctionEditActivity extends Activity
           case Constants.FUNCTION_TYPE_WALLPAPER:
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
             mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_WALLPAPER);
             break;
           default:
             // Do nothing, this should never happen
@@ -246,11 +248,7 @@ public class FunctionEditActivity extends Activity
     {
       switch (requestCode) {
         case Constants.PICK_FROM_FILE:
-          //This is witchcraft... I have no idea...
           imageUri = data.getData();
-          llVolumeOptions.setVisibility(View.GONE);
-          llRingtoneOptions.setVisibility(View.GONE);
-          llWallpaperOptions.setVisibility(View.VISIBLE);
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
           Toast.makeText(this, "" + imageUri, Toast.LENGTH_LONG).show();
           break;

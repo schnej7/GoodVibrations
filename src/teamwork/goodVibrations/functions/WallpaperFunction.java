@@ -29,31 +29,6 @@ public class WallpaperFunction extends Function
     id = newID;
   }
   
-  // this is used to regenerate your object. All Parcelables must have a CREATOR
-  // that implements these two methods
-  //not sure what I'm supposed to do with these
-  /*
-  public static final Parcelable.Creator<RingtoneFunction> CREATOR = new Parcelable.Creator<WalpaperFunction>()
-  {
-    public WallpaperFunction createFromParcel(Parcel in)
-    {
-      return new WallpaperFunction(in);
-    }
-
-    public RingtoneFunction[] newArray(int size)
-    {
-      return new RingtoneFunction[size];
-    }
-  };
-  
-  
-*/
-  private WallpaperFunction(Parcel in)
-  {
-    name = in.readString();
-    id = in.readInt();
-  }
-  
   @Override
   public void execute()
   {
@@ -64,13 +39,14 @@ public class WallpaperFunction extends Function
       // RingtoneManager.getRingtone(mC, mUri).play();
       // Log.d(TAG,"Ringtone playing");
       
-      //Convert uri to bitmap... this is fluffing retarded.
+      //Convert uri to bitmap
+      Log.d(TAG,"Changing Wallpaper");
       Bitmap bitmap = MediaStore.Images.Media.getBitmap(mC.getContentResolver(), imageUri);
       WM.setBitmap(bitmap);
     }
     catch(Exception e)
     {
-      Log.d(TAG, "Error executing set ringtone");
+      Log.d(TAG, "Error executing set wallpaper");
       // error handling goes here -- also, use something other than Throwable
     }
   }
