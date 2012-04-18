@@ -33,7 +33,7 @@ public class SetVolumeFunction extends Function
   
   // SetVolumeFunction
   // Constructor for making volume functions when loaded from a persistent file
-  public SetVolumeFunction(AudioManager tAM, String s)
+  public SetVolumeFunction(String s)
   {
     AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     String[] categories = s.split(Constants.CATEGORY_DELIM);
