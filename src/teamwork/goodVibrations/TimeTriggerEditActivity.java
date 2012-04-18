@@ -136,6 +136,7 @@ public class TimeTriggerEditActivity extends Activity
       Log.d(TAG, "onActivityResult() Failed");
     }
   }
+
   public class DataReceiver extends BroadcastReceiver
   {
     @Override
@@ -153,3 +154,4 @@ public class TimeTriggerEditActivity extends Activity
     }
   }
 }
+
