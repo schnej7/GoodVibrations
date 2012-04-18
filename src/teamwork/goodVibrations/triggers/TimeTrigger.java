@@ -42,9 +42,7 @@ public class TimeTrigger extends Trigger
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
-    Log.d(TAG,"BEFORE");
     type = Trigger.TriggerType.TIME;
-    Log.d(TAG,"AFTER");
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
     // int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
