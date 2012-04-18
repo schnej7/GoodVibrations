@@ -30,6 +30,9 @@ public class FunctionEditActivity extends Activity
   Intent mIntent;
   Uri ringtone_uri;
   Uri imageUri;
+  LinearLayout llVolumeOptions;
+  LinearLayout llRingtoneOptions; 
+  LinearLayout llWallpaperOptions; 
   //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
@@ -39,9 +42,6 @@ public class FunctionEditActivity extends Activity
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
-    
-    
-    
   }
 
   protected void onStart()
@@ -51,17 +51,16 @@ public class FunctionEditActivity extends Activity
     mIntent = new Intent();
     
     
-
+    llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
+    llRingtoneOptions= (LinearLayout) findViewById(R.id.llRingTone);
+    llWallpaperOptions = (LinearLayout) findViewById(R.id.llWallpaper);
     String array_spinner[];
     array_spinner = new String[3];
     array_spinner[Constants.FUNCTION_TYPE_VOLUME] = "Volume";
     array_spinner[Constants.FUNCTION_TYPE_RINGTONE] = "Ringtone";
     array_spinner[Constants.FUNCTION_TYPE_WALLPAPER] = "Wallpaper";
-
-    final LinearLayout llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
-    final LinearLayout llRingtoneOptions = (LinearLayout) findViewById(R.id.llRingTone);
-    final LinearLayout llWallpaperOptions = (LinearLayout) findViewById(R.id.llWallpaper);
-
+    final int returnedFromImageSelector = mIntent.getIntExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
+    
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
     final CheckBox chkRingtoneVibrate = (CheckBox) findViewById(R.id.chkRingtoneVibrate);
@@ -78,6 +77,13 @@ public class FunctionEditActivity extends Activity
     {
       public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
       {
+        Log.d(TAG,"rfIS = " + returnedFromImageSelector);
+        if (returnedFromImageSelector == 1)
+        {
+         //if the activity returned from an image selector, reset the case and selected view thingy.
+         i = 2; 
+         spinnerType.setSelection(2);
+        }
         switch(i)
         {
           case 0:
@@ -94,11 +100,11 @@ public class FunctionEditActivity extends Activity
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.GONE);
             llWallpaperOptions.setVisibility(View.VISIBLE);
+            break;
           default:
             llVolumeOptions.setVisibility(View.GONE);
             llRingtoneOptions.setVisibility(View.GONE);
-            //This is weird, IDK whats up with this...
-            llWallpaperOptions.setVisibility(View.VISIBLE);
+            llWallpaperOptions.setVisibility(View.GONE);
             break;
         }
       }
@@ -207,6 +213,7 @@ public class FunctionEditActivity extends Activity
             break;
           case Constants.FUNCTION_TYPE_WALLPAPER:
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
+            mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
             break;
           default:
             // Do nothing, this should never happen
@@ -229,9 +236,14 @@ public class FunctionEditActivity extends Activity
         case Constants.PICK_FROM_FILE:
           //This is witchcraft... I have no idea...
           imageUri = data.getData();
+          llVolumeOptions.setVisibility(View.GONE);
+          llRingtoneOptions.setVisibility(View.GONE);
+          llWallpaperOptions.setVisibility(View.VISIBLE);
+          mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
           Toast.makeText(this, "" + imageUri, Toast.LENGTH_LONG).show();
           break;
         case Constants.REQUEST_CODE_RINGTONE_PICKER:
+          mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
           ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
           Log.d(TAG, "uri " + ringtone_uri);
           Toast.makeText(this, "" + ringtone_uri, Toast.LENGTH_LONG).show();

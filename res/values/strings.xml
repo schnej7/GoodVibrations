@@ -50,6 +50,7 @@
 	    <string name="addLocTrigger">Add Location Trigger</string>
 	    <string name="selectLocation">Select Location</string>
 	    <string name="selectImage">Select Image</string>
+	    <string name="wallpaperImage">Image</string>
         
 </resources>
 
