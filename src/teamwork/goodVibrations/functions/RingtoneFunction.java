@@ -1,6 +1,7 @@
 package teamwork.goodVibrations.functions;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
@@ -20,11 +21,11 @@ public class RingtoneFunction extends Function
 
   // RingtoneFunction
   // Constructor for making ringtone functions through GUI
-  public RingtoneFunction(Context c, Bundle b, int newID)
+  public RingtoneFunction(Bundle b, int newID)
   {
     Log.d(TAG, "RingtoneFunction() Constructor");
-    mC = c;
-    AM = (AudioManager) mC.getSystemService(Context.AUDIO_SERVICE);
+    mC = GoodVibrationsService.c;
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     mUri = b.getParcelable(Constants.INTENT_KEY_URI);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
@@ -35,9 +36,10 @@ public class RingtoneFunction extends Function
   
   // RingtoneFunction
   // Constructor for making ringtones from persistent storage
-  public RingtoneFunction(Context c, String s)
+  public RingtoneFunction(String s)
   {
-    mC = c;
+    mC = GoodVibrationsService.c;
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     type = Function.FunctionType.RINGTONE;
     String [] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];

@@ -1,5 +1,6 @@
 package teamwork.goodVibrations;
 
+import teamwork.goodVibrations.persistence.PersistentStorage;
 import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
 
@@ -23,6 +24,8 @@ public class GoodVibrationsService extends Service
   private int maxTriggerID = 0;
 
   private SettingsChanger changer;
+  
+  public static Context c;
   
   private class SettingsChanger extends Thread
   {
@@ -87,8 +90,8 @@ public class GoodVibrationsService extends Service
   {
     Log.d(TAG, "Calling onCreate()");
 
-    triggers = new TriggerQueue();
-    functions = new FunctionList();
+    triggers = new TriggerQueue(PersistentStorage.loadTriggers());
+    functions = new FunctionList(PersistentStorage.loadFunctions());
 
     // Only samples, need to be removed
     Bundle b = new Bundle();
@@ -96,12 +99,12 @@ public class GoodVibrationsService extends Service
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
     b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
     b.putInt(Constants.INTENT_KEY_VOLUME, 100);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
     b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
     b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
 
     Log.d(TAG, "Added Function");
 
@@ -137,19 +140,20 @@ public class GoodVibrationsService extends Service
       {
       // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
-          functions.add(new SetVolumeFunction((AudioManager) getSystemService(Context.AUDIO_SERVICE), b, maxFunctionID++));
+          functions.add(new SetVolumeFunction(b, maxFunctionID++));
           break;
 
         // Add a new ring tone function
         case Constants.FUNCTION_TYPE_RINGTONE:
           Log.d(TAG, "New Ringtone Function");
-          functions.add(new RingtoneFunction(getApplicationContext(), b, maxFunctionID++));
+          functions.add(new RingtoneFunction(b, maxFunctionID++));
           break;
 
         default:
           Log.d(TAG, "Default Function");
           break;
       }
+      PersistentStorage.saveFunctions(functions.functions);
     }
     else if(intentType == Constants.TRIGGER_TYPE)
     {
@@ -182,7 +186,8 @@ public class GoodVibrationsService extends Service
       {
         changer.notify();
       }
-
+      
+      PersistentStorage.saveTriggers(triggers.getTriggers());
       Log.d(TAG, "Trigger submitted");
     }
     else if(intentType == Constants.GET_DATA)

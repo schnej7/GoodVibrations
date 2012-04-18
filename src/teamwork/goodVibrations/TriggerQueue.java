@@ -1,6 +1,7 @@
 package teamwork.goodVibrations;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -34,12 +35,24 @@ public class TriggerQueue
 
     triggers = new ArrayList<Trigger>();
   }
+  public TriggerQueue(Collection<Trigger> c)
+  {
+    this();
+    for(Trigger t : c)
+    {
+      add(t);
+    }
+  }
 
   // add
   // Adds a trigger to the queue
   public void add(Trigger t)
   {
     triggers.add(t);
+  }
+  public synchronized ArrayList<Trigger> getTriggers()
+  {
+    return triggers;
   }
 
   // remove

@@ -1,6 +1,8 @@
 package teamwork.goodVibrations.functions;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.GoodVibrationsService;
+import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,14 +19,14 @@ public class SetVolumeFunction extends Function
   
   // SetVolumeFunction
   // Constructor for making volume functions when added through GUI
-  public SetVolumeFunction(AudioManager tAM, Bundle b, int newID)
+  public SetVolumeFunction(Bundle b, int newID)
   {
     volume = b.getInt(Constants.INTENT_KEY_VOLUME);
     Log.d(TAG, "Volume: " + volume);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
     volumeTypes = b.getByte(Constants.INTENT_KEY_VOLUME_TYPES);
-    AM = tAM;
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     id = newID;
     type = Function.FunctionType.RING_VOLUME;
   }
@@ -33,8 +35,7 @@ public class SetVolumeFunction extends Function
   // Constructor for making volume functions when loaded from a persistent file
   public SetVolumeFunction(AudioManager tAM, String s)
   {
-    // TODO Redo string parsing
-    AM = tAM;
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     String[] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
