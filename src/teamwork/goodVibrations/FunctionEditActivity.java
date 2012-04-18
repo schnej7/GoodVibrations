@@ -161,7 +161,7 @@ public class FunctionEditActivity extends Activity
     buttonSelectRingtone.setOnClickListener(new View.OnClickListener()
     {
       // Start the ringtone picker on click and then get the result in the
-      // onActivityResult funciton below.
+      // onActivityResult function below.
       public void onClick(View v)
       {
         Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);

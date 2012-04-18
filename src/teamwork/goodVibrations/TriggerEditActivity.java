@@ -23,6 +23,7 @@ public class TriggerEditActivity extends Activity
     super.onStart();
     Log.d(TAG, "onStart()");
 
+    //add time trigger button
     final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
     buttonAddTimeTrigger.setOnClickListener(new View.OnClickListener()
     {
@@ -33,6 +34,7 @@ public class TriggerEditActivity extends Activity
       }
     });
 
+    //add location trigger button
     final Button buttonAddLocationTrigger = (Button) findViewById(R.id.buttonAddLocTrigger);
     buttonAddLocationTrigger.setOnClickListener(new View.OnClickListener()
     {
@@ -44,6 +46,7 @@ public class TriggerEditActivity extends Activity
     });
   }
 
+  //on activity result -> pass the data on
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {

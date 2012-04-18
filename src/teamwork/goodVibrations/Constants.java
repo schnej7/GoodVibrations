@@ -36,7 +36,7 @@ public class Constants
 
   // Labels for different types of values that are packed into intents
   public static final String INTENT_KEY_TYPE = "100";
-  public static final String INTENT_KEY_NAME = "101";
+  public static final String INTENT_KEY_NAME = "101"; 
   public static final String INTENT_KEY_VOLUME = "102";
   public static final String INTENT_KEY_VIBRATE = "103";
   // public static final String INTENT_KEY_BUNDLE = "104";
