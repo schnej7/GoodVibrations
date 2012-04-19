@@ -1,5 +1,7 @@
 package teamwork.goodVibrations;
 
+import java.util.Collections;
+
 import teamwork.goodVibrations.persistence.PersistentStorage;
 import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
@@ -77,6 +79,15 @@ public class GoodVibrationsService extends Service
               }
               catch(InterruptedException e2){};
               Log.d(TAG, "Sleep while no triggers interrupted");
+<<<<<<< HEAD
+           /*
+              synchronized(this)
+              {
+                this.wait();
+              }
+              */
+=======
+>>>>>>> 810c0b669786bc5ff3988e8bccd139486e308eb0
             }
           }
         }
@@ -99,10 +110,20 @@ public class GoodVibrationsService extends Service
 
     //triggers = new TriggerQueue();
     //functions = new FunctionList();
-    
+   
     functions = new FunctionList(PersistentStorage.loadFunctions());
+    int maxID = 0;
+    int ids[] = functions.getIDs();
+    for(int loc = 0; loc < ids.length; loc++)
+      maxID = (maxID < ids[loc])? ids[loc] : maxID;
+    
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
-
+    maxID = 0;
+    for (int loc = 0; loc < triggers.size(); loc++)
+      maxID = (triggers.getTriggers().get(loc).id > maxID)? triggers.getTriggers().get(loc).id : maxID;
+    maxFunctionID = maxID++;
+   
+    maxTriggerID += triggers.size();
 
     // Only samples, need to be removed
     Bundle b = new Bundle();
@@ -200,7 +221,7 @@ public class GoodVibrationsService extends Service
 
       // Restart the settings changer
       SettingsChanger.interrupted();
-      
+
       PersistentStorage.saveTriggers(triggers.getTriggers());
       Log.d(TAG, "Trigger submitted");
     }

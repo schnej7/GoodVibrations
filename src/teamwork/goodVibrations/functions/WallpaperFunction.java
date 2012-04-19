@@ -71,7 +71,7 @@ public class WallpaperFunction extends Function
     String saveString = new String();
     saveString = name + Constants.CATEGORY_DELIM;
     saveString += id  + Constants.CATEGORY_DELIM;
-    saveString += imageUri.toString();
+    saveString += imageUri.toString() + Constants.CATEGORY_DELIM;
     
     return saveString;
   }

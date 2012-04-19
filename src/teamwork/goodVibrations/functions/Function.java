@@ -3,6 +3,8 @@ package teamwork.goodVibrations.functions;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.Constants;
 
 public abstract class Function
@@ -10,6 +12,7 @@ public abstract class Function
   public int id;
   public String name;
   protected FunctionType type;
+  static String TAG = "FUNCTIONS";
 
   public abstract void execute();
 
@@ -27,6 +30,7 @@ public abstract class Function
     try
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
+      Log.d(TAG, "String: " + a);
       int i = Integer.valueOf(a[0]);
       return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
@@ -79,5 +83,6 @@ public abstract class Function
     {
       return type;
     }
+    
   }
 }
