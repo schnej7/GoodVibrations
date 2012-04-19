@@ -71,10 +71,6 @@ public class GoodVibrationsService extends Service
             catch(InterruptedException e)
             {
               Log.d(TAG, "Sleep while no triggers interrupted");
-              synchronized(this)
-              {
-                this.wait();
-              }
             }
           }
         }
@@ -196,10 +192,6 @@ public class GoodVibrationsService extends Service
 
       // Restart the settings changer
       SettingsChanger.interrupted();
-      synchronized(changer)
-      {
-        changer.notify();
-      }
       
       PersistentStorage.saveTriggers(triggers.getTriggers());
       Log.d(TAG, "Trigger submitted");
