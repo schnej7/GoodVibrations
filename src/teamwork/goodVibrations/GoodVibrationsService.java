@@ -70,6 +70,12 @@ public class GoodVibrationsService extends Service
             }
             catch(InterruptedException e)
             {
+              interrupted();
+              try
+              {
+                Thread.sleep(2000);
+              }
+              catch(InterruptedException e2){};
               Log.d(TAG, "Sleep while no triggers interrupted");
             }
           }
@@ -137,7 +143,7 @@ public class GoodVibrationsService extends Service
     final int intentType = b.getInt(Constants.INTENT_TYPE);
     final int type = b.getInt(Constants.INTENT_KEY_TYPE);
 
-    Log.d(TAG, "Bundle Created");
+    Log.d(TAG, "Bundle Created " + intentType + "  " + type);
 
     if(intentType == Constants.FUNCTION_TYPE)
     {
@@ -167,10 +173,12 @@ public class GoodVibrationsService extends Service
     }
     else if(intentType == Constants.TRIGGER_TYPE)
     {
+      Log.d(TAG,"TRIGGER TYPE");
       Trigger t = null;
       switch(type)
       {
         case Constants.TRIGGER_TYPE_TIME:
+          Log.d(TAG,"TRIGGER TYPE TIME");
           t = new TimeTrigger(b, maxTriggerID++);
           break;
 
