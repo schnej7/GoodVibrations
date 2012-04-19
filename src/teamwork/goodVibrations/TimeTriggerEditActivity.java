@@ -15,7 +15,8 @@ public class TimeTriggerEditActivity extends Activity
   private static final String TAG = "TimeTriggerEditActivity";
   Intent mIntent;
   EditText txtName;
-
+  private boolean firstTime = true;
+  
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
@@ -53,10 +54,18 @@ public class TimeTriggerEditActivity extends Activity
         try
         {
           Bundle b = mIntent.getExtras();
-          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
-          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-          TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
+          if(firstTime)
+          {
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.getTimeOfDayInMillis());
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.getTimeOfDayInMillis());
+          }
+          else
+          {
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME)); 
+          }
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
         }
         catch(NullPointerException e)
         {
@@ -100,6 +109,7 @@ public class TimeTriggerEditActivity extends Activity
       {
         // sets the name in the intent
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
         // start
         setResult(RESULT_OK, mIntent);
@@ -114,6 +124,7 @@ public class TimeTriggerEditActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if(resultCode == RESULT_OK)
     {
+      firstTime = false;
       Log.d(TAG, "onActivityResult()");
       // If the TimeTriggerSetTimesActivity was returned
       if(requestCode == Constants.REQUEST_CODE_SET_TIMES_ACTIVITY)

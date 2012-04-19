@@ -85,6 +85,11 @@ public class TimeTriggerSetTimesActivity extends Activity
       Log.d(TAG, "GOT INTENT");
     }
     catch(NullPointerException e){
+      
+      startTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils.getTimeOfDayInMillis()));
+      startTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils.getTimeOfDayInMillis()));
+      endTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils.getTimeOfDayInMillis()));
+      endTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils.getTimeOfDayInMillis()));
       Log.d( TAG, "No bundle to set to");
     }
   }
