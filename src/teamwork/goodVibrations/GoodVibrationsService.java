@@ -99,8 +99,17 @@ public class GoodVibrationsService extends Service
     //functions = new FunctionList();
     
     functions = new FunctionList(PersistentStorage.loadFunctions());
+    int maxID = 0;
+    for (int loc = 0; loc < functions.size(); loc++)
+      maxID = (functions.get(loc).id > maxID)? functions.get(loc).id : maxID;
+    maxFunctionID = maxID++;
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
-
+    maxID = 0;
+    for (int loc = 0; loc < triggers.size(); loc++)
+      maxID = (triggers.getTriggers().get(loc).id > maxID)? triggers.getTriggers().get(loc).id : maxID;
+    maxFunctionID = maxID++;
+   
+    maxTriggerID += triggers.size();
 
     // Only samples, need to be removed
     Bundle b = new Bundle();
