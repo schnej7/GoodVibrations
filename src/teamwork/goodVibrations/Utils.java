@@ -10,6 +10,14 @@ public class Utils
 
     return c.get(Calendar.HOUR_OF_DAY) * 3600000 + c.get(Calendar.MINUTE) * 60000 + c.get(Calendar.SECOND) * 1000 + c.get(Calendar.MILLISECOND);
   }
+  
+  public static int getHoursFromMillis( long millis ){
+    return (int) (millis / 3600000);
+  }
+  
+  public static int getMinutesFromMillis( long millis ){
+    return (int) (millis % 3600000) / 60000;
+  }
 
   public static long calculateTimeInMillis(int hour, int minute)
   {
