@@ -39,6 +39,11 @@ public class TimeTriggerSetDaysActivity extends Activity
     try
     {
       Bundle b = getIntent().getExtras();
+      long startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
+      long endTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+      Log.d(TAG,"StartTime: " + startTime);
+      mIntent.putExtra(Constants.INTENT_KEY_START_TIME, startTime);
+      mIntent.putExtra(Constants.INTENT_KEY_END_TIME, endTime);
       boolean repeat = b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL);
       byte daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
       if((Utils.getDayOfWeekBitMask(1) & daysActive) != 0)
