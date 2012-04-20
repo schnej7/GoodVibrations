@@ -43,34 +43,6 @@ public class TriggerDisplayActivity extends Activity
     messageFilter = new IntentFilter(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
-
-    /*
-     * if(triggerentered == 0) { // Submit a few sample triggers int[] startIDs
-     * = {0}; int[] stopIDs = {1}; Intent i = new
-     * Intent(getApplicationContext(), GoodVibrationsService.class);
-     * i.putExtra(Constants.INTENT_TYPE,Constants.TRIGGER_TYPE);
-     * i.putExtra(Constants.INTENT_KEY_TYPE,Constants.TRIGGER_TYPE_TIME);
-     * i.putExtra(Constants.INTENT_KEY_NAME, "T1 ");
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, true);
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)255);
-     * i.putExtra(Constants.INTENT_KEY_START_TIME,(long)1000);
-     * i.putExtra(Constants.INTENT_KEY_END_TIME,(long)5000);
-     * i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, startIDs);
-     * i.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, stopIDs);
-     * startService(i); triggerentered++; } if(triggerentered == 1) { // Submit
-     * a few sample triggers int[] startIDs = {2}; int[] stopIDs = {3}; Intent i
-     * = new Intent(getApplicationContext(), GoodVibrationsService.class);
-     * i.putExtra(Constants.INTENT_TYPE,Constants.TRIGGER_TYPE);
-     * i.putExtra(Constants.INTENT_KEY_TYPE,Constants.TRIGGER_TYPE_TIME);
-     * i.putExtra(Constants.INTENT_KEY_NAME, "T2 ");
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, true);
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)255);
-     * i.putExtra(Constants.INTENT_KEY_START_TIME,(long)8000);
-     * i.putExtra(Constants.INTENT_KEY_END_TIME,(long)15000);
-     * i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, startIDs);
-     * i.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, stopIDs);
-     * startService(i); triggerentered++; }
-     */
   }
 
   public void onResume()
