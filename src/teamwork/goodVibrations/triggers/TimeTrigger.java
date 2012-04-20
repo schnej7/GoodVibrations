@@ -221,7 +221,14 @@ public class TimeTrigger extends Trigger
   // Removes the function with id 'id' from the trigger
   public void removeFunction(Integer id)
   {
-    // TODO Auto-generated method stub
+    for(int i = 0; i < startFunctionIDs.size(); i++)
+    {
+      if(startFunctionIDs.get(i).equals(id))
+      {
+        startFunctionIDs.remove(i);
+        return;
+      }
+    }
   }
 
   // getInternalSaveString

@@ -15,10 +15,11 @@ public class Constants
   // INTENT_TYPE
   public static final int FUNCTION_TYPE = 0;
   public static final int TRIGGER_TYPE = 1;
-  public static final int GET_DATA = 2; // Tells the service that we want it to
-                                        // send the activity data. See
-                                        // INTENT_KEY_TYPE for type of desired
-                                        // type of data
+  // Tells the service that we want it to send the activity data. See INTENT_KEY_TYPE for type of desired type of data
+  public static final int GET_DATA = 2;
+  // Tells the service that we want to delete a trigger, function.  The ID to delete is put in INTENT_KEY_[TRIGGER|FUNCITON]_IDS
+  public static final int DELETE_TRIGGER = 3;
+  public static final int DELETE_FUNCTION = 4;
 
   // Function types for INTENT_KEY_TYPE
   public static final int FUNCTION_TYPE_VOLUME = 0;
@@ -80,11 +81,13 @@ public class Constants
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
   public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
   
+  // Used to determine which option was selected from the popup edit/delete menu
+  public static final int MENU_ITEM_EDIT = 0;
+  public static final int MENU_ITEM_DELETE = 1;
+  
   public static final String LIST_DELIM = "#";
   public static final String CATEGORY_DELIM = "@";
   public static final String SAVE_STRING_DELIM = "%";
-  
-  
   
   public static final String TEAM_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork";
   public static final String FUNC_DIR_PATH = TEAM_DIR_PATH+"/functions";
