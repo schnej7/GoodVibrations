@@ -35,6 +35,7 @@ public class GoodVibrationsService extends Service
     public void run()
     {
       Trigger t = null;
+      
       while(!Thread.currentThread().isInterrupted())
       {
         try
@@ -72,22 +73,7 @@ public class GoodVibrationsService extends Service
             }
             catch(InterruptedException e)
             {
-              interrupted();
-              try
-              {
-                Thread.sleep(2000);
-              }
-              catch(InterruptedException e2){};
               Log.d(TAG, "Sleep while no triggers interrupted");
-<<<<<<< HEAD
-           /*
-              synchronized(this)
-              {
-                this.wait();
-              }
-              */
-=======
->>>>>>> 810c0b669786bc5ff3988e8bccd139486e308eb0
             }
           }
         }
@@ -106,37 +92,27 @@ public class GoodVibrationsService extends Service
     
     c = getApplicationContext();
     
-
-
     //triggers = new TriggerQueue();
     //functions = new FunctionList();
-   
+       
     functions = new FunctionList(PersistentStorage.loadFunctions());
-    int maxID = 0;
-    int ids[] = functions.getIDs();
-    for(int loc = 0; loc < ids.length; loc++)
-      maxID = (maxID < ids[loc])? ids[loc] : maxID;
-    
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
-    maxID = 0;
-    for (int loc = 0; loc < triggers.size(); loc++)
-      maxID = (triggers.getTriggers().get(loc).id > maxID)? triggers.getTriggers().get(loc).id : maxID;
-    maxFunctionID = maxID++;
-   
-    maxTriggerID += triggers.size();
+    
+    int maxID = -1;
+    int Fids[] = functions.getIDs();
+    for(int loc = 0; loc < Fids.length; loc++)
+    {
+      maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
+    }
+    maxFunctionID = maxID + 1;    
 
-    // Only samples, need to be removed
-    Bundle b = new Bundle();
-    b.putInt(Constants.INTENT_KEY_VOLUME, 0);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
-    b.putInt(Constants.INTENT_KEY_VOLUME, 100);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
+    int Tids[] = triggers.getIDs();
+    maxID = -1;
+    for (int loc = 0; loc < Tids.length; loc++)
+    {
+      maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
+    }   
+    maxTriggerID = maxID + 1;
 
     Log.d(TAG, "Added Function");
 
@@ -191,31 +167,32 @@ public class GoodVibrationsService extends Service
           break;
       }
       PersistentStorage.saveFunctions(functions.functions);
+      Log.d(TAG,"Functions Saved");
     }
     else if(intentType == Constants.TRIGGER_TYPE)
     {
-      Log.d(TAG,"TRIGGER TYPE");
-      Trigger t = null;
-      switch(type)
-      {
-        case Constants.TRIGGER_TYPE_TIME:
-          Log.d(TAG,"TRIGGER TYPE TIME");
-          t = new TimeTrigger(b, maxTriggerID++);
-          break;
-
-        case Constants.TRIGGER_TYPE_LOCATION:
-          t = new LocationTrigger(this, b, maxTriggerID++);
-          break;
-
-        default:
-          // Should never happen
-      }
-
-      Log.d(TAG, "Submitting TimeTrigger To queue");
-      // Submit the trigger into the queue
-      changer.interrupt();
       synchronized(triggers)
       {
+        changer.interrupt();
+        Log.d(TAG,"TRIGGER TYPE");
+        Trigger t = null;
+        switch(type)
+        {
+          case Constants.TRIGGER_TYPE_TIME:
+            Log.d(TAG,"TRIGGER TYPE TIME");
+            t = new TimeTrigger(b, maxTriggerID++);
+            break;
+  
+          case Constants.TRIGGER_TYPE_LOCATION:
+            t = new LocationTrigger(this, b, maxTriggerID++);
+            break;
+  
+          default:
+            // Should never happen
+        }
+  
+        Log.d(TAG, "Submitting TimeTrigger To queue");
+        // Submit the trigger into the queue
         triggers.add(t);
       }
 
@@ -223,6 +200,7 @@ public class GoodVibrationsService extends Service
       SettingsChanger.interrupted();
 
       PersistentStorage.saveTriggers(triggers.getTriggers());
+
       Log.d(TAG, "Trigger submitted");
     }
     else if(intentType == Constants.GET_DATA)

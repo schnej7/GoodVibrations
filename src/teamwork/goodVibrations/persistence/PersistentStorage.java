@@ -32,7 +32,9 @@ public class PersistentStorage
 
     for(File f : new File(Constants.FUNC_DIR_PATH).listFiles())
     {
-      ret.add(Function.reconstitute(readFile(f)));
+      Function fnc = Function.reconstitute(readFile(f));
+      Log.d(TAG,"FID: " + fnc.id);
+      ret.add(fnc);
     }
 
     return ret;
@@ -46,19 +48,19 @@ public class PersistentStorage
     }
     try
     {
-      int i = 0;
       PrintWriter out = null;
       File outputFile;
       for(Function f : functions)
       {
-        outputFile = new File(Constants.FUNC_DIR_PATH, "function" + i + ".txt");
+        outputFile = new File(Constants.FUNC_DIR_PATH, "function" + f.id + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
+        Log.d(TAG,"SaveString: " + f.getSaveString());
         out.write(f.getSaveString());
-      }
-      if(out != null)
-      {
-        out.close();
+        if(out != null)
+        {
+          out.close();
+        }
       }
     }
     catch(IOException e)
@@ -87,12 +89,11 @@ public class PersistentStorage
     }
     try
     {
-      int i = 0;
       PrintWriter out = null;
       File outputFile;
       for(Trigger t : triggers)
       {
-        outputFile = new File(Constants.TRIG_DIR_PATH, "trigger" + i + ".txt");
+        outputFile = new File(Constants.TRIG_DIR_PATH, "trigger" + t.id + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(t.getSaveString());
