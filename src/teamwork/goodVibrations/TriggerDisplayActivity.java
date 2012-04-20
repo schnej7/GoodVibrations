@@ -33,15 +33,6 @@ public class TriggerDisplayActivity extends Activity
     triggerArrayAdapter = new ArrayAdapter<String>(this, R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
     listView.setAdapter(triggerArrayAdapter);
-
-    listView.setOnItemLongClickListener( new AdapterView.OnItemLongClickListener()
-    {
-      public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int listID, long arg3)
-      {
-        Log.d(TAG,"LONG CLICK!! LONG CLICK!" + listID + "  " + arg3);
-        return false;
-      }
-    });
     
     registerForContextMenu(listView);
     

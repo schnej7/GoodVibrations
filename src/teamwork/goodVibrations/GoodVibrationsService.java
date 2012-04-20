@@ -247,6 +247,30 @@ public class GoodVibrationsService extends Service
 
       Log.d(TAG, "Trigger deleted");
     }
+    else if(intentType == Constants.DELETE_FUNCTION)
+    {
+      // Get id to delete
+      int id = b.getInt(Constants.INTENT_KEY_FUNCTION_IDS);
+      synchronized(triggers)
+      {
+        changer.interrupt();
+        
+        // Go through all the triggers and remove the function ID if it is in the trigger
+        for(Trigger t : triggers.getTriggers())
+        {
+          t.removeFunction(new Integer(id));
+        }
+        
+        // Now remove from the functions list
+        functions.remove(id);
+      }
+      
+      // Restart the settings changer
+      SettingsChanger.interrupted();
+      
+      PersistentStorage.saveFunctions(functions.functions);
+      Log.d(TAG,"Function deleted");
+    }
 
     Log.d(TAG, "onStartCommand() Finished");
 
