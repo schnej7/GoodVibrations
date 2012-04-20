@@ -69,12 +69,7 @@ public class TriggerDisplayActivity extends Activity
       Bundle b = data.getExtras();
       // Add name to the list of functions with a different format depending on
       // the function type
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should
-                                                                    // always
-                                                                    // be true,
-                                                                    // but just
-                                                                    // double
-                                                                    // checking
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should always be true, but just double checking
       {
         switch(b.getInt(Constants.INTENT_KEY_TYPE))
         {
@@ -99,14 +94,9 @@ public class TriggerDisplayActivity extends Activity
 
   public class DataReceiver extends BroadcastReceiver
   {
+    // this method receives broadcast messages from GoodVibrationsService.java
     @Override
-    public void onReceive(Context context, Intent intent)// this method receives
-                                                         // broadcast messages.
-                                                         // Be sure to modify
-                                                         // AndroidManifest.xml
-                                                         // file in order to
-                                                         // enable message
-                                                         // receiving
+    public void onReceive(Context context, Intent intent)
     {
       Log.d(TAG, "RECIEVED BROADCAST MESSAGE");
 
