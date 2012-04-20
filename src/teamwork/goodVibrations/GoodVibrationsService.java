@@ -73,15 +73,6 @@ public class GoodVibrationsService extends Service
             catch(InterruptedException e)
             {
               Log.d(TAG, "Sleep while no triggers interrupted");
-<<<<<<< HEAD
-           /*
-              synchronized(this)
-              {
-                this.wait();
-              }
-              */
-=======
->>>>>>> 810c0b669786bc5ff3988e8bccd139486e308eb0
             }
           }
         }
@@ -106,19 +97,25 @@ public class GoodVibrationsService extends Service
     //functions = new FunctionList();
    
     functions = new FunctionList(PersistentStorage.loadFunctions());
+    triggers = new TriggerQueue(PersistentStorage.loadTriggers());
+    
     int maxID = 0;
+    try {
     int ids[] = functions.getIDs();
     for(int loc = 0; loc < ids.length; loc++)
       maxID = (maxID < ids[loc])? ids[loc] : maxID;
-    
-    triggers = new TriggerQueue(PersistentStorage.loadTriggers());
+    maxFunctionID = maxID+1;
     maxID = 0;
-    for (int loc = 0; loc < triggers.size(); loc++)
-      maxID = (triggers.getTriggers().get(loc).id > maxID)? triggers.getTriggers().get(loc).id : maxID;
-    maxFunctionID = maxID++;
-   
-    maxTriggerID += triggers.size();
-
+    }
+    catch(Exception e){}
+    try
+    {
+      int tIDS[] = triggers.getIDs();
+      for (int loc = 0; loc < tIDS.length; loc++)
+        maxID = (maxID < tIDS[loc])? tIDS[loc] : maxID;
+      maxTriggerID = maxID + 1;
+    }
+    catch(Exception e){}
     // Only samples, need to be removed
     Bundle b = new Bundle();
     b.putInt(Constants.INTENT_KEY_VOLUME, 0);
@@ -244,36 +241,6 @@ public class GoodVibrationsService extends Service
           break;
       }
     }
-
-    /*
-     * // TODO Remove the following block. It is for testing only
-     * if(functions.size() == 2) { Log.d(TAG,"Adding Trigger"); // Making a
-     * trigger // TODO Build trigger from parsed message
-     * 
-     * LocationManager LM = (LocationManager)
-     * getSystemService(Context.LOCATION_SERVICE); Criteria criteria = new
-     * Criteria(); String bestProvider = LM.getBestProvider(criteria, false);
-     * 
-     * Location l = new Location(bestProvider);
-     * 
-     * l.setLatitude(0); l.setLongitude(0);
-     * 
-     * b.putParcelable(Constants.INTENT_KEY_LOCATION, l);
-     * b.putFloat(Constants.INTENT_KEY_RADIUS, (float)10.0);
-     * 
-     * LocationTrigger t = new LocationTrigger(getApplicationContext(),b);
-     * t.addFunction(LocationTrigger.ENTERFUNCTION, new Integer(0));
-     * t.addFunction(LocationTrigger.EXITFUNCTION, new Integer(1));
-     * 
-     * msg.obj = t; msg.arg2 = Constants.TRIGGER_TYPE;
-     * mServiceHandler.sendMessage(msg); }
-     */
-    /*
-     * else { TimeTrigger t = new TimeTrigger(15000,20000,(byte)127);
-     * t.addFunction(TimeTrigger.STATE.ACTIVE, new Integer(2));
-     * t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(3)); msg.obj = t;
-     * //TODO: fix this //msg.obj = new NULLFunction(); }
-     */
 
     Log.d(TAG, "onStartCommand() Finished");
 
