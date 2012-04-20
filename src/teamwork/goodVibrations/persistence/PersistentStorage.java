@@ -97,10 +97,10 @@ public class PersistentStorage
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(t.getSaveString());
-      }
-      if(out != null)
-      {
-        out.close();
+        if(out != null)
+        {
+          out.close();
+        }
       }
     }
     catch(IOException e)
