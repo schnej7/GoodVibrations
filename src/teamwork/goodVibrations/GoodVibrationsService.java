@@ -98,37 +98,6 @@ public class GoodVibrationsService extends Service
     functions = new FunctionList(PersistentStorage.loadFunctions());
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     
-<<<<<<< HEAD
-    int maxID = 0;
-    try {
-    int ids[] = functions.getIDs();
-    for(int loc = 0; loc < ids.length; loc++)
-      maxID = (maxID < ids[loc])? ids[loc] : maxID;
-    maxFunctionID = maxID+1;
-    maxID = 0;
-    }
-    catch(Exception e){}
-    try
-    {
-      int tIDS[] = triggers.getIDs();
-      for (int loc = 0; loc < tIDS.length; loc++)
-        maxID = (maxID < tIDS[loc])? tIDS[loc] : maxID;
-      maxTriggerID = maxID + 1;
-    }
-    catch(Exception e){}
-    // Only samples, need to be removed
-    Bundle b = new Bundle();
-    b.putInt(Constants.INTENT_KEY_VOLUME, 0);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
-    b.putInt(Constants.INTENT_KEY_VOLUME, 100);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
-=======
     int maxID = -1;
     int Fids[] = functions.getIDs();
     for(int loc = 0; loc < Fids.length; loc++)
@@ -144,7 +113,19 @@ public class GoodVibrationsService extends Service
       maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
     }   
     maxTriggerID = maxID + 1;
->>>>>>> 478cac907e824d1c727d8ff25ea7fb8ab66d5988
+    
+    // Only samples, need to be removed
+    Bundle b = new Bundle();
+    b.putInt(Constants.INTENT_KEY_VOLUME, 0);
+    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
+    b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
+    b.putInt(Constants.INTENT_KEY_VOLUME, 100);
+    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
+    b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
+    functions.add(new SetVolumeFunction(b, maxFunctionID++));
 
     Log.d(TAG, "Added Function");
 
