@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -68,8 +69,9 @@ public class LocationTrigger extends Trigger
   
   // LocationTrigger
   // Constructor for creating location trigger from the persistent storage
-  public LocationTrigger(Context c, String s)
+  public LocationTrigger(String s)
   {
+    Context c = GoodVibrationsService.c;
     initLocationTrigger(c);
     isInside = false;
     
