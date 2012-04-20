@@ -231,36 +231,6 @@ public class GoodVibrationsService extends Service
       }
     }
 
-    /*
-     * // TODO Remove the following block. It is for testing only
-     * if(functions.size() == 2) { Log.d(TAG,"Adding Trigger"); // Making a
-     * trigger // TODO Build trigger from parsed message
-     * 
-     * LocationManager LM = (LocationManager)
-     * getSystemService(Context.LOCATION_SERVICE); Criteria criteria = new
-     * Criteria(); String bestProvider = LM.getBestProvider(criteria, false);
-     * 
-     * Location l = new Location(bestProvider);
-     * 
-     * l.setLatitude(0); l.setLongitude(0);
-     * 
-     * b.putParcelable(Constants.INTENT_KEY_LOCATION, l);
-     * b.putFloat(Constants.INTENT_KEY_RADIUS, (float)10.0);
-     * 
-     * LocationTrigger t = new LocationTrigger(getApplicationContext(),b);
-     * t.addFunction(LocationTrigger.ENTERFUNCTION, new Integer(0));
-     * t.addFunction(LocationTrigger.EXITFUNCTION, new Integer(1));
-     * 
-     * msg.obj = t; msg.arg2 = Constants.TRIGGER_TYPE;
-     * mServiceHandler.sendMessage(msg); }
-     */
-    /*
-     * else { TimeTrigger t = new TimeTrigger(15000,20000,(byte)127);
-     * t.addFunction(TimeTrigger.STATE.ACTIVE, new Integer(2));
-     * t.addFunction(TimeTrigger.STATE.INACTIVE, new Integer(3)); msg.obj = t;
-     * //TODO: fix this //msg.obj = new NULLFunction(); }
-     */
-
     Log.d(TAG, "onStartCommand() Finished");
 
     // If we get killed, after returning from here, restart
