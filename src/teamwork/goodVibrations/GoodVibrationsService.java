@@ -98,22 +98,24 @@ public class GoodVibrationsService extends Service
     functions = new FunctionList(PersistentStorage.loadFunctions());
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     
-    int maxID = -1;
-    int Fids[] = functions.getIDs();
-    for(int loc = 0; loc < Fids.length; loc++)
-    {
-      maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
-    }
-    maxFunctionID = maxID + 1;    
+int maxID = -1;
+int Fids[] = functions.getIDs();
+for(int loc = 0; loc < Fids.length; loc++)
+{
+  maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
+}
+maxFunctionID = maxID + 1;    
 
-    int Tids[] = triggers.getIDs();
-    maxID = -1;
-    for (int loc = 0; loc < Tids.length; loc++)
-    {
-      maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
-    }   
-    maxTriggerID = maxID + 1;
-    
+int Tids[] = triggers.getIDs();
+maxID = -1;
+for (int loc = 0; loc < Tids.length; loc++)
+{
+  maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
+}   
+maxTriggerID = maxID + 1;
+
+
+  
     // Only samples, need to be removed
     Bundle b = new Bundle();
     b.putInt(Constants.INTENT_KEY_VOLUME, 0);
@@ -126,6 +128,7 @@ public class GoodVibrationsService extends Service
     b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
     b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
     functions.add(new SetVolumeFunction(b, maxFunctionID++));
+
 
     Log.d(TAG, "Added Function");
 
@@ -258,8 +261,6 @@ public class GoodVibrationsService extends Service
 
       PersistentStorage.saveTriggers(triggers.getTriggers());
 
-<<<<<<< HEAD
-=======
       Log.d(TAG, "Trigger deleted");
     }
     else if(intentType == Constants.DELETE_FUNCTION)
@@ -287,7 +288,6 @@ public class GoodVibrationsService extends Service
       Log.d(TAG,"Function deleted");
     }
 
->>>>>>> 478cac907e824d1c727d8ff25ea7fb8ab66d5988
     Log.d(TAG, "onStartCommand() Finished");
 
     // If we get killed, after returning from here, restart
