@@ -230,6 +230,23 @@ public class GoodVibrationsService extends Service
           break;
       }
     }
+    else if(intentType == Constants.DELETE_TRIGGER)
+    {
+      // Get the id to delete
+      int id = b.getInt(Constants.INTENT_KEY_TRIGGER_IDS);
+      synchronized(triggers)
+      {
+        changer.interrupt();
+        triggers.remove(id);
+      }
+      
+      // Restart the settings changer
+      SettingsChanger.interrupted();
+
+      PersistentStorage.saveTriggers(triggers.getTriggers());
+
+      Log.d(TAG, "Trigger deleted");
+    }
 
     Log.d(TAG, "onStartCommand() Finished");
 
