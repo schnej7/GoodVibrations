@@ -23,8 +23,8 @@ public class GoodVibrationsService extends Service
                                           // triggers
   private volatile FunctionList functions; // List that holds all of the
                                            // functions
-  private int maxFunctionID = 0;
-  private int maxTriggerID = 0;
+  private int maxFunctionID = 1;
+  private int maxTriggerID = 1;
 
   private SettingsChanger changer;
   
@@ -110,7 +110,7 @@ public class GoodVibrationsService extends Service
     functions = new FunctionList(PersistentStorage.loadFunctions());
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     
-    int maxID = -1;
+    int maxID = 0;
     int Fids[] = functions.getIDs();
     for(int loc = 0; loc < Fids.length; loc++)
     {
@@ -119,7 +119,7 @@ public class GoodVibrationsService extends Service
     maxFunctionID = maxID + 1;    
     
     int Tids[] = triggers.getIDs();
-    maxID = -1;
+    maxID = 0;
     for (int loc = 0; loc < Tids.length; loc++)
     {
       maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
