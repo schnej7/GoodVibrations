@@ -128,8 +128,9 @@ public class SetVolumeFunction extends Function
   private SetVolumeFunction getInverse()
   {
     Bundle b = new Bundle();
-    
-    int currentVolume = AM.getStreamVolume(AudioManager.STREAM_RING);
+    float maxVol = (float) AM.getStreamMaxVolume(AudioManager.STREAM_RING);
+    int currentVolume = Math.round((float)(AM.getStreamVolume(AudioManager.STREAM_RING)*100.0)/maxVol);
+    Log.d(TAG, "CURRENTVOL: " + currentVolume);
     int currentVibrate = AM.getVibrateSetting(AudioManager.STREAM_RING);
     boolean currentVibrateBool = false;
     currentVibrateBool = (currentVibrate == AudioManager.VIBRATE_SETTING_ON);
