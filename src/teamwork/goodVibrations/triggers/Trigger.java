@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.functions.Function;
 
 public abstract class Trigger
 {
@@ -24,6 +25,10 @@ public abstract class Trigger
   abstract public boolean canExecute();
 
   abstract String getInternalSaveString();
+  
+  public abstract void addFunction(Integer fid, boolean isInverse);
+  
+  public abstract boolean isStarting();
 
   public String getSaveString()
   {

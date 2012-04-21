@@ -137,7 +137,7 @@ public class FunctionEditActivity extends Activity
              
                intent.setType("image/*");
                intent.setAction(Intent.ACTION_GET_CONTENT);
-       
+               
                startActivityForResult(Intent.createChooser(intent, "Complete action using"), Constants.PICK_FROM_FILE); 
              } 
            }

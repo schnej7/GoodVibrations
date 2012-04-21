@@ -44,17 +44,16 @@ public class WallpaperFunction extends Function
   }
   
   @Override
-  public void execute()
+  public WallpaperFunction execute()
   {
     Log.d(TAG, "execute() - Setting Wallpaper to " + imageUri);
+    WallpaperFunction inverse = getInverse();
     
     try
     {
-      // RingtoneManager.getRingtone(mC, mUri).play();
-      // Log.d(TAG,"Ringtone playing");
-      
       //Convert uri to bitmap
       Log.d(TAG,"Changing Wallpaper");
+      
       Bitmap bitmap = MediaStore.Images.Media.getBitmap(mC.getContentResolver(), imageUri);
       WM.setBitmap(bitmap);
     }
@@ -63,6 +62,18 @@ public class WallpaperFunction extends Function
       Log.d(TAG, "Error executing set wallpaper");
       // error handling goes here -- also, use something other than Throwable
     }
+    return inverse;
+  }
+  
+  private WallpaperFunction getInverse()
+  {
+    Bundle b = new Bundle();
+    
+    b.putParcelable(Constants.INTENT_KEY_IMAGEURI,imageUri);
+    b.putString(Constants.INTENT_KEY_NAME,name + "inv");
+    
+    WallpaperFunction inverse = new WallpaperFunction(b,id*-1);
+    return inverse;    
   }
 
   @Override

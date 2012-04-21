@@ -14,7 +14,7 @@ public abstract class Function
   protected FunctionType type;
   static String TAG = "FUNCTIONS";
 
-  public abstract void execute();
+  public abstract Function execute();
 
   public abstract String getInternalSaveString();
 
@@ -45,10 +45,8 @@ public abstract class Function
   {
     RINGTONE(0, RingtoneFunction.class),
     UI(1, FunctionForUI.class),
-    LOWER(2, LowerFunction.class),
-    RAISE(3, RaiseFunction.class),
-    RING_VOLUME(4, SetVolumeFunction.class),
-    WALLPAPER(5, WallpaperFunction.class);
+    RING_VOLUME(2, SetVolumeFunction.class),
+    WALLPAPER(3, WallpaperFunction.class);
 
     private static HashMap<Integer, FunctionType> lookup = new HashMap<Integer, FunctionType>();
 

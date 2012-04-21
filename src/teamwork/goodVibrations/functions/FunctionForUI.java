@@ -15,8 +15,10 @@ public class FunctionForUI extends Function
     type = Function.FunctionType.UI;
   }
 
-  public void execute()
-  {}
+  public FunctionForUI execute()
+  {
+    return null;
+  }
 
   @Override
   public String getInternalSaveString()

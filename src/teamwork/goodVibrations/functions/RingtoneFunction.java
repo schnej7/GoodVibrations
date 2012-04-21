@@ -51,15 +51,15 @@ public class RingtoneFunction extends Function
     
     Log.d(TAG,"NAME: " + name);
     Log.d(TAG,"ID: " + id);
-    
   }
 
   // execute
   // Does the changing of the tones
-  public void execute()
+  public RingtoneFunction execute()
   {
-
     Log.d(TAG, "execute() - Setting Ringtone to " + mUri);
+    
+    RingtoneFunction inverse = getInverse();
   
     // If the Ringtone was selected
     if((toneTypes & (byte)1) != 0)
@@ -86,7 +86,26 @@ public class RingtoneFunction extends Function
     {
       AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_OFF);
     }
-
+    
+    return inverse;
+  }
+  
+  private RingtoneFunction getInverse()
+  {
+    Bundle b = new Bundle();
+        
+    Uri ringtone = RingtoneManager.getActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE);
+    int currentVibrate = AM.getVibrateSetting(AudioManager.STREAM_RING);
+    boolean currentVibrateBool = false;
+    currentVibrateBool = (currentVibrate == AudioManager.VIBRATE_SETTING_ON);
+    
+    b.putParcelable(Constants.INTENT_KEY_URI, ringtone);
+    b.putBoolean(Constants.INTENT_KEY_VIBRATE, currentVibrateBool);
+    b.putString(Constants.INTENT_KEY_NAME, name + "inv");
+    b.putByte(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
+    
+    RingtoneFunction inverse = new RingtoneFunction(b,-1*id);
+    return inverse;
   }
 
   // getInternalSaveString

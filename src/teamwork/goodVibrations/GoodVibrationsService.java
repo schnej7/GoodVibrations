@@ -53,15 +53,30 @@ public class GoodVibrationsService extends Service
             if(t.canExecute())
             {
               Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name);
+              // Execute functions
               synchronized(triggers)
               {
                 for(Integer fID : t.getFunctions())
                 {
-                  functions.get(fID.intValue()).execute();
+                  Log.d(TAG,"FID: " + fID.intValue());
+                  Function inverse = functions.get(fID.intValue()).execute();
+                  if(t.isStarting())
+                  {
+                    functions.add(inverse);
+                    t.addFunction(new Integer(inverse.id),Constants.INVERSE_FUNCTION);
+                  }
+                  else
+                  {
+                    functions.remove(fID.intValue());
+                    t.removeFunction(fID);
+                  }
                 }
                 triggers.switchState(t.id);
               }
+              
             }
+            
+            
           }
           else
           // t is null because no triggers are in system

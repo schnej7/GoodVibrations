@@ -48,14 +48,9 @@ public class LocationTrigger extends Trigger
     Log.d(TAG, "Made Location Manager");
 
     int[] enterIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    int[] exitIDs = {1}; // Hardcoded for Product stakeholder review 1
     for(int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
-    }
-    for(int i = 0; i < exitIDs.length; i++)
-    {
-      exitFunctionIDs.add(new Integer(exitIDs[i]));
     }
 
     // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
@@ -139,7 +134,19 @@ public class LocationTrigger extends Trigger
     enterFunctionIDs = new ArrayList<Integer>();
     exitFunctionIDs = new ArrayList<Integer>();
   }
-
+  
+  public boolean isStarting()
+  {
+    if(isInside)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+  
   // removeFunction
   // Removes a function that is called by this location trigger
   public void removeFunction(Integer id)
@@ -224,6 +231,7 @@ public class LocationTrigger extends Trigger
 
   // addFunction
   // Adds a functionID to either the start or stop list
+  /*
   public boolean addFunction(boolean type, Integer f)
   {
     if(type == ENTERFUNCTION)
@@ -236,7 +244,21 @@ public class LocationTrigger extends Trigger
     }
     return true;
   }
+  */
 
+  @Override
+  public void addFunction(Integer fid, boolean isInverse)
+  {
+    if(isInverse)
+    {
+      exitFunctionIDs.add(fid);
+    }
+    else
+    {
+      enterFunctionIDs.add(fid);
+    }
+  }
+  
   // This class changes the local location variable whenever the 
   // phones location is updated
   private class GPSLocationListener implements LocationListener

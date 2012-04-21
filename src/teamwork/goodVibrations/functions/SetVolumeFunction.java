@@ -49,14 +49,23 @@ public class SetVolumeFunction extends Function
     Log.d(TAG,"ID: " + id);
     
   }
+  
+  public SetVolumeFunction(SetVolumeFunction f)
+  {
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
+    
+  }
 
   // execute
   // Does the actual changing of the volume
   @Override
-  public void execute()
+  public SetVolumeFunction execute()
   {
     Log.d(TAG, "EXECUTING " + name);
     Log.d(TAG,"Volume " + volume);
+    
+    SetVolumeFunction inverse = getInverse();
+    
     // If the volume will be up, we must set the ringer mode to normal
     if(volume > 0)
     {
@@ -112,6 +121,26 @@ public class SetVolumeFunction extends Function
     }
 
     Log.d(TAG, "execute() - Setting to " + volume);
+    
+    return inverse;
+  }
+  
+  private SetVolumeFunction getInverse()
+  {
+    Bundle b = new Bundle();
+    
+    int currentVolume = AM.getStreamVolume(AudioManager.STREAM_RING);
+    int currentVibrate = AM.getVibrateSetting(AudioManager.STREAM_RING);
+    boolean currentVibrateBool = false;
+    currentVibrateBool = (currentVibrate == AudioManager.VIBRATE_SETTING_ON);
+    
+    b.putInt(Constants.INTENT_KEY_VOLUME, currentVolume);
+    b.putBoolean(Constants.INTENT_KEY_VIBRATE, currentVibrateBool);
+    b.putString(Constants.INTENT_KEY_NAME, name+"inv");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES,volumeTypes);
+    
+    SetVolumeFunction inverse = new SetVolumeFunction(b,-1*id);
+    return inverse;
   }
   
   // scaleVolume
