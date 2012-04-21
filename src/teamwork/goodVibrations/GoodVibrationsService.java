@@ -91,44 +91,25 @@ public class GoodVibrationsService extends Service
     Log.d(TAG, "Calling onCreate()");
     
     c = getApplicationContext();
-    
-    //triggers = new TriggerQueue();
-    //functions = new FunctionList();
        
     functions = new FunctionList(PersistentStorage.loadFunctions());
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
     
-int maxID = -1;
-int Fids[] = functions.getIDs();
-for(int loc = 0; loc < Fids.length; loc++)
-{
-  maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
-}
-maxFunctionID = maxID + 1;    
-
-int Tids[] = triggers.getIDs();
-maxID = -1;
-for (int loc = 0; loc < Tids.length; loc++)
-{
-  maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
-}   
-maxTriggerID = maxID + 1;
-
-
-  
-    // Only samples, need to be removed
-    Bundle b = new Bundle();
-    b.putInt(Constants.INTENT_KEY_VOLUME, 0);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 0");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
-    b.putInt(Constants.INTENT_KEY_VOLUME, 100);
-    b.putBoolean(Constants.INTENT_KEY_VIBRATE, true);
-    b.putString(Constants.INTENT_KEY_NAME, "Volume 7");
-    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES, (byte)1);
-    functions.add(new SetVolumeFunction(b, maxFunctionID++));
-
+    int maxID = -1;
+    int Fids[] = functions.getIDs();
+    for(int loc = 0; loc < Fids.length; loc++)
+    {
+      maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
+    }
+    maxFunctionID = maxID + 1;    
+    
+    int Tids[] = triggers.getIDs();
+    maxID = -1;
+    for (int loc = 0; loc < Tids.length; loc++)
+    {
+      maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
+    }   
+    maxTriggerID = maxID + 1;
 
     Log.d(TAG, "Added Function");
 
