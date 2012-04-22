@@ -51,7 +51,8 @@ public class FunctionDisplayActivity extends Activity
     });
 
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_MESSAGE);
+    messageFilter.addAction(Constants.SERVICE_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
   }
@@ -99,18 +100,14 @@ public class FunctionDisplayActivity extends Activity
       int endIndex = functionMenuName.indexOf(')', 1);
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
 
-      Intent functionEditIntent = new Intent(getApplicationContext(),
-          FunctionEditActivity.class);
-      functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
-      startActivityForResult(functionEditIntent, 0);
-      /*
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
       i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION);
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+      Log.d(TAG, "Starting service");
       startService(i);
-      */
+
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
@@ -195,6 +192,7 @@ public class FunctionDisplayActivity extends Activity
       
       if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
       {
+        Log.d(TAG, "Got INTENT_LEY_FUCNTION");
         Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
         functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
         functionEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));

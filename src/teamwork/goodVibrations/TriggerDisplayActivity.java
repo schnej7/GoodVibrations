@@ -47,7 +47,7 @@ public class TriggerDisplayActivity extends Activity
     });
 
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_TRIGGER_LIST_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
   }

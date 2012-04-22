@@ -227,7 +227,7 @@ public class GoodVibrationsService extends Service
       switch(type)
       {
         case Constants.INTENT_KEY_FUNCTION_LIST:
-          i = new Intent(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+          i = new Intent(Constants.SERVICE_MESSAGE);
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
           int[] ids = functions.getIDs();
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, ids.length);
@@ -238,7 +238,7 @@ public class GoodVibrationsService extends Service
           break;
 
         case Constants.INTENT_KEY_TRIGGER_LIST:
-          i = new Intent(Constants.SERVICE_DATA_TRIGGER_LIST_MESSAGE);
+          i = new Intent(Constants.SERVICE_MESSAGE);
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
           Log.d(TAG, "NT: " + triggers.size());
@@ -249,9 +249,10 @@ public class GoodVibrationsService extends Service
           break;
           
         case Constants.INTENT_KEY_FUNCTION:
+          Log.d(TAG, "--Sending function to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = functions.get(id).getFunctionAsIntent();
-          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION);
           sendBroadcast(i);
           break;
           

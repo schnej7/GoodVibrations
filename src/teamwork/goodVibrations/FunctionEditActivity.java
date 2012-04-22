@@ -35,6 +35,7 @@ public class FunctionEditActivity extends Activity
   int returnedFromImageSelector;
   private boolean beingEdited = false;
   private Bundle savedInstance;
+  private int myId;
   //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
@@ -44,6 +45,9 @@ public class FunctionEditActivity extends Activity
     super.onCreate(savedInstanceState);
     savedInstance = getIntent().getExtras();
     beingEdited = savedInstance.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    if( beingEdited ){
+      myId = savedInstance.getInt(Constants.INTENT_KEY_EDITED_ID);
+    }
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
   }
@@ -192,12 +196,7 @@ public class FunctionEditActivity extends Activity
         int i = spinnerType.getSelectedItemPosition();
         mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
         if( beingEdited ){
-          //TODO: Set the INTENT_KEY_EDITED_ID
-          String name = mIntent.getExtras()
-              .getString(Constants.INTENT_KEY_NAME);
-          int endIndex = name.indexOf(')', 1);
-          int id = Integer.parseInt(name.substring(1, endIndex));
-          mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+          mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, myId);
 
         }
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
@@ -254,6 +253,7 @@ public class FunctionEditActivity extends Activity
     });
 
     txtName.setText(savedInstance.getString(Constants.INTENT_KEY_NAME));
+    Log.d(TAG, "INTENT_KEY_NAME: " + savedInstance.getString(Constants.INTENT_KEY_NAME));
     switch (savedInstance.getInt(Constants.INTENT_KEY_TYPE))
     {
       case Constants.FUNCTION_TYPE_VOLUME:

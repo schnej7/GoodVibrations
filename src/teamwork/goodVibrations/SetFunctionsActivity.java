@@ -41,7 +41,7 @@ public class SetFunctionsActivity extends Activity
 
     // register data receiver to get functions
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
 

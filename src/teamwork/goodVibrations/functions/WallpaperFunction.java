@@ -91,10 +91,12 @@ public class WallpaperFunction extends Function
   @Override
   public Intent getFunctionAsIntent()
   {
-    Intent i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    Intent i = new Intent(Constants.SERVICE_MESSAGE);
     
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_WALLPAPER);
+    i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
+    i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
     
     return i;
   }
