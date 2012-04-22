@@ -43,8 +43,7 @@ public class TimeTrigger extends Trigger
     state = STATE.FIRSTSTART;
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
-    //stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
-    stopTime = startTime + 15000;
+    stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
     priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
@@ -127,7 +126,7 @@ public class TimeTrigger extends Trigger
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
 
     // If current day is in daysActive
-    if(canExecute(Integer.MAX_VALUE))
+    if(canExecute())
     {
       long delay = 0;
       switch(state)
@@ -173,9 +172,15 @@ public class TimeTrigger extends Trigger
   // Determines if the trigger can execute on the current day of the week
   public boolean canExecute(int priority)
   {
+    Log.d(TAG, "Priority: " + this.priority + " MaxPriority: " + priority);
     if (this.priority > priority)
       return false;
     
+    return true;
+  }
+  
+  public boolean canExecute()
+  {
     Calendar c = Calendar.getInstance();
 
     int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);

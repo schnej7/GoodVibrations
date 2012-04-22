@@ -151,7 +151,7 @@ public class TriggerDisplayActivity extends Activity
 
       Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: " + Constants.INTENT_KEY_TRIGGER_LIST);
 
-      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_TRIGGER_LIST)
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER_LIST)
       {
         triggerArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);

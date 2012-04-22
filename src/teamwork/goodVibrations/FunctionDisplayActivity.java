@@ -100,16 +100,14 @@ public class FunctionDisplayActivity extends Activity
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
 
       // TODO: Edit the stuff here
-      Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
-      functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
-      startActivityForResult(functionEditIntent, 0);
-/*
+      
+
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
-      i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
-      i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
+      i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
+      i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION);
+      i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
       startService(i);
-*/
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
@@ -177,7 +175,7 @@ public class FunctionDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      if (b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         functionArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
@@ -191,7 +189,21 @@ public class FunctionDisplayActivity extends Activity
         }
       }
       
-      //if(b.)
+      if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
+      {
+        Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
+        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
+        functionEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+        int functionType = b.getInt(Constants.INTENT_KEY_TYPE);
+        functionEditIntent.putExtra(Constants.INTENT_KEY_TYPE, functionType);
+        if( functionType == Constants.FUNCTION_TYPE_VOLUME){
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME, b.getInt(Constants.INTENT_KEY_VOLUME));
+        }
+        
+        
+        startActivityForResult(functionEditIntent, 0);
+        
+      }
     }
   }
 

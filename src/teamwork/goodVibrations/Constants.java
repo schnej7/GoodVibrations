@@ -33,6 +33,8 @@ public class Constants
   // GetData types for INTENT_KEY_TYPE
   public static final int INTENT_KEY_TRIGGER_LIST = 0;
   public static final int INTENT_KEY_FUNCTION_LIST = 1;
+  public static final int INTENT_KEY_FUNCTION = 2;
+  public static final int INTENT_KEY_TRIGGER = 3;
   
   //GetData types for Image Selection
   public static final int PICK_FROM_FILE = 0;
@@ -69,6 +71,8 @@ public class Constants
   public static final String INTENT_KEY_EDITED_ID = "128";
   public static final String INTENT_KEY_DELETED_ID = "129";
   public static final String INTENT_KEY_EDITED_BOOL = "130";
+  public static final String INTENT_KEY_GET_FUNCTION_ID = "131";
+  public static final String INTENT_KEY_GET_TRIGGER_ID = "132";
 
 
   // Intent request codes. Used in onActivityResult triggers to determine which

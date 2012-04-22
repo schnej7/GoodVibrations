@@ -26,6 +26,7 @@ public abstract class Trigger
 
   abstract public void switchState();
 
+  abstract public boolean canExecute();
   abstract public boolean canExecute(int priority);
 
   abstract String getInternalSaveString();

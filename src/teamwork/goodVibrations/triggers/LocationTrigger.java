@@ -212,7 +212,11 @@ public class LocationTrigger extends Trigger
   {
     if (this.priority > priority)
       return false;
-    
+    return true;
+  }
+  
+  public boolean canExecute()
+  {
     Log.d(TAG, "canExecute()");
     if(myLocation != null)
     {

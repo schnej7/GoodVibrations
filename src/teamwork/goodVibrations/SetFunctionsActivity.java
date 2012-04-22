@@ -118,7 +118,7 @@ public class SetFunctionsActivity extends Activity
 
       Bundle b2 = intent.getExtras();
 
-      if(b2.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if(b2.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         String[] functionNames = b2.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
         int[] functionIDs = b2.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);

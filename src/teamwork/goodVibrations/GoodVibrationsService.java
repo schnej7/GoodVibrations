@@ -48,42 +48,40 @@ public class GoodVibrationsService extends Service
             Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
             
-            if(t.canExecute(maxPriority))
+            if(t.canExecute())
             {
               //set the max priority since if we get to this point, this has the best priority;
-              maxPriority = t.priority;
-              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name + "with priority: " + t.priority);
+              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name + " with priority: " + t.priority);
               // Execute functions
               synchronized(triggers)
               {
                 //added boolean for empty function lists
                 //we don't want to switch the state of a function if it doesn't
                 //have any functions to execute 
-                boolean isFunctionListEmpty = false;
-                for(Integer fID : t.getFunctions())
+                if (t.canExecute(maxPriority))
                 {
-                  isFunctionListEmpty = true;
-                  Log.d(TAG,"FID: " + fID.intValue());
-                  Function inverse = functions.get(fID.intValue()).execute();
-                  if(t.isStarting())
+                  maxPriority = t.priority;
+                  for(Integer fID : t.getFunctions())
                   {
-                    functions.add(inverse);
-                    t.addFunction(new Integer(inverse.id),Constants.INVERSE_FUNCTION);
-                  }
-                  else
-                  {
-                    functions.remove(fID.intValue());
-                    t.removeFunction(fID);
-                    //reset the max priority since the trigger has ended
-                    maxPriority = Integer.MAX_VALUE;
+                    Log.d(TAG,"FID: " + fID.intValue());
+                    Function inverse = functions.get(fID.intValue()).execute();
+                    if(t.isStarting())
+                    {
+                      functions.add(inverse);
+                      t.addFunction(new Integer(inverse.id),Constants.INVERSE_FUNCTION);
+                    }
+                    else
+                    {
+                      functions.remove(fID.intValue());
+                      t.removeFunction(fID);
+                      //reset the max priority since the trigger has ended
+                      maxPriority = Integer.MAX_VALUE;
+                    }
                   }
                 }
-                if (isFunctionListEmpty)
-                  triggers.switchState(t.id);
+                triggers.switchState(t.id);
               }
             }
-            
-            
           }
           else
           // t is null because no triggers are in system
@@ -253,7 +251,7 @@ public class GoodVibrationsService extends Service
     else if(intentType == Constants.DELETE_TRIGGER)
     {
       // Get the id to delete
-      int id = b.getInt(Constants.INTENT_KEY_TRIGGER_IDS);
+      int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
       synchronized(triggers)
       {
         changer.interrupt();
@@ -270,7 +268,7 @@ public class GoodVibrationsService extends Service
     else if(intentType == Constants.DELETE_FUNCTION)
     {
       // Get id to delete
-      int id = b.getInt(Constants.INTENT_KEY_FUNCTION_IDS);
+      int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
       synchronized(triggers)
       {
         changer.interrupt();

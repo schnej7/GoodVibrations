@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class FunctionEditActivity extends Activity
 {
   private static final String TAG = "FunctionEditActivity";
-  final String [] wallpaperItems = new String [] {"Select from Gallery", "Select from File"};
+  final String [] wallpaperItems = new String [] {"Select Image"};
   private ArrayAdapter<String> adapter;
   AlertDialog dialog;
   AlertDialog.Builder builder;
