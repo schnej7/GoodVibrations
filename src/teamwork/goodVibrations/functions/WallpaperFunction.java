@@ -5,6 +5,7 @@ import teamwork.goodVibrations.GoodVibrationsService;
 import android.app.WallpaperManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,20 +29,31 @@ public class WallpaperFunction extends Function
     imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
     id = newID;
+    type = Function.FunctionType.WALLPAPER;
+  }
+  
+  public WallpaperFunction(String s)
+  {
+    mC = GoodVibrationsService.c;
+    WM = WallpaperManager.getInstance(mC);
+    String [] categories = s.split(Constants.CATEGORY_DELIM);
+    name = categories[0];
+    id = new Integer(categories[1]).intValue();
+    imageUri = Uri.parse(categories[2]);
+    type = Function.FunctionType.WALLPAPER;
   }
   
   @Override
-  public void execute()
+  public WallpaperFunction execute()
   {
     Log.d(TAG, "execute() - Setting Wallpaper to " + imageUri);
+    WallpaperFunction inverse = getInverse();
     
     try
     {
-      // RingtoneManager.getRingtone(mC, mUri).play();
-      // Log.d(TAG,"Ringtone playing");
-      
       //Convert uri to bitmap
       Log.d(TAG,"Changing Wallpaper");
+      
       Bitmap bitmap = MediaStore.Images.Media.getBitmap(mC.getContentResolver(), imageUri);
       WM.setBitmap(bitmap);
     }
@@ -50,13 +62,29 @@ public class WallpaperFunction extends Function
       Log.d(TAG, "Error executing set wallpaper");
       // error handling goes here -- also, use something other than Throwable
     }
+    return inverse;
+  }
+  
+  private WallpaperFunction getInverse()
+  {
+    Bundle b = new Bundle();
+    
+    b.putParcelable(Constants.INTENT_KEY_IMAGEURI,imageUri);
+    b.putString(Constants.INTENT_KEY_NAME,name + "inv");
+    
+    WallpaperFunction inverse = new WallpaperFunction(b,id*-1);
+    return inverse;    
   }
 
   @Override
   public String getInternalSaveString()
   {
-    // TODO Auto-generated method stub
-    return null;
+    String saveString = new String();
+    saveString = name + Constants.CATEGORY_DELIM;
+    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += imageUri.toString() + Constants.CATEGORY_DELIM;
+    
+    return saveString;
   }
 
 }

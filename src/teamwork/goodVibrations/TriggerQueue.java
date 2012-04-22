@@ -59,7 +59,14 @@ public class TriggerQueue
   // Removes a trigger from the queue defined by index
   public void remove(int index)
   {
-    triggers.remove(index);
+    for(int i = 0; i < triggers.size(); i++)
+    {
+      Trigger t = triggers.get(i);
+      if(t.id == index)
+      {
+        triggers.remove(i);
+      }
+    }
   }
 
   // getNextTrigger

@@ -46,12 +46,6 @@ public class SetFunctionsActivity extends Activity
     registerReceiver(dataReceiver, messageFilter);
 
     final Button buttonDone = (Button) findViewById(R.id.doneSetTimeTriggerFunctions);
-    // look for data in the intent, which means that we have been here before
-    /*
-     * try { Bundle b = getIntent().getExtras(); int
-     * ids[]=b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS); for(int i=0;
-     * i<ids.length; i++) { if() } }
-     */
 
     buttonDone.setOnClickListener(new View.OnClickListener()
     {
@@ -82,14 +76,25 @@ public class SetFunctionsActivity extends Activity
     });
 
   }
+  
+  Bundle b;
 
-  public void onResume()
+  public void onStart()
   {
-    super.onResume();
+    super.onStart();
     Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
     i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
     startService(i);
+    
+    try{
+      b = getIntent().getExtras();
+      int[] intFunctionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+      Log.d( TAG, "intFunctionIDs.length = " + intFunctionIDs.length );
+    }
+    catch( NullPointerException e){
+      Log.e( TAG, "NullPointerException onStart", e);
+    }
   }
 
   public void onDestroy()
@@ -111,12 +116,12 @@ public class SetFunctionsActivity extends Activity
     {
       Log.d(TAG, "RECIEVED BROADCAST MESSAGE");
 
-      Bundle b = intent.getExtras();
+      Bundle b2 = intent.getExtras();
 
-      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if(b2.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
-        String[] functionNames = b.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
-        int[] functionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+        String[] functionNames = b2.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        int[] functionIDs = b2.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
         for(int i = 0; i < functionNames.length; i++)
         {
           FunctionForUI fTemp = new FunctionForUI(functionIDs[i], functionNames[i]);
@@ -125,6 +130,36 @@ public class SetFunctionsActivity extends Activity
         // notify array adapter of changes
         arrayAdapter.notifyDataSetChanged();
       }
+      //repopulate fields if we have been here before
+      Log.d( TAG, "Trying to get intent for existing function ids");
+      
+      try{
+        Log.d( TAG, "funcs.size() = " + funcs.size());
+        
+        int[] intFunctionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+        Log.d( TAG, "intFunctionIDs.length = " + intFunctionIDs.length );
+        
+        int size = arrayAdapter.getCount();
+        for( int i = 0; i < size; i++){
+          for( int j = 0; j < intFunctionIDs.length; j++ ){
+            if( funcs.get(i).id == intFunctionIDs[j] )
+            {
+              FunctionForUI ffui = arrayAdapter.getItem(i);
+              if( ffui == null){
+                Log.d(TAG, "funcs.get(i) returned null");
+              }
+              else{
+                ffui.shouldBeChecked = true;
+              }
+            }
+          }
+        }
+        arrayAdapter.notifyDataSetChanged();
+      }
+      catch(NullPointerException e){
+        Log.d( TAG, "Null pointer exception dude!");
+      }
+      
     }
   }
 }

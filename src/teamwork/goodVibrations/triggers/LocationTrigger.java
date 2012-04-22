@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
@@ -47,16 +48,12 @@ public class LocationTrigger extends Trigger
     Log.d(TAG, "Made Location Manager");
 
     int[] enterIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    int[] exitIDs = {1}; // Hardcoded for Product stakeholder review 1
     for(int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
     }
-    for(int i = 0; i < exitIDs.length; i++)
-    {
-      exitFunctionIDs.add(new Integer(exitIDs[i]));
-    }
-
+    priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
+    Log.d(TAG,"PRIORITY: " + priority);
     // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
     // Constant value of 50 for radius
     radius = 50;
@@ -68,8 +65,9 @@ public class LocationTrigger extends Trigger
   
   // LocationTrigger
   // Constructor for creating location trigger from the persistent storage
-  public LocationTrigger(Context c, String s)
+  public LocationTrigger(String s)
   {
+    Context c = GoodVibrationsService.c;
     initLocationTrigger(c);
     isInside = false;
     
@@ -77,14 +75,21 @@ public class LocationTrigger extends Trigger
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     String[] enterIDsString = categories[2].split(Constants.LIST_DELIM);
-    for(String stringID : enterIDsString)
+    if(!enterIDsString[0].equals(""))
     {
-      enterFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : enterIDsString)
+      {
+        enterFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
+
     String[] exitIDsString = categories[3].split(Constants.LIST_DELIM);
-    for(String stringID : exitIDsString)
+    if(!exitIDsString[0].equals(""))
     {
-      exitFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : exitIDsString)
+      {
+        exitFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
     
     Location l = new Location("");
@@ -92,7 +97,8 @@ public class LocationTrigger extends Trigger
     l.setLongitude(new Double(categories[5]));
     center = l;
     
-    radius = new Float(categories[6]);
+    radius = new Float(categories[6]).floatValue();
+    priority = new Integer(categories[7]).intValue();
     
     Log.d(TAG,name);
     Log.d(TAG, new Integer(id).toString());
@@ -137,12 +143,31 @@ public class LocationTrigger extends Trigger
     enterFunctionIDs = new ArrayList<Integer>();
     exitFunctionIDs = new ArrayList<Integer>();
   }
-
+  
+  public boolean isStarting()
+  {
+    if(isInside)
+    {
+      return false;
+    }
+    else
+    {
+      return true;
+    }
+  }
+  
   // removeFunction
   // Removes a function that is called by this location trigger
   public void removeFunction(Integer id)
   {
-    // TODO Auto-generated method stub
+    for(int i = 0; i < enterFunctionIDs.size(); i++)
+    {
+      if(enterFunctionIDs.get(i).equals(id))
+      {
+        enterFunctionIDs.remove(i);
+        return;
+      }
+    }
   }
 
   // getSleepTime
@@ -215,6 +240,7 @@ public class LocationTrigger extends Trigger
 
   // addFunction
   // Adds a functionID to either the start or stop list
+  /*
   public boolean addFunction(boolean type, Integer f)
   {
     if(type == ENTERFUNCTION)
@@ -227,7 +253,21 @@ public class LocationTrigger extends Trigger
     }
     return true;
   }
+  */
 
+  @Override
+  public void addFunction(Integer fid, boolean isInverse)
+  {
+    if(isInverse)
+    {
+      exitFunctionIDs.add(fid);
+    }
+    else
+    {
+      enterFunctionIDs.add(fid);
+    }
+  }
+  
   // This class changes the local location variable whenever the 
   // phones location is updated
   private class GPSLocationListener implements LocationListener
@@ -286,6 +326,9 @@ public class LocationTrigger extends Trigger
     saveString += new Double(center.getLongitude()).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Float(radius).toString();
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += new Integer(priority).toString();
+    saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
   }

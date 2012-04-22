@@ -33,7 +33,7 @@ public class SetVolumeFunction extends Function
   
   // SetVolumeFunction
   // Constructor for making volume functions when loaded from a persistent file
-  public SetVolumeFunction(AudioManager tAM, String s)
+  public SetVolumeFunction(String s)
   {
     AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
     String[] categories = s.split(Constants.CATEGORY_DELIM);
@@ -41,17 +41,31 @@ public class SetVolumeFunction extends Function
     id = new Integer(categories[1]).intValue();
     volume = new Integer(categories[2]).intValue();
     vibrate = new Boolean(categories[3]).booleanValue();
+    Log.d(TAG,"cat4: " + categories[4]);
     volumeTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RING_VOLUME;
+    
+    Log.d(TAG,"NAME: " + name);
+    Log.d(TAG,"ID: " + id);
+    
+  }
+  
+  public SetVolumeFunction(SetVolumeFunction f)
+  {
+    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
+    
   }
 
   // execute
   // Does the actual changing of the volume
   @Override
-  public void execute()
+  public SetVolumeFunction execute()
   {
     Log.d(TAG, "EXECUTING " + name);
     Log.d(TAG,"Volume " + volume);
+    
+    SetVolumeFunction inverse = getInverse();
+    
     // If the volume will be up, we must set the ringer mode to normal
     if(volume > 0)
     {
@@ -107,6 +121,27 @@ public class SetVolumeFunction extends Function
     }
 
     Log.d(TAG, "execute() - Setting to " + volume);
+    
+    return inverse;
+  }
+  
+  private SetVolumeFunction getInverse()
+  {
+    Bundle b = new Bundle();
+    float maxVol = (float) AM.getStreamMaxVolume(AudioManager.STREAM_RING);
+    int currentVolume = Math.round((float)(AM.getStreamVolume(AudioManager.STREAM_RING)*100.0)/maxVol);
+    Log.d(TAG, "CURRENTVOL: " + currentVolume);
+    int currentVibrate = AM.getVibrateSetting(AudioManager.STREAM_RING);
+    boolean currentVibrateBool = false;
+    currentVibrateBool = (currentVibrate == AudioManager.VIBRATE_SETTING_ON);
+    
+    b.putInt(Constants.INTENT_KEY_VOLUME, currentVolume);
+    b.putBoolean(Constants.INTENT_KEY_VIBRATE, currentVibrateBool);
+    b.putString(Constants.INTENT_KEY_NAME, name+"inv");
+    b.putByte(Constants.INTENT_KEY_VOLUME_TYPES,volumeTypes);
+    
+    SetVolumeFunction inverse = new SetVolumeFunction(b,-1*id);
+    return inverse;
   }
   
   // scaleVolume
@@ -136,6 +171,7 @@ public class SetVolumeFunction extends Function
     saveString += new Boolean(vibrate).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Byte(volumeTypes).toString();
+    saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
   }

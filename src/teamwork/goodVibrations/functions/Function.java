@@ -3,6 +3,8 @@ package teamwork.goodVibrations.functions;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.Constants;
 
 public abstract class Function
@@ -10,8 +12,9 @@ public abstract class Function
   public int id;
   public String name;
   protected FunctionType type;
+  static String TAG = "FUNCTIONS";
 
-  public abstract void execute();
+  public abstract Function execute();
 
   public abstract String getInternalSaveString();
 
@@ -25,11 +28,10 @@ public abstract class Function
     if(s == null)
       return null;
     try
-    {
+    { 
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      // TODO should s.substring at end of line be a[1] not a[0]
-      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
+      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
     catch(Exception e)
     {
@@ -42,9 +44,8 @@ public abstract class Function
   {
     RINGTONE(0, RingtoneFunction.class),
     UI(1, FunctionForUI.class),
-    LOWER(2, LowerFunction.class),
-    RAISE(3, RaiseFunction.class),
-    RING_VOLUME(4, SetVolumeFunction.class);
+    RING_VOLUME(2, SetVolumeFunction.class),
+    WALLPAPER(3, WallpaperFunction.class);
 
     private static HashMap<Integer, FunctionType> lookup = new HashMap<Integer, FunctionType>();
 
@@ -79,5 +80,6 @@ public abstract class Function
     {
       return type;
     }
+    
   }
 }

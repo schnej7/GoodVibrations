@@ -7,7 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,7 +33,9 @@ public class TriggerDisplayActivity extends Activity
     triggerArrayAdapter = new ArrayAdapter<String>(this, R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
     listView.setAdapter(triggerArrayAdapter);
-
+    
+    registerForContextMenu(listView);
+    
     final Button buttonAdd = (Button) findViewById(R.id.addTrigger);
     buttonAdd.setOnClickListener(new View.OnClickListener()
     {
@@ -43,34 +50,6 @@ public class TriggerDisplayActivity extends Activity
     messageFilter = new IntentFilter(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
-
-    /*
-     * if(triggerentered == 0) { // Submit a few sample triggers int[] startIDs
-     * = {0}; int[] stopIDs = {1}; Intent i = new
-     * Intent(getApplicationContext(), GoodVibrationsService.class);
-     * i.putExtra(Constants.INTENT_TYPE,Constants.TRIGGER_TYPE);
-     * i.putExtra(Constants.INTENT_KEY_TYPE,Constants.TRIGGER_TYPE_TIME);
-     * i.putExtra(Constants.INTENT_KEY_NAME, "T1 ");
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, true);
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)255);
-     * i.putExtra(Constants.INTENT_KEY_START_TIME,(long)1000);
-     * i.putExtra(Constants.INTENT_KEY_END_TIME,(long)5000);
-     * i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, startIDs);
-     * i.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, stopIDs);
-     * startService(i); triggerentered++; } if(triggerentered == 1) { // Submit
-     * a few sample triggers int[] startIDs = {2}; int[] stopIDs = {3}; Intent i
-     * = new Intent(getApplicationContext(), GoodVibrationsService.class);
-     * i.putExtra(Constants.INTENT_TYPE,Constants.TRIGGER_TYPE);
-     * i.putExtra(Constants.INTENT_KEY_TYPE,Constants.TRIGGER_TYPE_TIME);
-     * i.putExtra(Constants.INTENT_KEY_NAME, "T2 ");
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, true);
-     * i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte)255);
-     * i.putExtra(Constants.INTENT_KEY_START_TIME,(long)8000);
-     * i.putExtra(Constants.INTENT_KEY_END_TIME,(long)15000);
-     * i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, startIDs);
-     * i.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, stopIDs);
-     * startService(i); triggerentered++; }
-     */
   }
 
   public void onResume()
@@ -87,6 +66,48 @@ public class TriggerDisplayActivity extends Activity
     super.onDestroy();
     unregisterReceiver(dataReceiver);
   }
+  
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+  {
+      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+      menu.setHeaderTitle(triggerArrayAdapter.getItem(info.position));
+      menu.add(Menu.NONE,Constants.MENU_ITEM_EDIT,Menu.NONE,"Edit");    // TODO The strings should be resources
+      menu.add(Menu.NONE,Constants.MENU_ITEM_DELETE,Menu.NONE,"Delete");
+  }
+  
+  @Override
+  public boolean onContextItemSelected(MenuItem item)
+  {
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    int menuItemIndex = item.getItemId();
+    switch(menuItemIndex)
+    {
+      case Constants.MENU_ITEM_EDIT:
+        Log.d(TAG,"SHOULD START EDIT ACTIVITY HERE");
+        break;
+        
+      case Constants.MENU_ITEM_DELETE:
+        Log.d(TAG,"SHOULD DELETE TRIGGER HERE");
+        
+        String triggerMenuName = triggerArrayAdapter.getItem(info.position);
+        int endIndex = triggerMenuName.indexOf(')', 1);
+        int id = Integer.parseInt(triggerMenuName.substring(1,endIndex));
+        
+        Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
+        i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_TRIGGER);
+        i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, id);
+        startService(i);
+        onResume();
+        break;
+        
+      default: // Should never be reached
+        break;  
+    }
+
+    Log.d(TAG,"MENU ITEM NAME: " + triggerArrayAdapter.getItem(info.position));
+    return true;
+  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -97,12 +118,7 @@ public class TriggerDisplayActivity extends Activity
       Bundle b = data.getExtras();
       // Add name to the list of functions with a different format depending on
       // the function type
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should
-                                                                    // always
-                                                                    // be true,
-                                                                    // but just
-                                                                    // double
-                                                                    // checking
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should always be true, but just double checking
       {
         switch(b.getInt(Constants.INTENT_KEY_TYPE))
         {
@@ -127,14 +143,9 @@ public class TriggerDisplayActivity extends Activity
 
   public class DataReceiver extends BroadcastReceiver
   {
+    // this method receives broadcast messages from GoodVibrationsService.java
     @Override
-    public void onReceive(Context context, Intent intent)// this method receives
-                                                         // broadcast messages.
-                                                         // Be sure to modify
-                                                         // AndroidManifest.xml
-                                                         // file in order to
-                                                         // enable message
-                                                         // receiving
+    public void onReceive(Context context, Intent intent)
     {
       Log.d(TAG, "RECIEVED BROADCAST MESSAGE");
 

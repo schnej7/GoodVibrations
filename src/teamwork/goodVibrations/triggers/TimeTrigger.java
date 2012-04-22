@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import teamwork.goodVibrations.Utils;
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.functions.Function;
 
 public class TimeTrigger extends Trigger
 {
@@ -42,19 +43,15 @@ public class TimeTrigger extends Trigger
     state = STATE.FIRSTSTART;
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
-    stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+    //stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
+    stopTime = startTime + 15000;
+    priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    // int[] stopIDs = b.getIntArray(Constants.INTENT_KEY_STOP_FUNCTION_IDS);
-    int[] stopIDs = {0}; // Hard coded for Product stakeholder review 1
     for(int i = 0; i < startIDs.length; i++)
     {
       startFunctionIDs.add(new Integer(startIDs[i]));
-    }
-    for(int i = 0; i < stopIDs.length; i++)
-    {
-      stopFunctionIDs.add(new Integer(stopIDs[i]));
     }
 
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
@@ -77,37 +74,50 @@ public class TimeTrigger extends Trigger
     
     name = categories[0];
     id = new Integer(categories[1]).intValue();
-    
+
     String[] startIDsString = categories[2].split(Constants.LIST_DELIM);
-    for(String stringID : startIDsString)
+    if(!startIDsString[0].equals(""))
     {
-      startFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : startIDsString)
+      {
+        startFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
     
     String[] stopIDsString = categories[3].split(Constants.LIST_DELIM);
-    for(String stringID : stopIDsString)
+    if(!stopIDsString[0].equals(""))
     {
-      stopFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : stopIDsString)
+      {
+        stopFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
-    
+
     startTime = new Long(categories[4]).longValue();
     stopTime =  new Long(categories[5]).longValue();
-    daysActive = new Byte(categories[6]).byteValue(); 
-  }
+    daysActive = new Byte(categories[6]).byteValue();
+    priority = new Integer(categories[7]).intValue();
 
+    state = STATE.FIRSTSTART;
+    long currentTimeInDay = Utils.getTimeOfDayInMillis();
+    if(currentTimeInDay > stopTime)
+    {
+      state = STATE.FIRSTSTOP;
+    }
+  }
+  
   // addFunction
   // Adds a functionID to either the start or stop list
-  public boolean addFunction(STATE type, Integer f)
+  public void addFunction(Integer fid, boolean isInverse)
   {
-    if(type == STATE.ACTIVE)
+    if(isInverse)
     {
-      startFunctionIDs.add(f);
+      stopFunctionIDs.add(fid);
     }
-    else if(type == STATE.INACTIVE)
+    else
     {
-      stopFunctionIDs.add(f);
+      startFunctionIDs.add(fid);
     }
-    return true;
   }
 
   // getSleepTime
@@ -147,6 +157,18 @@ public class TimeTrigger extends Trigger
     return Constants.dayInMillis - currentTimeInDay;
   }
 
+  // isStarting
+  public boolean isStarting()
+  {
+    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
   // canExecute
   // Determines if the trigger can execute on the current day of the week
   public boolean canExecute()
@@ -199,11 +221,11 @@ public class TimeTrigger extends Trigger
   // Changes the state of the trigger.
   public void switchState()
   {
-    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART || state == STATE.FIRSTSTOP)
+    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART)
     {
       state = STATE.ACTIVE;
     }
-    else if(state == STATE.ACTIVE)
+    else if(state == STATE.ACTIVE || state == STATE.FIRSTSTOP)
     {
       state = STATE.INACTIVE;
     }
@@ -214,7 +236,14 @@ public class TimeTrigger extends Trigger
   // Removes the function with id 'id' from the trigger
   public void removeFunction(Integer id)
   {
-    // TODO Auto-generated method stub
+    for(int i = 0; i < startFunctionIDs.size(); i++)
+    {
+      if(startFunctionIDs.get(i).equals(id))
+      {
+        startFunctionIDs.remove(i);
+        return;
+      }
+    }
   }
 
   // getInternalSaveString
@@ -251,7 +280,10 @@ public class TimeTrigger extends Trigger
     saveString += Long.toString(startTime) + Constants.CATEGORY_DELIM;
     saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
     saveString += Byte.toString(daysActive);
-        
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += Integer.toString(priority);
+    saveString += Constants.CATEGORY_DELIM;
+
     return saveString;
   }
 

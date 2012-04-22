@@ -7,7 +7,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,6 +34,8 @@ public class FunctionDisplayActivity extends Activity
     functionArrayAdapter = new ArrayAdapter<String>(this, R.layout.function_list_item);
     listView = (ListView) findViewById(R.id.listViewFunctions);
     listView.setAdapter(functionArrayAdapter);
+    
+    registerForContextMenu(listView);
 
     final Button buttonAdd = (Button) findViewById(R.id.addFunction);
     buttonAdd.setOnClickListener(new View.OnClickListener()
@@ -60,6 +67,49 @@ public class FunctionDisplayActivity extends Activity
     super.onDestroy();
     unregisterReceiver(dataReceiver);
   }
+  
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+  {
+      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
+      menu.setHeaderTitle(functionArrayAdapter.getItem(info.position));
+      menu.add(Menu.NONE,Constants.MENU_ITEM_EDIT,Menu.NONE,"Edit");    // TODO The strings should be resources
+      menu.add(Menu.NONE,Constants.MENU_ITEM_DELETE,Menu.NONE,"Delete");
+  }
+  
+  @Override
+  public boolean onContextItemSelected(MenuItem item)
+  {
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    int menuItemIndex = item.getItemId();
+    switch(menuItemIndex)
+    {
+      case Constants.MENU_ITEM_EDIT:
+        Log.d(TAG,"SHOULD START EDIT ACTIVITY HERE");
+        break;
+        
+      case Constants.MENU_ITEM_DELETE:
+        Log.d(TAG,"SHOULD DELETE TRIGGER HERE");
+        
+        String functionMenuName = functionArrayAdapter.getItem(info.position);
+        int endIndex = functionMenuName.indexOf(')', 1);
+        int id = Integer.parseInt(functionMenuName.substring(1,endIndex));
+        
+        Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
+        i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
+        i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, id);
+        startService(i);
+        onResume();
+        break;
+        
+      default: // Should never be reached
+        break;  
+    }
+
+    Log.d(TAG,"MENU ITEM NAME: " + functionArrayAdapter.getItem(info.position));
+    return true;
+  }
+  
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -68,13 +118,8 @@ public class FunctionDisplayActivity extends Activity
     if(resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE) // Should
-                                                                     // always
-                                                                     // be true
-                                                                     // but
-                                                                     // just to
-                                                                     // double
-                                                                     // check
+      // Should always be true but just to double check
+      if(b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE)
       {
         // Add name to the list of functions with a different format depending
         // on the function type
@@ -102,14 +147,9 @@ public class FunctionDisplayActivity extends Activity
 
   public class DataReceiver extends BroadcastReceiver
   {
+    // this method receives broadcast messages.  
     @Override
-    public void onReceive(Context context, Intent intent)// this method receives
-                                                         // broadcast messages.
-                                                         // Be sure to modify
-                                                         // AndroidManifest.xml
-                                                         // file in order to
-                                                         // enable message
-                                                         // receiving
+    public void onReceive(Context context, Intent intent)
     {
       Log.d(TAG, "RECIEVED BROADCAST MESSAGE");
 

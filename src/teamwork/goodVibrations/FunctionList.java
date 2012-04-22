@@ -31,6 +31,17 @@ public class FunctionList
   {
     functions.add(f);
   }
+  
+  public void remove(int id)
+  {
+    for(int i = 0; i < functions.size(); i++)
+    {
+      if(functions.get(i).id == id)
+      {
+        functions.remove(i);
+      }
+    }
+  }
 
   public int size()
   {
@@ -50,6 +61,8 @@ public class FunctionList
     }
     return null;
   }
+  
+  
 
   public int[] getIDs()
   {

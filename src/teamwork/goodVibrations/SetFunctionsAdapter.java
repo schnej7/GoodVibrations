@@ -49,7 +49,7 @@ public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
 
     // assign appropriate data
     funcName.setText(f.name);
-    
+    f.chkbx.setChecked(f.shouldBeChecked);
 
     return funcView;
 

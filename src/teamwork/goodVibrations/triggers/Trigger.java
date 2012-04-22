@@ -4,14 +4,19 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.Constants;
+import teamwork.goodVibrations.functions.Function;
 
 public abstract class Trigger
 {
+  private static final String TAG = "Trigger";
 
   public int id;
   public String name;
   protected TriggerType type;
+  public int priority;
 
   abstract public void removeFunction(Integer id);
 
@@ -24,6 +29,10 @@ public abstract class Trigger
   abstract public boolean canExecute();
 
   abstract String getInternalSaveString();
+  
+  public abstract void addFunction(Integer fid, boolean isInverse);
+  
+  public abstract boolean isStarting();
 
   public String getSaveString()
   {
@@ -38,7 +47,7 @@ public abstract class Trigger
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(s.substring(a[0].length()));
+      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
     catch(Exception e)
     {

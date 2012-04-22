@@ -38,6 +38,21 @@
         android:text="@string/setFunctions" />
     
     <!--  done button -->
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/setPriority"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/editTextPriority"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="phone" />
+
      <Button
         android:id="@+id/buttonTimeTriggerDone"
         style="@style/ButtonText"

@@ -15,10 +15,11 @@ public class Constants
   // INTENT_TYPE
   public static final int FUNCTION_TYPE = 0;
   public static final int TRIGGER_TYPE = 1;
-  public static final int GET_DATA = 2; // Tells the service that we want it to
-                                        // send the activity data. See
-                                        // INTENT_KEY_TYPE for type of desired
-                                        // type of data
+  // Tells the service that we want it to send the activity data. See INTENT_KEY_TYPE for type of desired type of data
+  public static final int GET_DATA = 2;
+  // Tells the service that we want to delete a trigger, function.  The ID to delete is put in INTENT_KEY_[TRIGGER|FUNCITON]_IDS
+  public static final int DELETE_TRIGGER = 3;
+  public static final int DELETE_FUNCTION = 4;
 
   // Function types for INTENT_KEY_TYPE
   public static final int FUNCTION_TYPE_VOLUME = 0;
@@ -64,6 +65,7 @@ public class Constants
   public static final String INTENT_KEY_IMAGEURI = "124";
   public static final String INTENT_KEY_CALLED_IMAGE_SELECTOR = "125";
   public static final String INTENT_KEY_TONE_TYPES = "126";
+  public static final String INTENT_KEY_PRIORITY = "127";
 
 
   // Intent request codes. Used in onActivityResult triggers to determine which
@@ -80,16 +82,20 @@ public class Constants
   public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
   public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
   
+  // Used to determine which option was selected from the popup edit/delete menu
+  public static final int MENU_ITEM_EDIT = 0;
+  public static final int MENU_ITEM_DELETE = 1;
+  
   public static final String LIST_DELIM = "#";
   public static final String CATEGORY_DELIM = "@";
   public static final String SAVE_STRING_DELIM = "%";
   
-  
-  
   public static final String TEAM_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork";
-  public static final String FUNC_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork/functions";
-  public static final String TRIG_DIR_PATH = Environment.getExternalStorageDirectory().getPath()+"/teamwork/triggers";
-  public static final String FUNC_LIST_NAME = "FunctionList.txt";
-  public static final String TRIG_LIST_NAME = "TriggerList.txt";
+  public static final String FUNC_DIR_PATH = TEAM_DIR_PATH+"/functions";
+  public static final String TRIG_DIR_PATH = TEAM_DIR_PATH+"/triggers";
+  
+  // Flags for adding functions to triggers
+  public static final boolean INVERSE_FUNCTION = true;
+  public static final boolean NORMAL_FUNCTION = false;
 
 }
