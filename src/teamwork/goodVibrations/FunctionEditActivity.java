@@ -33,6 +33,7 @@ public class FunctionEditActivity extends Activity
   LinearLayout llRingtoneOptions; 
   LinearLayout llWallpaperOptions; 
   int returnedFromImageSelector;
+  private boolean beingEdited = false;
   //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
@@ -40,6 +41,7 @@ public class FunctionEditActivity extends Activity
     adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, wallpaperItems);
     builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
+    beingEdited = savedInstanceState.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
   }
@@ -185,6 +187,12 @@ public class FunctionEditActivity extends Activity
       public void onClick(View v)
       {
         int i = spinnerType.getSelectedItemPosition();
+        mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
+        if( beingEdited ){
+          //Set the INTENT_KEY_EDITED_ID
+         //mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, )
+          
+        }
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
