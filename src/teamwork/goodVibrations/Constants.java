@@ -88,6 +88,8 @@ public class Constants
   // Used to broadcast messages from the service to the activity
   public static final String SERVICE_DATA_TRIGGER_LIST_MESSAGE = "serviceDataTriggerListMessage";
   public static final String SERVICE_DATA_FUNCTION_LIST_MESSAGE = "serviceDataFunctionListMessage";
+  public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggreMessage";
+  public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
   
   // Used to determine which option was selected from the popup edit/delete menu
   public static final int MENU_ITEM_EDIT = 0;
