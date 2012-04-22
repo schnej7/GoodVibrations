@@ -1,5 +1,6 @@
 package teamwork.goodVibrations.functions;
 
+import android.content.Intent;
 import android.widget.CheckBox;
 
 public class FunctionForUI extends Function
@@ -22,6 +23,13 @@ public class FunctionForUI extends Function
 
   @Override
   public String getInternalSaveString()
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Intent getFunctionAsIntent()
   {
     // TODO Auto-generated method stub
     return null;

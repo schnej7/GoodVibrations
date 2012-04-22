@@ -3,6 +3,7 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -124,6 +125,19 @@ public class RingtoneFunction extends Function
     saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
+  }
+
+  @Override
+  public Intent getFunctionAsIntent()
+  {
+    Intent i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
+    i.putExtra(Constants.INTENT_KEY_URI, mUri);
+    i.putExtra(Constants.INTENT_KEY_VIBRATE, vibrate);
+    i.putExtra(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
+    
+    return i;
   }
 
 }

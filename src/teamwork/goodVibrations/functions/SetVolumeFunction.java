@@ -3,6 +3,7 @@ package teamwork.goodVibrations.functions;
 import teamwork.goodVibrations.Constants;
 import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -47,7 +48,7 @@ public class SetVolumeFunction extends Function
     
     Log.d(TAG,"NAME: " + name);
     Log.d(TAG,"ID: " + id);
-    
+
   }
   
   public SetVolumeFunction(SetVolumeFunction f)
@@ -174,5 +175,18 @@ public class SetVolumeFunction extends Function
     saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
+  }
+
+  @Override
+  public Intent getFunctionAsIntent()
+  {
+    
+    Intent i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_VOLUME);
+    i.putExtra(Constants.INTENT_KEY_VOLUME, volume);
+    i.putExtra(Constants.INTENT_KEY_VIBRATE, vibrate);
+    i.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, volumeTypes);
+    
+    return i;
   }
 }

@@ -223,11 +223,12 @@ public class GoodVibrationsService extends Service
     else if(intentType == Constants.GET_DATA)
     {
       Intent i;
+      int id;
       switch(type)
       {
         case Constants.INTENT_KEY_FUNCTION_LIST:
-          i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
-          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
+          i = new Intent(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
           int[] ids = functions.getIDs();
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, ids.length);
           i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES, functions.getNames());
@@ -237,14 +238,27 @@ public class GoodVibrationsService extends Service
           break;
 
         case Constants.INTENT_KEY_TRIGGER_LIST:
-          i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
-          i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_TRIGGER_LIST);
+          i = new Intent(Constants.SERVICE_DATA_TRIGGER_LIST_MESSAGE);
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
           Log.d(TAG, "NT: " + triggers.size());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_NAMES, triggers.getNames());
           i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, triggers.getIDs());
           sendBroadcast(i);
           Log.d(TAG, "GET TRIGGER LIST");
+          break;
+          
+        case Constants.INTENT_KEY_FUNCTION:
+          id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+          i = functions.get(id).getFunctionAsIntent();
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);
+          sendBroadcast(i);
+          break;
+          
+        case Constants.INTENT_KEY_TRIGGER:
+          id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+          
+          
           break;
       }
     }

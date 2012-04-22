@@ -3,6 +3,7 @@ package teamwork.goodVibrations.functions;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.content.Intent;
 import android.util.Log;
 
 import teamwork.goodVibrations.Constants;
@@ -17,6 +18,8 @@ public abstract class Function
   public abstract Function execute();
 
   public abstract String getInternalSaveString();
+  
+  public abstract Intent getFunctionAsIntent();
 
   public String getSaveString()
   {
