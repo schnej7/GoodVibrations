@@ -52,7 +52,8 @@ public class LocationTrigger extends Trigger
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
     }
-
+    priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
+    Log.d(TAG,"PRIORITY: " + priority);
     // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
     // Constant value of 50 for radius
     radius = 50;
