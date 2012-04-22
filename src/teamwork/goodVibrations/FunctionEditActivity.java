@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class FunctionEditActivity extends Activity
@@ -34,10 +36,12 @@ public class FunctionEditActivity extends Activity
   LinearLayout llWallpaperOptions; 
   int returnedFromImageSelector;
   private boolean beingEdited = false;
+  private Bundle savedInstance;
   //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
   {
+    savedInstance = savedInstanceState;
     adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, wallpaperItems);
     builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
@@ -62,10 +66,12 @@ public class FunctionEditActivity extends Activity
     array_spinner[Constants.FUNCTION_TYPE_WALLPAPER] = "Wallpaper";
     returnedFromImageSelector = mIntent.getIntExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
     
+    final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
+    final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);  
+ 
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
     final CheckBox chkRingtoneVibrate = (CheckBox) findViewById(R.id.chkRingtoneVibrate);
-    final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
     // Ringvolume Checkboxes
     final CheckBox chkRingtoneVolume = (CheckBox) findViewById(R.id.chkRingtoneVol);
     final CheckBox chkMediaVolume = (CheckBox) findViewById(R.id.chkMediaVol);
@@ -76,7 +82,6 @@ public class FunctionEditActivity extends Activity
     final CheckBox chkAlarmTone = (CheckBox) findViewById(R.id.chkAlarmTone);
     final CheckBox chkNotificationTone = (CheckBox) findViewById(R.id.chkNotificationTone);
 
-    final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
     spinnerType.setAdapter(spinnerAdapter);
     spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
@@ -245,8 +250,56 @@ public class FunctionEditActivity extends Activity
         finish(); // Returns to FunctionDisplayActivity.onActivityResult()
       }
     });
-  }
 
+    txtName.setText(savedInstance.getString(Constants.INTENT_KEY_NAME));
+    switch (savedInstance.getInt(Constants.INTENT_KEY_TYPE))
+    {
+      case Constants.FUNCTION_TYPE_VOLUME:
+        spinnerType.setSelection(0);
+        sliderVolume.setProgress(savedInstance.getInt(Constants.INTENT_KEY_VOLUME));
+        chkVolumeVibrate.setChecked(savedInstance.getBoolean(Constants.INTENT_KEY_VIBRATE));
+        byte volumeTypes = savedInstance.getByte(Constants.INTENT_KEY_VOLUME_TYPES);
+        if((volumeTypes & (byte)1) != 0)
+        {
+          chkRingtoneVolume.setChecked(true);
+        }
+        if((volumeTypes & (byte)2) != 0)
+        {
+          chkMediaVolume.setChecked(true);
+        }
+        if((volumeTypes & (byte)4) != 0)
+        {
+          chkAlarmVolume.setChecked(true);
+        }
+        if((volumeTypes & (byte)8) != 0)
+        {
+          chkNotificationVolume.setChecked(true);
+        }
+        break;
+      case Constants.FUNCTION_TYPE_RINGTONE:
+        spinnerType.setSelection(1);
+        ringtone_uri = savedInstance.getParcelable(Constants.INTENT_KEY_URI);
+        chkRingtoneVibrate.setChecked(savedInstance.getBoolean(Constants.INTENT_KEY_VIBRATE));
+        byte toneTypes = savedInstance.getByte(Constants.INTENT_KEY_TONE_TYPES);
+        if((toneTypes & (byte)1) != 0)
+        {
+          chkRingtoneTone.setChecked(true);
+        }
+        if((toneTypes & (byte)2) != 0)
+        {
+          chkAlarmTone.setChecked(true);
+        }
+        if((toneTypes & (byte)4) != 0)
+        {
+          chkNotificationTone.setChecked(true);
+        }
+        break;
+      case Constants.FUNCTION_TYPE_WALLPAPER:
+        spinnerType.setSelection(2);
+        imageUri = savedInstance.getParcelable(Constants.INTENT_KEY_IMAGEURI); 
+        break;
+    }
+  }
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
