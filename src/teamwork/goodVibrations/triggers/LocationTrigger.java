@@ -74,14 +74,21 @@ public class LocationTrigger extends Trigger
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     String[] enterIDsString = categories[2].split(Constants.LIST_DELIM);
-    for(String stringID : enterIDsString)
+    if(!enterIDsString[0].equals(""))
     {
-      enterFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : enterIDsString)
+      {
+        enterFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
+
     String[] exitIDsString = categories[3].split(Constants.LIST_DELIM);
-    for(String stringID : exitIDsString)
+    if(!exitIDsString[0].equals(""))
     {
-      exitFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : exitIDsString)
+      {
+        exitFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
     
     Location l = new Location("");

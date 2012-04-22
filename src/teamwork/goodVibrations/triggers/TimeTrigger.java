@@ -73,23 +73,29 @@ public class TimeTrigger extends Trigger
     
     name = categories[0];
     id = new Integer(categories[1]).intValue();
-    
+
     String[] startIDsString = categories[2].split(Constants.LIST_DELIM);
-    for(String stringID : startIDsString)
+    if(!startIDsString[0].equals(""))
     {
-      startFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : startIDsString)
+      {
+        startFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
     
     String[] stopIDsString = categories[3].split(Constants.LIST_DELIM);
-    for(String stringID : stopIDsString)
+    if(!stopIDsString[0].equals(""))
     {
-      stopFunctionIDs.add(new Integer(stringID).intValue());
+      for(String stringID : stopIDsString)
+      {
+        stopFunctionIDs.add(new Integer(stringID).intValue());
+      }
     }
-    
+
     startTime = new Long(categories[4]).longValue();
     stopTime =  new Long(categories[5]).longValue();
     daysActive = new Byte(categories[6]).byteValue();
-    
+
     state = STATE.FIRSTSTART;
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
     if(currentTimeInDay > stopTime)

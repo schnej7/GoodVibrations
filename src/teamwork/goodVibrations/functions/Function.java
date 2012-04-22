@@ -28,7 +28,7 @@ public abstract class Function
     if(s == null)
       return null;
     try
-    {
+    { 
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
       return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);

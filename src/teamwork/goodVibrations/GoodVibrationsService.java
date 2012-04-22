@@ -281,6 +281,7 @@ public class GoodVibrationsService extends Service
       SettingsChanger.interrupted();
       
       PersistentStorage.saveFunctions(functions.functions);
+      PersistentStorage.saveTriggers(triggers.getTriggers());
       Log.d(TAG,"Function deleted");
     }
 
