@@ -96,6 +96,7 @@ public class TimeTrigger extends Trigger
     startTime = new Long(categories[4]).longValue();
     stopTime =  new Long(categories[5]).longValue();
     daysActive = new Byte(categories[6]).byteValue();
+    priority = new Integer(categories[7]).intValue();
 
     state = STATE.FIRSTSTART;
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
@@ -280,7 +281,9 @@ public class TimeTrigger extends Trigger
     saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
     saveString += Byte.toString(daysActive);
     saveString += Constants.CATEGORY_DELIM;
-        
+    saveString += Integer.toString(priority);
+    saveString += Constants.CATEGORY_DELIM;
+
     return saveString;
   }
 

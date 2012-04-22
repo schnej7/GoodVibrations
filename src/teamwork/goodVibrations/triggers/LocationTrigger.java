@@ -97,7 +97,8 @@ public class LocationTrigger extends Trigger
     l.setLongitude(new Double(categories[5]));
     center = l;
     
-    radius = new Float(categories[6]);
+    radius = new Float(categories[6]).floatValue();
+    priority = new Integer(categories[7]).intValue();
     
     Log.d(TAG,name);
     Log.d(TAG, new Integer(id).toString());
@@ -325,6 +326,8 @@ public class LocationTrigger extends Trigger
     saveString += new Double(center.getLongitude()).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Float(radius).toString();
+    saveString += Constants.CATEGORY_DELIM;
+    saveString += new Integer(priority).toString();
     saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
