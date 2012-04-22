@@ -66,27 +66,45 @@ public class FunctionList
 
   public int[] getIDs()
   {
-    Iterator<Function> iter = functions.iterator();
-    int[] IDs = new int[functions.size()];
+    int[] fullIDs = new int[functions.size()];
     int i = 0;
-    while(iter.hasNext())
+    for(Function f : functions)
     {
-      IDs[i] = iter.next().id;
-      i++;
+      if(f.id > 0)
+      {
+        fullIDs[i] = f.id;
+        i++;
+      }
     }
+    Log.d(TAG,"IFUNCTIONS.SIZE: " + functions.size() + " " + i);
+    int [] IDs = new int[i];
+    for(int j = 0; j < i; j++)
+    {
+      IDs[j] = fullIDs[j];
+    }
+    
     return IDs;
   }
 
   public String[] getNames()
   {
-    Iterator<Function> iter = functions.iterator();
-    String[] names = new String[functions.size()];
+    String[] fullNames = new String[functions.size()];
     int i = 0;
-    while(iter.hasNext())
+    for(Function f : functions)
     {
-      names[i] = iter.next().name;
-      i++;
+      if(f.id > 0)
+      {
+        fullNames[i] = f.name;
+        i++;
+      }
     }
+    Log.d(TAG,"NFUNCTIONS.SIZE: " + functions.size() + " " + i);
+    String[] names = new String[i];
+    for(int j = 0; j < i; j++)
+    {
+      names[j] = fullNames[j];
+    }
+    
     return names;
   }
 

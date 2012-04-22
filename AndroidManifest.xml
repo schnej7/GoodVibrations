@@ -23,7 +23,8 @@
         <uses-library android:required="true" android:name="com.google.android.maps"></uses-library>
         <activity
             android:name=".GoodVibrationsActivity"
-            android:theme="@android:style/Theme.NoTitleBar" >
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -32,29 +33,40 @@
         </activity>
         <activity 
             android:name=".MapSelector"
-            android:theme="@android:style/Theme.NoTitleBar">
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait">
         </activity>
         <activity android:name=".TriggerDisplayActivity" 
-            android:theme="@android:style/Theme.NoTitleBar" />
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />
         <activity android:name=".FunctionDisplayActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />
         <activity android:name=".FunctionEditActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />
         
         <activity android:name=".TriggerEditActivity"
-            android:theme="@android:style/Theme.NoTitleBar" />      	
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait" />      	
         <activity android:name=".TimeTriggerEditActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".TimeTriggerSetDaysActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".TimeTriggerSetTimesActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".TimeTriggerSetDaysActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".LocationTriggerEditActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         <activity android:name=".SetFunctionsActivity" 
-            android:theme="@android:style/Theme.NoTitleBar"/>
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:screenOrientation="portrait"/>
         
         <service android:name=".GoodVibrationsService"></service>
         

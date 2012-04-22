@@ -81,7 +81,6 @@ public class GoodVibrationsService extends Service
                 if (isFunctionListEmpty)
                   triggers.switchState(t.id);
               }
-              
             }
             
             
@@ -231,9 +230,10 @@ public class GoodVibrationsService extends Service
         case Constants.INTENT_KEY_FUNCTION_LIST:
           i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
           i.putExtra(Constants.INTENT_KEY_NAME, Constants.INTENT_KEY_FUNCTION_LIST);
-          i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, functions.size());
+          int[] ids = functions.getIDs();
+          i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, ids.length);
           i.putExtra(Constants.INTENT_KEY_FUNCTION_NAMES, functions.getNames());
-          i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, functions.getIDs());
+          i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, ids);
           sendBroadcast(i);
           Log.d(TAG, "GET FUNCTION LIST");
           break;
