@@ -96,7 +96,7 @@ public class TriggerDisplayActivity extends Activity
         
         Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
         i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_TRIGGER);
-        i.putExtra(Constants.INTENT_KEY_TRIGGER_IDS, id);
+        i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
         startService(i);
         onResume();
         break;

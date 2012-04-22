@@ -97,7 +97,7 @@ public class FunctionDisplayActivity extends Activity
         
         Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
         i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
-        i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, id);
+        i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
         startService(i);
         onResume();
         break;
