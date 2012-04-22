@@ -77,9 +77,14 @@ public class TriggerQueue
       // Found the trigger
       if(t.id == id)
       {
-        Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER);
+        /*
+        Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
+        
+        i.putExtra(Constants.INTENT_KEY_NAME,t.name);
+        i.putExtra(Constants.INTENT_KEY_, value)
         
         return i;
+        */
       }
     }
     return null;

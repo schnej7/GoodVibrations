@@ -4,6 +4,7 @@ import teamwork.goodVibrations.Constants;
 import teamwork.goodVibrations.GoodVibrationsService;
 import android.app.WallpaperManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
@@ -85,6 +86,17 @@ public class WallpaperFunction extends Function
     saveString += imageUri.toString() + Constants.CATEGORY_DELIM;
     
     return saveString;
+  }
+
+  @Override
+  public Intent getFunctionAsIntent()
+  {
+    Intent i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_WALLPAPER);
+    i.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
+    
+    return i;
   }
 
 }
