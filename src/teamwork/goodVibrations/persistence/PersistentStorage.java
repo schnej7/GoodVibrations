@@ -33,7 +33,6 @@ public class PersistentStorage
     for(File f : new File(Constants.FUNC_DIR_PATH).listFiles())
     {
       Function fnc = Function.reconstitute(readFile(f));
-      Log.d(TAG,"FID: " + fnc.id);
       ret.add(fnc);
     }
 
@@ -55,7 +54,6 @@ public class PersistentStorage
         outputFile = new File(Constants.FUNC_DIR_PATH, "function" + f.id + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
-        Log.d(TAG,"SaveString: " + f.getSaveString());
         out.write(f.getSaveString());
         if(out != null)
         {
