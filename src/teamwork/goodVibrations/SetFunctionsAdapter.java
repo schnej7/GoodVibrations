@@ -49,6 +49,7 @@ public class SetFunctionsAdapter extends ArrayAdapter<FunctionForUI>
 
     // assign appropriate data
     funcName.setText(f.name);
+    
 
     return funcView;
 
