@@ -127,7 +127,7 @@ public class TimeTrigger extends Trigger
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
 
     // If current day is in daysActive
-    if(canExecute())
+    if(canExecute(Integer.MAX_VALUE))
     {
       long delay = 0;
       switch(state)
@@ -171,8 +171,11 @@ public class TimeTrigger extends Trigger
   }
   // canExecute
   // Determines if the trigger can execute on the current day of the week
-  public boolean canExecute()
+  public boolean canExecute(int priority)
   {
+    if (this.priority > priority)
+      return false;
+    
     Calendar c = Calendar.getInstance();
 
     int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);

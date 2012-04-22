@@ -11,6 +11,14 @@ import android.util.Log;
 
 import teamwork.goodVibrations.triggers.Trigger;
 
+//PSEUDO CODE FOR PRIORITIES
+/*
+*/
+
+
+
+
+
 public class TriggerQueue
 {
   private static String TAG = "TriggerQueue";

@@ -1,7 +1,5 @@
 package teamwork.goodVibrations;
 
-import java.util.Collections;
-
 import teamwork.goodVibrations.persistence.PersistentStorage;
 import teamwork.goodVibrations.triggers.*;
 import teamwork.goodVibrations.functions.*;
@@ -9,9 +7,7 @@ import teamwork.goodVibrations.functions.*;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -25,6 +21,7 @@ public class GoodVibrationsService extends Service
                                            // functions
   private int maxFunctionID = 1;
   private int maxTriggerID = 1;
+  private int maxPriority = Integer.MAX_VALUE;
 
   private SettingsChanger changer;
   
@@ -50,14 +47,22 @@ public class GoodVibrationsService extends Service
             Log.d(TAG, "Sleeping for " + t.getSleepTime());
             Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
-            if(t.canExecute())
+            
+            if(t.canExecute(maxPriority))
             {
-              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name);
+              //set the max priority since if we get to this point, this has the best priority;
+              maxPriority = t.priority;
+              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name + "with priority: " + t.priority);
               // Execute functions
               synchronized(triggers)
               {
+                //added boolean for empty function lists
+                //we don't want to switch the state of a function if it doesn't
+                //have any functions to execute 
+                boolean isFunctionListEmpty = false;
                 for(Integer fID : t.getFunctions())
                 {
+                  isFunctionListEmpty = true;
                   Log.d(TAG,"FID: " + fID.intValue());
                   Function inverse = functions.get(fID.intValue()).execute();
                   if(t.isStarting())
@@ -69,9 +74,12 @@ public class GoodVibrationsService extends Service
                   {
                     functions.remove(fID.intValue());
                     t.removeFunction(fID);
+                    //reset the max priority since the trigger has ended
+                    maxPriority = Integer.MAX_VALUE;
                   }
                 }
-                triggers.switchState(t.id);
+                if (isFunctionListEmpty)
+                  triggers.switchState(t.id);
               }
               
             }
