@@ -226,7 +226,7 @@ public class GoodVibrationsService extends Service
       int id;
       switch(type)
       {
-        case Constants.INTENT_KEY_FUNCTION_LIST:
+        case Constants.INTENT_KEY_FUNCTION_LIST: 
           i = new Intent(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
           int[] ids = functions.getIDs();
@@ -251,12 +251,13 @@ public class GoodVibrationsService extends Service
         case Constants.INTENT_KEY_FUNCTION:
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = functions.get(id).getFunctionAsIntent();
-          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION);
           sendBroadcast(i);
           break;
           
         case Constants.INTENT_KEY_TRIGGER:
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+          i = triggers.get(id).getTriggerAsIntent();
           
           
           break;
