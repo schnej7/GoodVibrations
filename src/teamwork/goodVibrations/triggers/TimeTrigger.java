@@ -43,8 +43,7 @@ public class TimeTrigger extends Trigger
     state = STATE.FIRSTSTART;
     daysActive = b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE);
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
-    //stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
-    stopTime = startTime + 15000;
+    stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
     priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
