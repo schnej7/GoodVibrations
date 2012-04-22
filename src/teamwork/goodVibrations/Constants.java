@@ -33,6 +33,8 @@ public class Constants
   // GetData types for INTENT_KEY_TYPE
   public static final int INTENT_KEY_TRIGGER_LIST = 0;
   public static final int INTENT_KEY_FUNCTION_LIST = 1;
+  public static final int INTENT_KEY_FUNCTION = 2;
+  public static final int INTENT_KEY_TRIGGER = 3;
   
   //GetData types for Image Selection
   public static final int PICK_FROM_FILE = 0;
