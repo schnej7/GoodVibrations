@@ -32,6 +32,7 @@
 	    <string name="Media">Media Volume</string>
 	    <string name="Alarm">Alarm Volume</string>
 	    <string name="Notification">Notification Volume</string>
+	    <string name="setPriority">Set Priority</string>
 	    
 	    <string name="RingtoneTone">Ring Tone</string>
 	    <string name="NotificationTone">Notification Tone</string>

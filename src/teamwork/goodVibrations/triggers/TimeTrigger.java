@@ -45,6 +45,8 @@ public class TimeTrigger extends Trigger
     startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
     //stopTime = b.getLong(Constants.INTENT_KEY_END_TIME);
     stopTime = startTime + 15000;
+    priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
+    Log.d(TAG,"PRIORITY: " + priority);
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);

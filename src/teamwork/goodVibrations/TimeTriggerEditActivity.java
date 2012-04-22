@@ -15,6 +15,7 @@ public class TimeTriggerEditActivity extends Activity
   private static final String TAG = "TimeTriggerEditActivity";
   Intent mIntent;
   EditText txtName;
+  EditText txtPriority;
   private boolean firstTime = true;
   
   public void onCreate(Bundle savedInstanceState)
@@ -42,8 +43,9 @@ public class TimeTriggerEditActivity extends Activity
     mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
     mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
 
-    // name text box
+    // name and priority text boxes
     txtName = (EditText) findViewById(R.id.editTextTriggerName);
+    txtPriority = (EditText) findViewById(R.id.editTextPriority);
     // button to set times
     final Button buttonSetTimes = (Button) findViewById(R.id.buttonTimeTriggerSetTimes);
     buttonSetTimes.setOnClickListener(new View.OnClickListener()
@@ -111,6 +113,18 @@ public class TimeTriggerEditActivity extends Activity
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
+        // Check the priority value to make sure it is a number
+        try
+        {
+          String p = txtPriority.getText().toString();
+          int priorityInt = new Integer(p).intValue();
+          mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, priorityInt);
+        }
+        catch(Exception e)
+        {
+          mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, 1);
+        }
+        
         // start
         setResult(RESULT_OK, mIntent);
         finish(); // Returns to FunctionDisplayActivity.onActivityResult()

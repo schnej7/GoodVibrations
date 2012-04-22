@@ -65,6 +65,7 @@ public class Constants
   public static final String INTENT_KEY_IMAGEURI = "124";
   public static final String INTENT_KEY_CALLED_IMAGE_SELECTOR = "125";
   public static final String INTENT_KEY_TONE_TYPES = "126";
+  public static final String INTENT_KEY_PRIORITY = "127";
 
 
   // Intent request codes. Used in onActivityResult triggers to determine which

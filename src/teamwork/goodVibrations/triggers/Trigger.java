@@ -16,6 +16,7 @@ public abstract class Trigger
   public int id;
   public String name;
   protected TriggerType type;
+  public int priority;
 
   abstract public void removeFunction(Integer id);
 
