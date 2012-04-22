@@ -99,15 +99,18 @@ public class FunctionDisplayActivity extends Activity
       int endIndex = functionMenuName.indexOf(')', 1);
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
 
-      // TODO: Edit the stuff here
-      
-
+      Intent functionEditIntent = new Intent(getApplicationContext(),
+          FunctionEditActivity.class);
+      functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
+      startActivityForResult(functionEditIntent, 0);
+      /*
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
       i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION);
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
       startService(i);
+      */
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
@@ -158,6 +161,7 @@ public class FunctionDisplayActivity extends Activity
       // Create the intent that gets sent to the service
       data.setClass(this, GoodVibrationsService.class);
       startService(data); // Calls GoodVibrationsService.onStartCommand()
+      onResume();
     }
     else
     {

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,7 +17,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 public class FunctionEditActivity extends Activity
@@ -41,11 +39,11 @@ public class FunctionEditActivity extends Activity
 
   public void onCreate(Bundle savedInstanceState)
   {
-    savedInstance = savedInstanceState;
     adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, wallpaperItems);
     builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
-    beingEdited = savedInstanceState.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    savedInstance = getIntent().getExtras();
+    beingEdited = savedInstance.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     Log.d(TAG, "onCreate()");
     setContentView(R.layout.function_edit_menu);
   }
@@ -194,9 +192,13 @@ public class FunctionEditActivity extends Activity
         int i = spinnerType.getSelectedItemPosition();
         mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
         if( beingEdited ){
-          //Set the INTENT_KEY_EDITED_ID
-         //mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, )
-          
+          //TODO: Set the INTENT_KEY_EDITED_ID
+          String name = mIntent.getExtras()
+              .getString(Constants.INTENT_KEY_NAME);
+          int endIndex = name.indexOf(')', 1);
+          int id = Integer.parseInt(name.substring(1, endIndex));
+          mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+
         }
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
