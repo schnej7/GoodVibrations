@@ -7,17 +7,10 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import android.content.Intent;
 import android.util.Log;
 
 import teamwork.goodVibrations.triggers.Trigger;
-
-//PSEUDO CODE FOR PRIORITIES
-/*
-*/
-
-
-
-
 
 public class TriggerQueue
 {
@@ -75,6 +68,21 @@ public class TriggerQueue
         triggers.remove(i);
       }
     }
+  }
+  
+  public Intent getTriggerIntent(int id)
+  {
+    for(Trigger t : triggers)
+    {
+      // Found the trigger
+      if(t.id == id)
+      {
+        Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER);
+        
+        return i;
+      }
+    }
+    return null;
   }
 
   // getNextTrigger

@@ -48,7 +48,7 @@ public class FunctionDisplayActivity extends Activity
     });
 
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
   }

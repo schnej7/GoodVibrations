@@ -85,8 +85,8 @@ public class Constants
   public static final int REQUEST_CODE_WALLPAPER_PICKER = 6;
 
   // Used to broadcast messages from the service to the activity
-  public static final String SERVICE_DATA_TRIGGER_MESSAGE = "serviceDataTriggerMessage";
-  public static final String SERVICE_DATA_FUNCTION_MESSAGE = "serviceDataFunctionMessage";
+  public static final String SERVICE_DATA_TRIGGER_LIST_MESSAGE = "serviceDataTriggerListMessage";
+  public static final String SERVICE_DATA_FUNCTION_LIST_MESSAGE = "serviceDataFunctionListMessage";
   
   // Used to determine which option was selected from the popup edit/delete menu
   public static final int MENU_ITEM_EDIT = 0;
