@@ -208,8 +208,11 @@ public class LocationTrigger extends Trigger
   // canExecute
   // Determines if the trigger should execute.  Based on the last exectued
   // location and the current location
-  public boolean canExecute()
+  public boolean canExecute(int priority)
   {
+    if (this.priority > priority)
+      return false;
+    
     Log.d(TAG, "canExecute()");
     if(myLocation != null)
     {
