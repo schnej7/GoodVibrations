@@ -75,34 +75,32 @@ public class TriggerDisplayActivity extends Activity
       menu.add(Menu.NONE,Constants.MENU_ITEM_EDIT,Menu.NONE,"Edit");    // TODO The strings should be resources
       menu.add(Menu.NONE,Constants.MENU_ITEM_DELETE,Menu.NONE,"Delete");
   }
-  
+
   @Override
   public boolean onContextItemSelected(MenuItem item)
   {
-    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+        .getMenuInfo();
     int menuItemIndex = item.getItemId();
-    switch(menuItemIndex)
+    if (menuItemIndex == Constants.MENU_ITEM_EDIT)
     {
-      case Constants.MENU_ITEM_EDIT:
-        Log.d(TAG,"SHOULD START EDIT ACTIVITY HERE");
-        break;
-        
-      case Constants.MENU_ITEM_DELETE:
-        Log.d(TAG,"SHOULD DELETE TRIGGER HERE");
-        
-        String triggerMenuName = triggerArrayAdapter.getItem(info.position);
-        int endIndex = triggerMenuName.indexOf(')', 1);
-        int id = Integer.parseInt(triggerMenuName.substring(1,endIndex));
-        
-        Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
-        i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_TRIGGER);
-        i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
-        startService(i);
-        onResume();
-        break;
-        
-      default: // Should never be reached
-        break;  
+      Log.d(TAG, "SHOULD START EDIT ACTIVITY HERE");
+    }
+    else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
+    {
+      Log.d(TAG, "SHOULD DELETE TRIGGER HERE");
+
+      String triggerMenuName = triggerArrayAdapter.getItem(info.position);
+      int endIndex = triggerMenuName.indexOf(')', 1);
+      int id = Integer.parseInt(triggerMenuName.substring(1, endIndex));
+
+      Intent i = new Intent(getApplicationContext(),
+          GoodVibrationsService.class);
+      i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_TRIGGER);
+      i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
+      startService(i);
+      onResume();
+
     }
 
     Log.d(TAG,"MENU ITEM NAME: " + triggerArrayAdapter.getItem(info.position));

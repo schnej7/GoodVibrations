@@ -68,6 +68,7 @@ public class Constants
   public static final String INTENT_KEY_PRIORITY = "127";
   public static final String INTENT_KEY_EDITED_ID = "128";
   public static final String INTENT_KEY_DELETED_ID = "129";
+  public static final String INTENT_KEY_EDITED_BOOL = "130";
 
 
   // Intent request codes. Used in onActivityResult triggers to determine which

@@ -31,10 +31,11 @@ public class FunctionDisplayActivity extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.function_tab);
 
-    functionArrayAdapter = new ArrayAdapter<String>(this, R.layout.function_list_item);
+    functionArrayAdapter = new ArrayAdapter<String>(this,
+        R.layout.function_list_item);
     listView = (ListView) findViewById(R.id.listViewFunctions);
     listView.setAdapter(functionArrayAdapter);
-    
+
     registerForContextMenu(listView);
 
     final Button buttonAdd = (Button) findViewById(R.id.addFunction);
@@ -42,7 +43,9 @@ public class FunctionDisplayActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent functionEditIntent = new Intent(getApplicationContext(), FunctionEditActivity.class);
+        Intent functionEditIntent = new Intent(getApplicationContext(),
+            FunctionEditActivity.class);
+        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, false);
         startActivityForResult(functionEditIntent, 0);
       }
     });
@@ -67,70 +70,89 @@ public class FunctionDisplayActivity extends Activity
     super.onDestroy();
     unregisterReceiver(dataReceiver);
   }
-  
+
   @Override
-  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+  public void onCreateContextMenu(ContextMenu menu, View v,
+      ContextMenuInfo menuInfo)
   {
-      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-      menu.setHeaderTitle(functionArrayAdapter.getItem(info.position));
-      menu.add(Menu.NONE,Constants.MENU_ITEM_EDIT,Menu.NONE,"Edit");    // TODO The strings should be resources
-      menu.add(Menu.NONE,Constants.MENU_ITEM_DELETE,Menu.NONE,"Delete");
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+    menu.setHeaderTitle(functionArrayAdapter.getItem(info.position));
+    menu.add(Menu.NONE, Constants.MENU_ITEM_EDIT, Menu.NONE, "Edit"); // TODO
+                                                                      // The
+                                                                      // strings
+                                                                      // should
+                                                                      // be
+                                                                      // resources
+    menu.add(Menu.NONE, Constants.MENU_ITEM_DELETE, Menu.NONE, "Delete");
   }
-  
+
   @Override
   public boolean onContextItemSelected(MenuItem item)
   {
-    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
+        .getMenuInfo();
     int menuItemIndex = item.getItemId();
-    switch(menuItemIndex)
+    if (menuItemIndex == Constants.MENU_ITEM_EDIT)
     {
-      case Constants.MENU_ITEM_EDIT:
-        Log.d(TAG,"SHOULD START EDIT ACTIVITY HERE");
-        break;
-        
-      case Constants.MENU_ITEM_DELETE:
-        Log.d(TAG,"SHOULD DELETE TRIGGER HERE");
-        
-        String functionMenuName = functionArrayAdapter.getItem(info.position);
-        int endIndex = functionMenuName.indexOf(')', 1);
-        int id = Integer.parseInt(functionMenuName.substring(1,endIndex));
-        
-        Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
-        i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
-        i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
-        startService(i);
-        onResume();
-        break;
-        
-      default: // Should never be reached
-        break;  
+      Log.d(TAG, "SHOULD START EDIT ACTIVITY HERE");
+      String functionMenuName = functionArrayAdapter.getItem(info.position);
+      int endIndex = functionMenuName.indexOf(')', 1);
+      int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
+
+      // TODO: Edit the stuff here
+      Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
+      functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
+      startActivityForResult(functionEditIntent, 0);
+/*
+      Intent i = new Intent(getApplicationContext(),
+          GoodVibrationsService.class);
+      i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
+      i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
+      startService(i);
+*/
+    }
+    else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
+    {
+      Log.d(TAG, "SHOULD DELETE TRIGGER HERE");
+
+      String functionMenuName = functionArrayAdapter.getItem(info.position);
+      int endIndex = functionMenuName.indexOf(')', 1);
+      int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
+
+      Intent i = new Intent(getApplicationContext(),
+          GoodVibrationsService.class);
+      i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
+      i.putExtra(Constants.INTENT_KEY_DELETED_ID, id);
+      startService(i);
+      onResume();
     }
 
-    Log.d(TAG,"MENU ITEM NAME: " + functionArrayAdapter.getItem(info.position));
+    Log.d(TAG, "MENU ITEM NAME: " + functionArrayAdapter.getItem(info.position));
     return true;
   }
-  
 
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
       // Should always be true but just to double check
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE)
+      if (b.getInt(Constants.INTENT_TYPE) == Constants.FUNCTION_TYPE)
       {
         // Add name to the list of functions with a different format depending
         // on the function type
-        switch(b.getInt(Constants.INTENT_KEY_TYPE))
+        switch (b.getInt(Constants.INTENT_KEY_TYPE))
         {
           case Constants.FUNCTION_TYPE_VOLUME:
-            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
+            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME)
+                + "  Vol: " + b.getInt(Constants.INTENT_KEY_VOLUME));
             break;
 
           case Constants.FUNCTION_TYPE_RINGTONE:
-            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME) + "  Tone: " + b.getParcelable(Constants.INTENT_KEY_URI));
+            functionArrayAdapter.add(b.getString(Constants.INTENT_KEY_NAME)
+                + "  Tone: " + b.getParcelable(Constants.INTENT_KEY_URI));
             break;
         }
       }
@@ -147,7 +169,7 @@ public class FunctionDisplayActivity extends Activity
 
   public class DataReceiver extends BroadcastReceiver
   {
-    // this method receives broadcast messages.  
+    // this method receives broadcast messages.
     @Override
     public void onReceive(Context context, Intent intent)
     {
@@ -155,17 +177,21 @@ public class FunctionDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      if(b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if (b.getInt(Constants.INTENT_KEY_NAME) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         functionArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
-        String[] functionNames = b.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        String[] functionNames = b
+            .getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
         int[] functionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
-          functionArrayAdapter.add("(" + functionIDs[i] + ")  " + functionNames[i]);
+          functionArrayAdapter.add("(" + functionIDs[i] + ")  "
+              + functionNames[i]);
         }
       }
+      
+      //if(b.)
     }
   }
 
