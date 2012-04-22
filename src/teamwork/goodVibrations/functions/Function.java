@@ -30,7 +30,6 @@ public abstract class Function
     try
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
-      Log.d(TAG, "String: " + a);
       int i = Integer.valueOf(a[0]);
       return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
     }
