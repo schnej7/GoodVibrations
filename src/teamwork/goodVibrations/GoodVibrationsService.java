@@ -253,7 +253,7 @@ public class GoodVibrationsService extends Service
     else if(intentType == Constants.DELETE_TRIGGER)
     {
       // Get the id to delete
-      int id = b.getInt(Constants.INTENT_KEY_TRIGGER_IDS);
+      int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
       synchronized(triggers)
       {
         changer.interrupt();
@@ -270,7 +270,7 @@ public class GoodVibrationsService extends Service
     else if(intentType == Constants.DELETE_FUNCTION)
     {
       // Get id to delete
-      int id = b.getInt(Constants.INTENT_KEY_FUNCTION_IDS);
+      int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
       synchronized(triggers)
       {
         changer.interrupt();
