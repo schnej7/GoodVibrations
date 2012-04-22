@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.util.Log;
+
 import teamwork.goodVibrations.Constants;
 import teamwork.goodVibrations.functions.Function;
 
 public abstract class Trigger
 {
+  private static final String TAG = "Trigger";
 
   public int id;
   public String name;
