@@ -56,8 +56,18 @@ public class LocationTriggerEditActivity extends Activity
       {
         // Add the selected functions to the bundle so they can be automatically
         // checked
-        Intent TimeTriggerSetFunctions = new Intent(getApplicationContext(), SetFunctionsActivity.class);
-        startActivityForResult(TimeTriggerSetFunctions, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
+        Intent LocationTriggerSetFunctionsIntent = new Intent(getApplicationContext(), SetFunctionsActivity.class);
+        try
+        {
+          Bundle b = mIntent.getExtras();
+          LocationTriggerSetFunctionsIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        }
+        catch(NullPointerException e)
+        {
+          // If we get a NullPointerException that means that this hasn't been
+          // called so there is no data to be passed anyway.
+        }
+        startActivityForResult(LocationTriggerSetFunctionsIntent, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });
 
