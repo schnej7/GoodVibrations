@@ -266,8 +266,8 @@ public class GoodVibrationsService extends Service
         case Constants.INTENT_KEY_TRIGGER:
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = triggers.get(id).getTriggerAsIntent();
-          
-          
+          i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);
+          sendBroadcast(i);
           break;
       }
     }
