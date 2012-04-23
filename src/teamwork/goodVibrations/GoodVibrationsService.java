@@ -165,7 +165,7 @@ public class GoodVibrationsService extends Service
       {
         int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
         Log.d(TAG,"IS EDITING: " + id);
-        removeFunction(id);
+        removeFunction(id,false);
       }
 
       switch(type)
@@ -292,7 +292,7 @@ public class GoodVibrationsService extends Service
     {
       // Get id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
-      removeFunction(id);
+      removeFunction(id,true);
     }
 
     Log.d(TAG, "onStartCommand() Finished");
@@ -307,16 +307,19 @@ public class GoodVibrationsService extends Service
     return null;
   }
   
-  private void removeFunction(int id)
+  private void removeFunction(int id, boolean clearFromTriggers)
   {
     synchronized(triggers)
     {
       changer.interrupt();
       
-      // Go through all the triggers and remove the function ID if it is in the trigger
-      for(Trigger t : triggers.getTriggers())
+      if(clearFromTriggers)
       {
-        t.removeFunction(new Integer(id));
+        // Go through all the triggers and remove the function ID if it is in the trigger
+        for(Trigger t : triggers.getTriggers())
+        {
+          t.removeFunction(new Integer(id));
+        }
       }
       
       // Now remove from the functions list
