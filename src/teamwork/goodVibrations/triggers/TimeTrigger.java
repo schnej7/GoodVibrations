@@ -301,11 +301,14 @@ public class TimeTrigger extends Trigger
   {
     Intent i = new Intent(Constants.SERVICE_MESSAGE);
     
+    i.putExtra(Constants.INTENT_KEY_NAME, name);
+    i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+    i.putExtra(Constants.INTENT_KEY_PRIORITY, priority);
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
     i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,daysActive);
     i.putExtra(Constants.INTENT_KEY_START_TIME, startTime);
     i.putExtra(Constants.INTENT_KEY_END_TIME, stopTime);
     i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, startFunctionIDs);
-    i.putExtra(Constants.INTENT_KEY_PRIORITY, priority);
 
     return i;
   }

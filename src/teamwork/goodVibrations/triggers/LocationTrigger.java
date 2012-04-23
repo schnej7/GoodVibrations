@@ -345,11 +345,15 @@ public class LocationTrigger extends Trigger
   public Intent getTriggerAsIntent()
   {
     Intent i = new Intent();
-    
+
+    i.putExtra(Constants.INTENT_KEY_NAME, name);
+    i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+    i.putExtra(Constants.INTENT_KEY_PRIORITY,priority);
+    i.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
     i.putExtra(Constants.INTENT_KEY_LATITUDE, center.getLatitude());
     i.putExtra(Constants.INTENT_KEY_LONGITUDE, center.getLatitude());
-    //i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS)
+    i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, enterFunctionIDs.toArray());
     
-    return null;
+    return i;
   }
 }
