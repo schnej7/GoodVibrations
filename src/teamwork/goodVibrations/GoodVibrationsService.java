@@ -161,9 +161,16 @@ public class GoodVibrationsService extends Service
 
     if(intentType == Constants.FUNCTION_TYPE)
     {
+      if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+      {
+        int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+        Log.d(TAG,"IS EDITING: " + id);
+        removeFunction(id);
+      }
+
       switch(type)
       {
-      // Add a new volume function
+        // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
           functions.add(new SetVolumeFunction(b, maxFunctionID++));
           break;
@@ -226,8 +233,8 @@ public class GoodVibrationsService extends Service
       int id;
       switch(type)
       {
-        case Constants.INTENT_KEY_FUNCTION_LIST: 
-          i = new Intent(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+        case Constants.INTENT_KEY_FUNCTION_LIST:
+          i = new Intent(Constants.SERVICE_MESSAGE);
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
           int[] ids = functions.getIDs();
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, ids.length);
@@ -238,7 +245,7 @@ public class GoodVibrationsService extends Service
           break;
 
         case Constants.INTENT_KEY_TRIGGER_LIST:
-          i = new Intent(Constants.SERVICE_DATA_TRIGGER_LIST_MESSAGE);
+          i = new Intent(Constants.SERVICE_MESSAGE);
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER_LIST);
           i.putExtra(Constants.INTENT_KEY_DATA_LENGTH, triggers.size());
           Log.d(TAG, "NT: " + triggers.size());
@@ -249,6 +256,7 @@ public class GoodVibrationsService extends Service
           break;
           
         case Constants.INTENT_KEY_FUNCTION:
+          Log.d(TAG, "--Sending function to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = functions.get(id).getFunctionAsIntent();
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION);
@@ -284,26 +292,7 @@ public class GoodVibrationsService extends Service
     {
       // Get id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
-      synchronized(triggers)
-      {
-        changer.interrupt();
-        
-        // Go through all the triggers and remove the function ID if it is in the trigger
-        for(Trigger t : triggers.getTriggers())
-        {
-          t.removeFunction(new Integer(id));
-        }
-        
-        // Now remove from the functions list
-        functions.remove(id);
-      }
-      
-      // Restart the settings changer
-      SettingsChanger.interrupted();
-      
-      PersistentStorage.saveFunctions(functions.functions);
-      PersistentStorage.saveTriggers(triggers.getTriggers());
-      Log.d(TAG,"Function deleted");
+      removeFunction(id);
     }
 
     Log.d(TAG, "onStartCommand() Finished");
@@ -316,6 +305,31 @@ public class GoodVibrationsService extends Service
   public IBinder onBind(Intent arg0)
   {
     return null;
+  }
+  
+  private void removeFunction(int id)
+  {
+    synchronized(triggers)
+    {
+      changer.interrupt();
+      
+      // Go through all the triggers and remove the function ID if it is in the trigger
+      for(Trigger t : triggers.getTriggers())
+      {
+        t.removeFunction(new Integer(id));
+      }
+      
+      // Now remove from the functions list
+      functions.remove(id);
+      
+      Log.d(TAG,"REMOVED FUNCTION " + id);
+    }
+    
+    // Restart the settings changer
+    SettingsChanger.interrupted();
+    
+    PersistentStorage.saveFunctions(functions.functions);
+    PersistentStorage.saveTriggers(triggers.getTriggers());
   }
 
 }

@@ -10,6 +10,7 @@ import java.util.NoSuchElementException;
 import android.content.Intent;
 import android.util.Log;
 
+import teamwork.goodVibrations.functions.Function;
 import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue
@@ -118,6 +119,20 @@ public class TriggerQueue
         return;
       }
     }
+  }
+  
+  public Trigger get(int id)
+  {
+    Iterator<Trigger> iter = triggers.iterator();
+    while(iter.hasNext())
+    {
+      Trigger t = iter.next();
+      if(t.id == id)
+      {
+        return t;
+      }
+    }
+    return null;
   }
 
   // getIDs

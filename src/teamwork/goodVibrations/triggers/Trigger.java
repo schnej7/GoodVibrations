@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 
+import android.content.Intent;
 import android.util.Log;
 
 import teamwork.goodVibrations.Constants;
@@ -25,6 +26,8 @@ public abstract class Trigger
   abstract public ArrayList<Integer> getFunctions();
 
   abstract public void switchState();
+
+  public abstract Intent getTriggerAsIntent();
 
   abstract public boolean canExecute();
   abstract public boolean canExecute(int priority);
@@ -96,4 +99,5 @@ public abstract class Trigger
       return type;
     }
   }
+
 }

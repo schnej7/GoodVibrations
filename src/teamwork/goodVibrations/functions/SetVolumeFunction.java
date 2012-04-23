@@ -28,7 +28,14 @@ public class SetVolumeFunction extends Function
     name = b.getString(Constants.INTENT_KEY_NAME);
     volumeTypes = b.getByte(Constants.INTENT_KEY_VOLUME_TYPES);
     AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
-    id = newID;
+    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    {
+      id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+    }
+    else
+    {
+      id = newID;
+    }
     type = Function.FunctionType.RING_VOLUME;
   }
   
@@ -181,11 +188,13 @@ public class SetVolumeFunction extends Function
   public Intent getFunctionAsIntent()
   {
     
-    Intent i = new Intent(Constants.SERVICE_DATA_FUNCTION_MESSAGE);
+    Intent i = new Intent(Constants.SERVICE_MESSAGE);
+    i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_VOLUME);
     i.putExtra(Constants.INTENT_KEY_VOLUME, volume);
     i.putExtra(Constants.INTENT_KEY_VIBRATE, vibrate);
     i.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, volumeTypes);
+    i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
     
     return i;
   }

@@ -51,7 +51,8 @@ public class FunctionDisplayActivity extends Activity
     });
 
     IntentFilter messageFilter;
-    messageFilter = new IntentFilter(Constants.SERVICE_DATA_FUNCTION_LIST_MESSAGE);
+    messageFilter = new IntentFilter(Constants.SERVICE_MESSAGE);
+    messageFilter.addAction(Constants.SERVICE_MESSAGE);
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
   }
@@ -99,15 +100,13 @@ public class FunctionDisplayActivity extends Activity
       int endIndex = functionMenuName.indexOf(')', 1);
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
 
-      // TODO: Edit the stuff here
-      
-
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
       i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION);
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
       startService(i);
+
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
@@ -158,6 +157,7 @@ public class FunctionDisplayActivity extends Activity
       // Create the intent that gets sent to the service
       data.setClass(this, GoodVibrationsService.class);
       startService(data); // Calls GoodVibrationsService.onStartCommand()
+      onResume();
     }
     else
     {
@@ -191,15 +191,27 @@ public class FunctionDisplayActivity extends Activity
       
       if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
       {
+        Log.d(TAG, "Got INTENT_LEY_FUCNTION");
         Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
         functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
         functionEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,b.getInt(Constants.INTENT_KEY_EDITED_ID));
         int functionType = b.getInt(Constants.INTENT_KEY_TYPE);
         functionEditIntent.putExtra(Constants.INTENT_KEY_TYPE, functionType);
-        if( functionType == Constants.FUNCTION_TYPE_VOLUME){
+        if( functionType == Constants.FUNCTION_TYPE_VOLUME ){
           functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME, b.getInt(Constants.INTENT_KEY_VOLUME));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE, b.getBoolean(Constants.INTENT_KEY_VIBRATE));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, b.getByte(Constants.INTENT_KEY_VOLUME_TYPES));
+        }
+        else if( functionType == Constants.FUNCTION_TYPE_RINGTONE ){
+          functionEditIntent.putExtra(Constants.INTENT_KEY_URI, b.getParcelable(Constants.INTENT_KEY_URI));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE, b.getBoolean(Constants.INTENT_KEY_VIBRATE));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES, b.getByte(Constants.INTENT_KEY_TONE_TYPES));
         }
         
+        else if( functionType == Constants.FUNCTION_TYPE_RINGTONE ){
+          functionEditIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, b.getParcelable(Constants.INTENT_KEY_IMAGEURI));
+        }
         
         startActivityForResult(functionEditIntent, 0);
         

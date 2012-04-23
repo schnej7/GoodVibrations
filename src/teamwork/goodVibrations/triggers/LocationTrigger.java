@@ -6,6 +6,7 @@ import java.util.List;
 import teamwork.goodVibrations.Constants;
 import teamwork.goodVibrations.GoodVibrationsService;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -338,5 +339,17 @@ public class LocationTrigger extends Trigger
     saveString += Constants.CATEGORY_DELIM;
     
     return saveString;
+  }
+
+  @Override
+  public Intent getTriggerAsIntent()
+  {
+    Intent i = new Intent();
+    
+    i.putExtra(Constants.INTENT_KEY_LATITUDE, center.getLatitude());
+    i.putExtra(Constants.INTENT_KEY_LONGITUDE, center.getLatitude());
+    //i.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS)
+    
+    return null;
   }
 }
