@@ -42,6 +42,7 @@ public class TriggerDisplayActivity extends Activity
       public void onClick(View v)
       {
         Intent TriggerEditIntent = new Intent(getApplicationContext(), TriggerEditActivity.class);
+        TriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, false);
         startActivityForResult(TriggerEditIntent, 0);
       }
     });
@@ -162,6 +163,28 @@ public class TriggerDisplayActivity extends Activity
         {
           triggerArrayAdapter.add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
         }
+      }
+      else if( b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER){
+        Intent triggerEditIntent = new Intent(getApplicationContext(),TriggerEditActivity.class);
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,b.getInt(Constants.INTENT_KEY_EDITED_ID));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        int triggerType = b.getInt(Constants.INTENT_KEY_TYPE);
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_TYPE, triggerType);
+        if( triggerType == Constants.TRIGGER_TYPE_LOCATION ){
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+          triggerEditIntent.setClass( getApplicationContext(), LocationTriggerEditActivity.class);
+        }
+        else if( triggerType == Constants.TRIGGER_TYPE_TIME ){
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
+          triggerEditIntent.setClass( getApplicationContext(), TimeTriggerEditActivity.class);
+        }
+        startActivityForResult(triggerEditIntent, 0);
       }
     }
   }

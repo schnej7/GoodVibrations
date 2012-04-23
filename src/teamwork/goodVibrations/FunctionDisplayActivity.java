@@ -189,7 +189,7 @@ public class FunctionDisplayActivity extends Activity
         }
       }
       
-      if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
+      else if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
       {
         Log.d(TAG, "Got INTENT_LEY_FUCNTION");
         Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
