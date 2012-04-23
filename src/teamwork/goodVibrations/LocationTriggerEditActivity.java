@@ -12,12 +12,13 @@ import android.widget.Toast;
 public class LocationTriggerEditActivity extends Activity
 {
   private static final String TAG = "LocationTriggerEditActivity";
-  Intent mIntent = new Intent();
+  Intent mIntent;
 
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
+    mIntent = new Intent();
     setContentView(R.layout.add_location_trigger);
   }
 
@@ -97,6 +98,14 @@ public class LocationTriggerEditActivity extends Activity
         finish(); // Returns to TriggerDisplayActivity.onActivityResult()
       }
     });
+    
+    Bundle b = getIntent().getExtras();
+    mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
+    txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
+    txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
+    mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+    mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+    mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
   }
 
   @Override

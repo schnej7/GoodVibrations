@@ -10,11 +10,13 @@ import android.widget.Button;
 public class TriggerEditActivity extends Activity
 {
   private static final String TAG = "TriggerEditActivity";
+  Bundle b;
 
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
+    b = getIntent().getExtras();
     setContentView(R.layout.add_trigger);
   }
 
@@ -30,6 +32,7 @@ public class TriggerEditActivity extends Activity
       public void onClick(View v)
       {
         Intent TimeTriggerEditIntent = new Intent(getApplicationContext(), TimeTriggerEditActivity.class);
+        TimeTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
         startActivityForResult(TimeTriggerEditIntent, Constants.REQUEST_CODE_TIME);
       }
     });
@@ -41,6 +44,7 @@ public class TriggerEditActivity extends Activity
       public void onClick(View v)
       {
         Intent LocationTriggerEditIntent = new Intent(getApplicationContext(), LocationTriggerEditActivity.class);
+        LocationTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
         startActivityForResult(LocationTriggerEditIntent, Constants.REQUEST_CODE_LOCATION);
       }
     });
