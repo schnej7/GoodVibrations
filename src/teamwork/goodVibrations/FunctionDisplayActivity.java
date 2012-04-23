@@ -105,7 +105,6 @@ public class FunctionDisplayActivity extends Activity
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
       i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION);
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
-      Log.d(TAG, "Starting service");
       startService(i);
 
     }
@@ -196,6 +195,7 @@ public class FunctionDisplayActivity extends Activity
         Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
         functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
         functionEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,b.getInt(Constants.INTENT_KEY_EDITED_ID));
         int functionType = b.getInt(Constants.INTENT_KEY_TYPE);
         functionEditIntent.putExtra(Constants.INTENT_KEY_TYPE, functionType);
         if( functionType == Constants.FUNCTION_TYPE_VOLUME ){

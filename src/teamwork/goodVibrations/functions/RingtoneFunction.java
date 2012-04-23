@@ -31,7 +31,14 @@ public class RingtoneFunction extends Function
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
     toneTypes = b.getByte(Constants.INTENT_KEY_TONE_TYPES);
-    id = newID;
+    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    {
+      id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+    }
+    else
+    {
+      id = newID;
+    }
     type = Function.FunctionType.RINGTONE;
   }
   

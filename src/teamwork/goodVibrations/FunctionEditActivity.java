@@ -197,7 +197,7 @@ public class FunctionEditActivity extends Activity
         mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
         if( beingEdited ){
           mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, myId);
-
+          Log.d(TAG,"PUTTING ID: " + myId);
         }
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
         mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());

@@ -161,9 +161,16 @@ public class GoodVibrationsService extends Service
 
     if(intentType == Constants.FUNCTION_TYPE)
     {
+      if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+      {
+        int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+        Log.d(TAG,"IS EDITING: " + id);
+        removeFunction(id,false);
+      }
+
       switch(type)
       {
-      // Add a new volume function
+        // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
           functions.add(new SetVolumeFunction(b, maxFunctionID++));
           break;
@@ -258,6 +265,7 @@ public class GoodVibrationsService extends Service
           
         case Constants.INTENT_KEY_TRIGGER:
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+          i = triggers.get(id).getTriggerAsIntent();
           
           
           break;
@@ -284,26 +292,7 @@ public class GoodVibrationsService extends Service
     {
       // Get id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
-      synchronized(triggers)
-      {
-        changer.interrupt();
-        
-        // Go through all the triggers and remove the function ID if it is in the trigger
-        for(Trigger t : triggers.getTriggers())
-        {
-          t.removeFunction(new Integer(id));
-        }
-        
-        // Now remove from the functions list
-        functions.remove(id);
-      }
-      
-      // Restart the settings changer
-      SettingsChanger.interrupted();
-      
-      PersistentStorage.saveFunctions(functions.functions);
-      PersistentStorage.saveTriggers(triggers.getTriggers());
-      Log.d(TAG,"Function deleted");
+      removeFunction(id,true);
     }
 
     Log.d(TAG, "onStartCommand() Finished");
@@ -316,6 +305,34 @@ public class GoodVibrationsService extends Service
   public IBinder onBind(Intent arg0)
   {
     return null;
+  }
+  
+  private void removeFunction(int id, boolean clearFromTriggers)
+  {
+    synchronized(triggers)
+    {
+      changer.interrupt();
+      
+      if(clearFromTriggers)
+      {
+        // Go through all the triggers and remove the function ID if it is in the trigger
+        for(Trigger t : triggers.getTriggers())
+        {
+          t.removeFunction(new Integer(id));
+        }
+      }
+      
+      // Now remove from the functions list
+      functions.remove(id);
+      
+      Log.d(TAG,"REMOVED FUNCTION " + id);
+    }
+    
+    // Restart the settings changer
+    SettingsChanger.interrupted();
+    
+    PersistentStorage.saveFunctions(functions.functions);
+    PersistentStorage.saveTriggers(triggers.getTriggers());
   }
 
 }

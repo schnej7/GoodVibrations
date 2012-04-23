@@ -3,6 +3,7 @@ package teamwork.goodVibrations.triggers;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import teamwork.goodVibrations.Utils;
@@ -293,6 +294,20 @@ public class TimeTrigger extends Trigger
     saveString += Constants.CATEGORY_DELIM;
 
     return saveString;
+  }
+
+  @Override
+  public Intent getTriggerAsIntent()
+  {
+    Intent i = new Intent(Constants.SERVICE_MESSAGE);
+    
+    i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,daysActive);
+    i.putExtra(Constants.INTENT_KEY_START_TIME, startTime);
+    i.putExtra(Constants.INTENT_KEY_END_TIME, stopTime);
+    i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, startFunctionIDs);
+    i.putExtra(Constants.INTENT_KEY_PRIORITY, priority);
+
+    return i;
   }
 
 }
