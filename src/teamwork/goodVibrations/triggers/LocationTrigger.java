@@ -43,7 +43,14 @@ public class LocationTrigger extends Trigger
     
     isInside = false;
     name = b.getString(Constants.INTENT_KEY_NAME);
-    id = newID;
+    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    {
+     id = b.getInt(Constants.INTENT_KEY_EDITED_ID); 
+    }
+    else
+    {
+      id = newID;
+    }
     type = Trigger.TriggerType.LOCATION;
 
     Log.d(TAG, "Made Location Manager");

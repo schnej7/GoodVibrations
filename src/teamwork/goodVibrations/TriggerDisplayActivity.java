@@ -96,7 +96,6 @@ public class TriggerDisplayActivity extends Activity
       i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_TRIGGER);
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
       startService(i);
-      onResume();
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
