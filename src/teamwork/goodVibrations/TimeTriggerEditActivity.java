@@ -136,7 +136,7 @@ public class TimeTriggerEditActivity extends Activity
     beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
     Log.d(TAG, "beingEdited = " + beingEdited);
-    if(beingEdited){
+    if(beingEdited && firstTime){
       firstTime = false;
       txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
       mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
