@@ -100,12 +100,17 @@ public class LocationTriggerEditActivity extends Activity
     });
     
     Bundle b = getIntent().getExtras();
-    mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
-    txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
-    txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
-    mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
-    mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
-    mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+    boolean beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
+    if(beingEdited){
+      txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
+      mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+      txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
+      mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
+      mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
+      mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+      mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+    }
   }
 
   @Override
