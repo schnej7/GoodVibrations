@@ -164,7 +164,7 @@ public class GoodVibrationsService extends Service
       if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
       {
         int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
-        Log.d(TAG,"IS EDITING: " + id);
+        Log.d(TAG,"IS EDITING FUNCTION: " + id);
         removeFunction(id,false);
       }
 
@@ -195,6 +195,13 @@ public class GoodVibrationsService extends Service
     }
     else if(intentType == Constants.TRIGGER_TYPE)
     {
+      if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+      {
+        int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
+        Log.d(TAG,"IS EDITING TRIGGER: " + id);
+        removeTrigger(id);
+      }
+      
       synchronized(triggers)
       {
         changer.interrupt();
@@ -275,17 +282,7 @@ public class GoodVibrationsService extends Service
     {
       // Get the id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
-      synchronized(triggers)
-      {
-        changer.interrupt();
-        triggers.remove(id);
-      }
-      
-      // Restart the settings changer
-      SettingsChanger.interrupted();
-
-      PersistentStorage.saveTriggers(triggers.getTriggers());
-
+      removeTrigger(id);
       Log.d(TAG, "Trigger deleted");
     }
     else if(intentType == Constants.DELETE_FUNCTION)
@@ -335,4 +332,18 @@ public class GoodVibrationsService extends Service
     PersistentStorage.saveTriggers(triggers.getTriggers());
   }
 
+  private void removeTrigger(int id)
+  {
+    synchronized(triggers)
+    {
+      changer.interrupt();
+      triggers.remove(id);
+    }
+    
+    // Restart the settings changer
+    SettingsChanger.interrupted();
+
+    PersistentStorage.saveTriggers(triggers.getTriggers());
+  }
+  
 }
