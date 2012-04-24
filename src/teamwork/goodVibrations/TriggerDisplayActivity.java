@@ -86,6 +86,17 @@ public class TriggerDisplayActivity extends Activity
     if (menuItemIndex == Constants.MENU_ITEM_EDIT)
     {
       Log.d(TAG, "SHOULD START EDIT ACTIVITY HERE");
+      String triggerMenuName = triggerArrayAdapter.getItem(info.position);
+      int endIndex = triggerMenuName.indexOf(')', 1);
+      int id = Integer.parseInt(triggerMenuName.substring(1, endIndex));
+
+      Intent i = new Intent(getApplicationContext(),
+          GoodVibrationsService.class);
+      i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
+      i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_TRIGGER);
+      i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
+      startService(i);
+      onResume();
     }
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {

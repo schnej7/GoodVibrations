@@ -38,9 +38,6 @@ public class TimeTriggerEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    
-    Bundle b = getIntent().getExtras();
-    mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
 
     // set intent type to time trigger
     mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
@@ -134,12 +131,21 @@ public class TimeTriggerEditActivity extends Activity
       }
     });
     
-    txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
-    txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
-    mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-    mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
-    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-    mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+    Bundle b = getIntent().getExtras();
+    boolean beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
+    Log.d(TAG, "beingEdited = " + beingEdited);
+    if(beingEdited){
+      txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
+      mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
+      txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
+      mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
+      mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
+      mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
+      mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+      mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+      Log.d(TAG, "INTENT_KEY_FUNCTION_IDS = " + b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS).toString() );
+    }
   }
 
   @Override

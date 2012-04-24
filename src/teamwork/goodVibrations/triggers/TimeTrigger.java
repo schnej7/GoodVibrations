@@ -301,6 +301,7 @@ public class TimeTrigger extends Trigger
   {
     Intent i = new Intent(Constants.SERVICE_MESSAGE);
     
+    i.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
     i.putExtra(Constants.INTENT_KEY_EDITED_BOOL,true);
