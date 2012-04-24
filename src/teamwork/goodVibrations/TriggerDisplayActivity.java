@@ -187,6 +187,7 @@ public class TriggerDisplayActivity extends Activity
           triggerEditIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
           triggerEditIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
           triggerEditIntent.setClass( getApplicationContext(), LocationTriggerEditActivity.class);
+          Log.d(TAG,"Going to LocationTriggerEditActivity");
         }
         else if( triggerType == Constants.TRIGGER_TYPE_TIME ){
           triggerEditIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));

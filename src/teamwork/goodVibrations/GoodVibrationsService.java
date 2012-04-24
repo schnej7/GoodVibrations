@@ -264,6 +264,7 @@ public class GoodVibrationsService extends Service
           break;
           
         case Constants.INTENT_KEY_TRIGGER:
+          Log.d(TAG, "--Sending trigger to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = triggers.get(id).getTriggerAsIntent();
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);

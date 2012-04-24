@@ -13,6 +13,8 @@ public class LocationTriggerEditActivity extends Activity
 {
   private static final String TAG = "LocationTriggerEditActivity";
   Intent mIntent;
+  private boolean beingEdited = false;
+  private boolean firstTime = true;
 
   public void onCreate(Bundle savedInstanceState)
   {
@@ -100,12 +102,15 @@ public class LocationTriggerEditActivity extends Activity
     });
     
     Bundle b = getIntent().getExtras();
-    boolean beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
-    if(beingEdited){
+    if(beingEdited && firstTime){
+      firstTime = false;
+      Log.d(TAG,"Being EDITED");
       txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
       mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
       txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
+      mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, b.getInt(Constants.INTENT_KEY_EDITED_ID));
       mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
       mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
       mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
@@ -134,8 +139,7 @@ public class LocationTriggerEditActivity extends Activity
     }
     else
     {
-      Log.d(TAG, "RINGTONE RESULT FAIL");
-      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
+      Toast.makeText(this, "Error", Toast.LENGTH_LONG).show();
     }
   }
 }
