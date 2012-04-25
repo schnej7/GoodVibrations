@@ -1,3 +1,4 @@
+
 package teamwork.goodVibrations.functions;
 
 import java.util.EnumSet;

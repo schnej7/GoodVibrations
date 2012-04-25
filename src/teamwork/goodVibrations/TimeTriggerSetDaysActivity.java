@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 
+//class for setting the days to repeat the time trigger on
 public class TimeTriggerSetDaysActivity extends Activity
 {
   private static String TAG = "TimeTriggerSetDaysActivity";
@@ -25,7 +26,9 @@ public class TimeTriggerSetDaysActivity extends Activity
     super.onStart();
     Log.d(TAG, "onStart()");
 
+    //done button
     final Button buttonDone = (Button) findViewById(R.id.doneSetTimes);
+    //check boxes for days of the week
     final CheckBox chkSunday = (CheckBox) findViewById(R.id.chkSunday);
     final CheckBox chkMonday = (CheckBox) findViewById(R.id.chkMonday);
     final CheckBox chkTuesday = (CheckBox) findViewById(R.id.chkTuesday);
@@ -33,11 +36,13 @@ public class TimeTriggerSetDaysActivity extends Activity
     final CheckBox chkThursday = (CheckBox) findViewById(R.id.chkThursday);
     final CheckBox chkFriday = (CheckBox) findViewById(R.id.chkFriday);
     final CheckBox chkSaturday = (CheckBox) findViewById(R.id.chkSaturday);
+    //repeat? checkbox
     final CheckBox chkRepeat = (CheckBox) findViewById(R.id.chkRepeatWeekly);
 
-    // Look for data in the intent, which means that we have been here before
+    
     try
     {
+   // Look for data in the intent, which means we need to repopulate the fields
       Bundle b = getIntent().getExtras();
       long startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
       long endTime = b.getLong(Constants.INTENT_KEY_END_TIME);
@@ -66,10 +71,13 @@ public class TimeTriggerSetDaysActivity extends Activity
     {
     }
 
+    //handle clicking done button
     buttonDone.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
+        //put checked days and whether to repeat weekly in the intent
+        
         Log.d(TAG, "Running onClick()");
         byte days = 0;
         // days = (byte) (days | 1);

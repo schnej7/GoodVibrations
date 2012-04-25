@@ -8,6 +8,14 @@ import android.util.Log;
 
 import teamwork.goodVibrations.functions.Function;
 
+/**************************************************
+ *                                                *
+ *  This is a wrapper class for an ArrayList      *
+ *  we add functionality for finding functions    *
+ *  by ID number                                  *
+ *                                                *
+ **************************************************/
+
 public class FunctionList
 {
   private static String TAG = "FunctionList";
