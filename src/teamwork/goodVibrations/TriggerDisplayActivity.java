@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+//displays the list of triggers
 public class TriggerDisplayActivity extends Activity
 {
   private static String TAG = "TriggerDisplayActivity";
@@ -28,8 +29,9 @@ public class TriggerDisplayActivity extends Activity
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.trigger_tab);
+    setContentView(R.layout.trigger_tab); //set correct UI
 
+    //listview
     triggerArrayAdapter = new ArrayAdapter<String>(this,
         R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
@@ -37,6 +39,7 @@ public class TriggerDisplayActivity extends Activity
 
     registerForContextMenu(listView);
 
+    //add trigger button
     final Button buttonAdd = (Button) findViewById(R.id.addTrigger);
     buttonAdd.setOnClickListener(new View.OnClickListener()
     {
@@ -44,7 +47,8 @@ public class TriggerDisplayActivity extends Activity
       {
         Intent TriggerEditIntent = new Intent(getApplicationContext(),
             TriggerEditActivity.class);
-        TriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, false);
+        //set edited bool to false, since adding a new trigger
+        TriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, false); 
         startActivityForResult(TriggerEditIntent, 0);
       }
     });
@@ -71,6 +75,7 @@ public class TriggerDisplayActivity extends Activity
   }
 
   @Override
+  //for clicking and holding on a trigger to edit and delete
   public void onCreateContextMenu(ContextMenu menu, View v,
       ContextMenuInfo menuInfo)
   {
@@ -86,11 +91,14 @@ public class TriggerDisplayActivity extends Activity
   }
 
   @Override
+  //handle editing or deleting of trigger on click and hold
   public boolean onContextItemSelected(MenuItem item)
   {
     AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
         .getMenuInfo();
     int menuItemIndex = item.getItemId();
+    
+    //handle editing
     if (menuItemIndex == Constants.MENU_ITEM_EDIT)
     {
       Log.d(TAG, "SHOULD START EDIT ACTIVITY HERE");
@@ -98,6 +106,7 @@ public class TriggerDisplayActivity extends Activity
       int endIndex = triggerMenuName.indexOf(')', 1);
       int id = Integer.parseInt(triggerMenuName.substring(1, endIndex));
 
+      //ask service for editing data
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
@@ -105,6 +114,8 @@ public class TriggerDisplayActivity extends Activity
       i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
       startService(i);
     }
+    
+    //handle deleting
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
       Log.d(TAG, "SHOULD DELETE TRIGGER HERE");
@@ -113,6 +124,7 @@ public class TriggerDisplayActivity extends Activity
       int endIndex = triggerMenuName.indexOf(')', 1);
       int id = Integer.parseInt(triggerMenuName.substring(1, endIndex));
 
+      //tell service to delete trigger
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_TRIGGER);
@@ -127,6 +139,7 @@ public class TriggerDisplayActivity extends Activity
   }
 
   @Override
+  //send data to service
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
@@ -144,12 +157,12 @@ public class TriggerDisplayActivity extends Activity
       {
         switch (b.getInt(Constants.INTENT_KEY_TYPE))
         {
-          case Constants.TRIGGER_TYPE_TIME:
+          case Constants.TRIGGER_TYPE_TIME: //handle time triggers
             triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)
                 + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
             break;
 
-          case Constants.TRIGGER_TYPE_LOCATION:
+          case Constants.TRIGGER_TYPE_LOCATION: //handle location triggers
             triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)));
             break;
         }
@@ -177,6 +190,7 @@ public class TriggerDisplayActivity extends Activity
       Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: "
           + Constants.INTENT_KEY_TRIGGER_LIST);
 
+      //handle getting the trigger list from the service
       if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER_LIST)
       {
         triggerArrayAdapter.clear();
@@ -191,8 +205,10 @@ public class TriggerDisplayActivity extends Activity
               .add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
         }
       }
+      //handle data needed to edit a trigger
       else if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER)
       {
+        //puts the data in an intent to send on to the location/time edit
         Intent triggerEditIntent = new Intent(getApplicationContext(),
             TriggerEditActivity.class);
         triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
@@ -206,6 +222,8 @@ public class TriggerDisplayActivity extends Activity
             b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
         int triggerType = b.getInt(Constants.INTENT_KEY_TYPE);
         triggerEditIntent.putExtra(Constants.INTENT_KEY_TYPE, triggerType);
+        
+        //data for location trigger
         if (triggerType == Constants.TRIGGER_TYPE_LOCATION)
         {
           triggerEditIntent.putExtra(Constants.INTENT_KEY_LATITUDE,
@@ -216,6 +234,7 @@ public class TriggerDisplayActivity extends Activity
               LocationTriggerEditActivity.class);
           Log.d(TAG, "Going to LocationTriggerEditActivity");
         }
+        //data for time trigger
         else if (triggerType == Constants.TRIGGER_TYPE_TIME)
         {
           triggerEditIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,

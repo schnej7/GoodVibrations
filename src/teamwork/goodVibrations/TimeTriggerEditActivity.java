@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+//for editing/creating the time triggers
 public class TimeTriggerEditActivity extends Activity
 {
   private static final String TAG = "TimeTriggerEditActivity";
@@ -30,8 +31,6 @@ public class TimeTriggerEditActivity extends Activity
     mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, (byte) 0);
     // Set defaults in case user does not select start or end functions
     int[] emptyInts = new int[0];
-    // mIntent.putExtra(Constants.INTENT_KEY_START_FUNCTION_IDS, emptyInts);
-    // mIntent.putExtra(Constants.INTENT_KEY_STOP_FUNCTION_IDS, emptyInts);
     mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, emptyInts);
   }
 
@@ -57,6 +56,8 @@ public class TimeTriggerEditActivity extends Activity
             TimeTriggerSetTimesActivity.class);
         try
         {
+          //handle if we need to repopulate the set times and day picker fields
+          // on the corresponding edit UIs
           Bundle b = mIntent.getExtras();
           if (firstTime)
           {
@@ -90,6 +91,7 @@ public class TimeTriggerEditActivity extends Activity
       }
     });
 
+    //set functions button
     final Button buttonSetFunction = (Button) findViewById(R.id.buttonTimeTriggerSetFunctions);
     buttonSetFunction.setOnClickListener(new View.OnClickListener()
     {
@@ -102,6 +104,7 @@ public class TimeTriggerEditActivity extends Activity
             getApplicationContext(), SetFunctionsActivity.class);
         try
         {
+          //handle if we need to repopulate set function information - for editing
           Bundle b = mIntent.getExtras();
           TimeTriggerSetFunctionsIntent.putExtra(
               Constants.INTENT_KEY_FUNCTION_IDS,
@@ -117,8 +120,7 @@ public class TimeTriggerEditActivity extends Activity
       }
     });
 
-    // final Button buttonSetFunctions =
-    // (Button)findViewById(R.id.buttonTimeTriggerSetFunctions);
+    //done button
     final Button buttonDone = (Button) findViewById(R.id.buttonTimeTriggerDone);
     buttonDone.setOnClickListener(new View.OnClickListener()
     {
@@ -149,9 +151,11 @@ public class TimeTriggerEditActivity extends Activity
     });
 
     Bundle b = getIntent().getExtras();
+    //keeps track of whether this is a new time trigger or if it is being edited
     beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
     Log.d(TAG, "beingEdited = " + beingEdited);
+    //handles if it is being edited
     if (beingEdited && firstTime)
     {
       firstTime = false;
@@ -213,8 +217,7 @@ public class TimeTriggerEditActivity extends Activity
   public class DataReceiver extends BroadcastReceiver
   {
     @Override
-    public void onReceive(Context context, Intent intent) // PUT IT IN THE
-                                                          // MANIFEST
+    public void onReceive(Context context, Intent intent)
     {
       Log.d(TAG, "RECEIVED BROADCAST MESSAGE");
 

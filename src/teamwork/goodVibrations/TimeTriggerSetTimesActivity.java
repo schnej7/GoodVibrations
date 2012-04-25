@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TimePicker;
 
+//Activity for setting the start and end times of a time trigger
 public class TimeTriggerSetTimesActivity extends Activity
 {
   private static final String TAG = "TimeTriggerSetTimeActivity";
@@ -19,7 +20,7 @@ public class TimeTriggerSetTimesActivity extends Activity
   {
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
-    setContentView(R.layout.set_times);
+    setContentView(R.layout.set_times); //set correct UI
 
     Bundle b = getIntent().getExtras();
     mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
@@ -37,6 +38,7 @@ public class TimeTriggerSetTimesActivity extends Activity
     super.onStart();
     Log.d(TAG, "onStart()");
 
+    //repeat button which opens the day picker
     Button repeatButton = (Button) findViewById(R.id.buttonRepeat);
     repeatButton.setOnClickListener(new View.OnClickListener()
     {
@@ -44,6 +46,7 @@ public class TimeTriggerSetTimesActivity extends Activity
       {
         Intent TimeTriggerDaysIntent = new Intent(getApplicationContext(),
             TimeTriggerSetDaysActivity.class);
+        //have we been here before (ie editing)? - if so pass data on
         try
         {
           Bundle b = mIntent.getExtras();
@@ -68,11 +71,13 @@ public class TimeTriggerSetTimesActivity extends Activity
       }
     });
 
+    //done button
     Button doneSetTimesButton = (Button) findViewById(R.id.buttonDoneSetTimes);
     doneSetTimesButton.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
+        //puts the start and end times in the intent
         mIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils
             .calculateTimeInMillis(startTimePicker.getCurrentHour(),
                 startTimePicker.getCurrentMinute()));
@@ -85,7 +90,7 @@ public class TimeTriggerSetTimesActivity extends Activity
       }
     });
 
-    // Look for bundle with time data in it
+    // Look for bundle with time data in it - used for repopulating/editing
     try
     {
       Log.d(TAG, "Trying to get intent");
@@ -101,7 +106,7 @@ public class TimeTriggerSetTimesActivity extends Activity
     }
     catch (NullPointerException e)
     {
-
+      //haven't been here before - no data to repopulate
       startTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils
           .getTimeOfDayInMillis()));
       startTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils
@@ -120,6 +125,7 @@ public class TimeTriggerSetTimesActivity extends Activity
     super.onActivityResult(requestCode, resultCode, data);
     if (resultCode == RESULT_OK)
     {
+      //handle data from repeat day picker
       if (requestCode == Constants.REQUEST_CODE_DAY_PICKER)
       {
         Log.d(TAG, "Daypicker Returned");

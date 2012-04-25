@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+//For editing and creating  triggers
 public class TriggerEditActivity extends Activity
 {
   private static final String TAG = "TriggerEditActivity";
@@ -17,7 +18,7 @@ public class TriggerEditActivity extends Activity
     super.onCreate(savedInstanceState);
     Log.d(TAG, "onCreate()");
     b = getIntent().getExtras();
-    setContentView(R.layout.add_trigger);
+    setContentView(R.layout.add_trigger);//set to the correct UI
   }
 
   protected void onStart()
@@ -34,7 +35,7 @@ public class TriggerEditActivity extends Activity
         Intent TimeTriggerEditIntent = new Intent(getApplicationContext(),
             TimeTriggerEditActivity.class);
         TimeTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL,
-            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
+            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL)); //is this trigger being edited?
         startActivityForResult(TimeTriggerEditIntent,
             Constants.REQUEST_CODE_TIME);
       }
@@ -49,7 +50,7 @@ public class TriggerEditActivity extends Activity
         Intent LocationTriggerEditIntent = new Intent(getApplicationContext(),
             LocationTriggerEditActivity.class);
         LocationTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL,
-            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
+            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL)); //is this trigger being edited?
         startActivityForResult(LocationTriggerEditIntent,
             Constants.REQUEST_CODE_LOCATION);
       }
@@ -67,11 +68,11 @@ public class TriggerEditActivity extends Activity
       Bundle b = data.getExtras();
       switch (requestCode)
       {
-        case Constants.REQUEST_CODE_TIME:
+        case Constants.REQUEST_CODE_TIME: //for time triggers
           Log.d(TAG, "ST: " + b.getLong(Constants.INTENT_KEY_START_TIME));
           break;
 
-        case Constants.REQUEST_CODE_LOCATION:
+        case Constants.REQUEST_CODE_LOCATION: //for location triggers
 
           break;
       }

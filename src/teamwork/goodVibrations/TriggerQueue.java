@@ -7,7 +7,6 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import android.content.Intent;
 import android.util.Log;
 
 import teamwork.goodVibrations.triggers.Trigger;
@@ -22,6 +21,7 @@ public class TriggerQueue
   // Constructor, defines the comparator, initializes the ArrayList
   public TriggerQueue()
   {
+    //used for comparing two triggers
     comparator = new Comparator<Trigger>()
     {
       public int compare(Trigger t1, Trigger t2)
@@ -37,6 +37,7 @@ public class TriggerQueue
     triggers = new ArrayList<Trigger>();
   }
 
+  //collection of triggers
   public TriggerQueue(Collection<Trigger> c)
   {
     this();
@@ -46,19 +47,18 @@ public class TriggerQueue
     }
   }
 
-  // add
   // Adds a trigger to the queue
   public void add(Trigger t)
   {
     triggers.add(t);
   }
 
+  //returns the trigger list
   public synchronized ArrayList<Trigger> getTriggers()
   {
     return triggers;
   }
 
-  // remove
   // Removes a trigger from the queue defined by index
   public void remove(int index)
   {
@@ -72,25 +72,7 @@ public class TriggerQueue
     }
   }
 
-  public Intent getTriggerIntent(int id)
-  {
-    for (Trigger t : triggers)
-    {
-      // Found the trigger
-      if (t.id == id)
-      {
-        /*
-         * Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
-         * 
-         * i.putExtra(Constants.INTENT_KEY_NAME,t.name);
-         * i.putExtra(Constants.INTENT_KEY_, value)
-         * 
-         * return i;
-         */
-      }
-    }
-    return null;
-  }
+ 
 
   // getNextTrigger
   // Returns the trigger that must execute next, determined by the comparator
@@ -122,6 +104,7 @@ public class TriggerQueue
     }
   }
 
+  //returns corresponding trigger
   public Trigger get(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
