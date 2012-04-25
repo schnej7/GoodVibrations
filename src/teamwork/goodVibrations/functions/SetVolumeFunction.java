@@ -29,6 +29,7 @@ public class SetVolumeFunction extends Function
     volumeTypes = b.getByte(Constants.INTENT_KEY_VOLUME_TYPES);
     AM = (AudioManager) GoodVibrationsService.c
         .getSystemService(Context.AUDIO_SERVICE);
+    // Set the ID properly if it is a new or edited function
     if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
       id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
@@ -54,17 +55,6 @@ public class SetVolumeFunction extends Function
     Log.d(TAG, "cat4: " + categories[4]);
     volumeTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RING_VOLUME;
-
-    Log.d(TAG, "NAME: " + name);
-    Log.d(TAG, "ID: " + id);
-
-  }
-
-  public SetVolumeFunction(SetVolumeFunction f)
-  {
-    AM = (AudioManager) GoodVibrationsService.c
-        .getSystemService(Context.AUDIO_SERVICE);
-
   }
 
   // execute
@@ -75,6 +65,7 @@ public class SetVolumeFunction extends Function
     Log.d(TAG, "EXECUTING " + name);
     Log.d(TAG, "Volume " + volume);
 
+    // Get the inverse function for reverting the setting
     SetVolumeFunction inverse = getInverse();
 
     // If the volume will be up, we must set the ringer mode to normal
@@ -141,6 +132,7 @@ public class SetVolumeFunction extends Function
 
     Log.d(TAG, "execute() - Setting to " + volume);
 
+    // Return the inverse function so the setting can be reverted
     return inverse;
   }
 
@@ -178,12 +170,6 @@ public class SetVolumeFunction extends Function
   @Override
   public String getInternalSaveString()
   {
-    // name
-    // id
-    // volume
-    // vibrate
-    // volumeTypes
-
     String saveString = new String();
     saveString = name + Constants.CATEGORY_DELIM;
     saveString += id + Constants.CATEGORY_DELIM;
@@ -197,6 +183,9 @@ public class SetVolumeFunction extends Function
     return saveString;
   }
 
+  // getFunctionAsIntent()
+  // Returns the set volume function as an intent which is passed
+  // to the activity when this function needs to be edited
   @Override
   public Intent getFunctionAsIntent()
   {
