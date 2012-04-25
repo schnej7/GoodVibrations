@@ -5,13 +5,11 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import android.content.Intent;
-import android.util.Log;
-
 import teamwork.goodVibrations.Constants;
-import teamwork.goodVibrations.functions.Function;
 
 public abstract class Trigger
 {
+  @SuppressWarnings("unused")
   private static final String TAG = "Trigger";
 
   public int id;

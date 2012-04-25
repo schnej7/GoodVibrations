@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 import android.content.Intent;
 import android.util.Log;
 
-import teamwork.goodVibrations.functions.Function;
 import teamwork.goodVibrations.triggers.Trigger;
 
 public class TriggerQueue

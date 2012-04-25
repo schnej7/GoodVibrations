@@ -6,12 +6,8 @@ import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.AudioManager;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.util.Log;
 

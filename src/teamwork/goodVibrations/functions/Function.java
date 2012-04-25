@@ -4,8 +4,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 
 import android.content.Intent;
-import android.util.Log;
-
 import teamwork.goodVibrations.Constants;
 
 public abstract class Function

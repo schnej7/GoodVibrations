@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.util.Log;
 import teamwork.goodVibrations.Utils;
 import teamwork.goodVibrations.Constants;
-import teamwork.goodVibrations.functions.Function;
 
 public class TimeTrigger extends Trigger
 {
