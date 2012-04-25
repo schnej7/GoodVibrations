@@ -18,7 +18,7 @@ public class TimeTriggerEditActivity extends Activity
   EditText txtPriority;
   private boolean firstTime = true;
   private boolean beingEdited = false;
-  
+
   public void onCreate(Bundle savedInstanceState)
   {
     super.onCreate(savedInstanceState);
@@ -53,30 +53,40 @@ public class TimeTriggerEditActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent TimeTriggerSetTimesIntent = new Intent(getApplicationContext(), TimeTriggerSetTimesActivity.class);
+        Intent TimeTriggerSetTimesIntent = new Intent(getApplicationContext(),
+            TimeTriggerSetTimesActivity.class);
         try
         {
           Bundle b = mIntent.getExtras();
-          if(firstTime)
+          if (firstTime)
           {
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.getTimeOfDayInMillis());
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.getTimeOfDayInMillis());
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME,
+                Utils.getTimeOfDayInMillis());
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME,
+                Utils.getTimeOfDayInMillis());
           }
           else
           {
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME)); 
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_START_TIME,
+                b.getLong(Constants.INTENT_KEY_START_TIME));
+            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_END_TIME,
+                b.getLong(Constants.INTENT_KEY_END_TIME));
           }
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
-            TimeTriggerSetTimesIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+          TimeTriggerSetTimesIntent.putExtra(
+              Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
+              b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+          TimeTriggerSetTimesIntent.putExtra(
+              Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+              b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
         }
-        catch(NullPointerException e)
+        catch (NullPointerException e)
         {
           // If we get a NullPointerException that means that this hasn't been
           // called so there is no data to be passed anyway.
         }
 
-        startActivityForResult(TimeTriggerSetTimesIntent, Constants.REQUEST_CODE_SET_TIMES_ACTIVITY);
+        startActivityForResult(TimeTriggerSetTimesIntent,
+            Constants.REQUEST_CODE_SET_TIMES_ACTIVITY);
       }
     });
 
@@ -88,18 +98,22 @@ public class TimeTriggerEditActivity extends Activity
       {
         // Add the selected functions to the bundle so they can be automatically
         // checked
-        Intent TimeTriggerSetFunctionsIntent = new Intent(getApplicationContext(), SetFunctionsActivity.class);
+        Intent TimeTriggerSetFunctionsIntent = new Intent(
+            getApplicationContext(), SetFunctionsActivity.class);
         try
         {
           Bundle b = mIntent.getExtras();
-          TimeTriggerSetFunctionsIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+          TimeTriggerSetFunctionsIntent.putExtra(
+              Constants.INTENT_KEY_FUNCTION_IDS,
+              b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
         }
-        catch(NullPointerException e)
+        catch (NullPointerException e)
         {
           // If we get a NullPointerException that means that this hasn't been
           // called so there is no data to be passed anyway.
         }
-        startActivityForResult(TimeTriggerSetFunctionsIntent, Constants.REQUEST_CODE_SET_FUNCTION_IDS);
+        startActivityForResult(TimeTriggerSetFunctionsIntent,
+            Constants.REQUEST_CODE_SET_FUNCTION_IDS);
       }
     });
 
@@ -111,9 +125,11 @@ public class TimeTriggerEditActivity extends Activity
       public void onClick(View v)
       {
         // sets the name in the intent
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText()
+            .toString());
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.TRIGGER_TYPE);
-        mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
+        mIntent
+            .putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
         // Check the priority value to make sure it is a number
         try
         {
@@ -121,32 +137,41 @@ public class TimeTriggerEditActivity extends Activity
           int priorityInt = new Integer(p).intValue();
           mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, priorityInt);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
           mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, 1);
         }
-        
+
         // start
         setResult(RESULT_OK, mIntent);
         finish(); // Returns to FunctionDisplayActivity.onActivityResult()
       }
     });
-    
+
     Bundle b = getIntent().getExtras();
     beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
     Log.d(TAG, "beingEdited = " + beingEdited);
-    if(beingEdited && firstTime){
+    if (beingEdited && firstTime)
+    {
       firstTime = false;
       txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
-      mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
-      txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
-      mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, b.getInt(Constants.INTENT_KEY_EDITED_ID));
-      mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
-      mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-      mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
-      mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-      mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+      mIntent.putExtra(Constants.INTENT_KEY_NAME,
+          b.getString(Constants.INTENT_KEY_NAME));
+      txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY))
+          .toString());
+      mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,
+          b.getInt(Constants.INTENT_KEY_EDITED_ID));
+      mIntent.putExtra(Constants.INTENT_KEY_PRIORITY,
+          b.getInt(Constants.INTENT_KEY_PRIORITY));
+      mIntent.putExtra(Constants.INTENT_KEY_START_TIME,
+          b.getLong(Constants.INTENT_KEY_START_TIME));
+      mIntent.putExtra(Constants.INTENT_KEY_END_TIME,
+          b.getLong(Constants.INTENT_KEY_END_TIME));
+      mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+          b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+      mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS,
+          b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
     }
   }
 
@@ -154,24 +179,29 @@ public class TimeTriggerEditActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
       firstTime = false;
       Log.d(TAG, "onActivityResult()");
       // If the TimeTriggerSetTimesActivity was returned
-      if(requestCode == Constants.REQUEST_CODE_SET_TIMES_ACTIVITY)
+      if (requestCode == Constants.REQUEST_CODE_SET_TIMES_ACTIVITY)
       {
         Bundle b = data.getExtras();
-        mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-        mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
+        mIntent.putExtra(Constants.INTENT_KEY_START_TIME,
+            b.getLong(Constants.INTENT_KEY_START_TIME));
+        mIntent.putExtra(Constants.INTENT_KEY_END_TIME,
+            b.getLong(Constants.INTENT_KEY_END_TIME));
         // If there is also repeat days information
-        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
-        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
+            b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+            b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
       }
-      else if(requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
+      else if (requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
       {
         Bundle b = data.getExtras();
-        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS,
+            b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
       }
     }
     else
@@ -183,18 +213,18 @@ public class TimeTriggerEditActivity extends Activity
   public class DataReceiver extends BroadcastReceiver
   {
     @Override
-    public void onReceive(Context context, Intent intent) //PUT IT IN THE MANIFEST
+    public void onReceive(Context context, Intent intent) // PUT IT IN THE
+                                                          // MANIFEST
     {
       Log.d(TAG, "RECEIVED BROADCAST MESSAGE");
-      
+
       Bundle b = intent.getExtras();
-      
-      if(b.getInt(Constants.INTENT_KEY_TYPE)== Constants.TRIGGER_TYPE_TIME)
+
+      if (b.getInt(Constants.INTENT_KEY_TYPE) == Constants.TRIGGER_TYPE_TIME)
       {
         txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
       }
-      
+
     }
   }
 }
-

@@ -30,18 +30,20 @@ public class TriggerDisplayActivity extends Activity
     super.onCreate(savedInstanceState);
     setContentView(R.layout.trigger_tab);
 
-    triggerArrayAdapter = new ArrayAdapter<String>(this, R.layout.trigger_list_item);
+    triggerArrayAdapter = new ArrayAdapter<String>(this,
+        R.layout.trigger_list_item);
     listView = (ListView) findViewById(R.id.listViewTriggers);
     listView.setAdapter(triggerArrayAdapter);
-    
+
     registerForContextMenu(listView);
-    
+
     final Button buttonAdd = (Button) findViewById(R.id.addTrigger);
     buttonAdd.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
-        Intent TriggerEditIntent = new Intent(getApplicationContext(), TriggerEditActivity.class);
+        Intent TriggerEditIntent = new Intent(getApplicationContext(),
+            TriggerEditActivity.class);
         TriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, false);
         startActivityForResult(TriggerEditIntent, 0);
       }
@@ -67,14 +69,20 @@ public class TriggerDisplayActivity extends Activity
     super.onDestroy();
     unregisterReceiver(dataReceiver);
   }
-  
+
   @Override
-  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo)
+  public void onCreateContextMenu(ContextMenu menu, View v,
+      ContextMenuInfo menuInfo)
   {
-      AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)menuInfo;
-      menu.setHeaderTitle(triggerArrayAdapter.getItem(info.position));
-      menu.add(Menu.NONE,Constants.MENU_ITEM_EDIT,Menu.NONE,"Edit");    // TODO The strings should be resources
-      menu.add(Menu.NONE,Constants.MENU_ITEM_DELETE,Menu.NONE,"Delete");
+    AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
+    menu.setHeaderTitle(triggerArrayAdapter.getItem(info.position));
+    menu.add(Menu.NONE, Constants.MENU_ITEM_EDIT, Menu.NONE, "Edit"); // TODO
+                                                                      // The
+                                                                      // strings
+                                                                      // should
+                                                                      // be
+                                                                      // resources
+    menu.add(Menu.NONE, Constants.MENU_ITEM_DELETE, Menu.NONE, "Delete");
   }
 
   @Override
@@ -114,7 +122,7 @@ public class TriggerDisplayActivity extends Activity
 
     }
 
-    Log.d(TAG,"MENU ITEM NAME: " + triggerArrayAdapter.getItem(info.position));
+    Log.d(TAG, "MENU ITEM NAME: " + triggerArrayAdapter.getItem(info.position));
     return true;
   }
 
@@ -122,17 +130,23 @@ public class TriggerDisplayActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
       // Add name to the list of functions with a different format depending on
       // the function type
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should always be true, but just double checking
+      if (b.getInt(Constants.INTENT_TYPE) == Constants.TRIGGER_TYPE) // Should
+                                                                     // always
+                                                                     // be true,
+                                                                     // but just
+                                                                     // double
+                                                                     // checking
       {
-        switch(b.getInt(Constants.INTENT_KEY_TYPE))
+        switch (b.getInt(Constants.INTENT_KEY_TYPE))
         {
           case Constants.TRIGGER_TYPE_TIME:
-            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME) + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
+            triggerArrayAdapter.add((b.getString(Constants.INTENT_KEY_NAME)
+                + " S:" + b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE)));
             break;
 
           case Constants.TRIGGER_TYPE_LOCATION:
@@ -160,40 +174,58 @@ public class TriggerDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
-      Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: " + Constants.INTENT_KEY_TRIGGER_LIST);
+      Log.d(TAG, "KEYNAME: " + b.getInt(Constants.INTENT_KEY_NAME) + " LIST: "
+          + Constants.INTENT_KEY_TRIGGER_LIST);
 
-      if(b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER_LIST)
+      if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER_LIST)
       {
         triggerArrayAdapter.clear();
         int length = b.getInt(Constants.INTENT_KEY_DATA_LENGTH);
-        String[] triggerNames = b.getStringArray(Constants.INTENT_KEY_TRIGGER_NAMES);
+        String[] triggerNames = b
+            .getStringArray(Constants.INTENT_KEY_TRIGGER_NAMES);
         int[] triggerIDs = b.getIntArray(Constants.INTENT_KEY_TRIGGER_IDS);
         Log.d(TAG, "LENGTH: " + length);
-        for(int i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
-          triggerArrayAdapter.add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
+          triggerArrayAdapter
+              .add("(" + triggerIDs[i] + ")  " + triggerNames[i]);
         }
       }
-      else if( b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER){
-        Intent triggerEditIntent = new Intent(getApplicationContext(),TriggerEditActivity.class);
+      else if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_TRIGGER)
+      {
+        Intent triggerEditIntent = new Intent(getApplicationContext(),
+            TriggerEditActivity.class);
         triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
-        triggerEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
-        triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,b.getInt(Constants.INTENT_KEY_EDITED_ID));
-        triggerEditIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
-        triggerEditIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_NAME,
+            b.getString(Constants.INTENT_KEY_NAME));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,
+            b.getInt(Constants.INTENT_KEY_EDITED_ID));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_PRIORITY,
+            b.getInt(Constants.INTENT_KEY_PRIORITY));
+        triggerEditIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS,
+            b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
         int triggerType = b.getInt(Constants.INTENT_KEY_TYPE);
         triggerEditIntent.putExtra(Constants.INTENT_KEY_TYPE, triggerType);
-        if( triggerType == Constants.TRIGGER_TYPE_LOCATION ){
-          triggerEditIntent.putExtra(Constants.INTENT_KEY_LATITUDE, b.getDouble(Constants.INTENT_KEY_LATITUDE));
-          triggerEditIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, b.getDouble(Constants.INTENT_KEY_LONGITUDE));
-          triggerEditIntent.setClass( getApplicationContext(), LocationTriggerEditActivity.class);
-          Log.d(TAG,"Going to LocationTriggerEditActivity");
+        if (triggerType == Constants.TRIGGER_TYPE_LOCATION)
+        {
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_LATITUDE,
+              b.getDouble(Constants.INTENT_KEY_LATITUDE));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_LONGITUDE,
+              b.getDouble(Constants.INTENT_KEY_LONGITUDE));
+          triggerEditIntent.setClass(getApplicationContext(),
+              LocationTriggerEditActivity.class);
+          Log.d(TAG, "Going to LocationTriggerEditActivity");
         }
-        else if( triggerType == Constants.TRIGGER_TYPE_TIME ){
-          triggerEditIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-          triggerEditIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
-          triggerEditIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
-          triggerEditIntent.setClass( getApplicationContext(), TimeTriggerEditActivity.class);
+        else if (triggerType == Constants.TRIGGER_TYPE_TIME)
+        {
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+              b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_START_TIME,
+              b.getLong(Constants.INTENT_KEY_START_TIME));
+          triggerEditIntent.putExtra(Constants.INTENT_KEY_END_TIME,
+              b.getLong(Constants.INTENT_KEY_END_TIME));
+          triggerEditIntent.setClass(getApplicationContext(),
+              TimeTriggerEditActivity.class);
         }
         startActivityForResult(triggerEditIntent, 0);
       }

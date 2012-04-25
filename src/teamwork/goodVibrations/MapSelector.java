@@ -41,7 +41,8 @@ public class MapSelector extends MapActivity
   class MapOverlay extends com.google.android.maps.Overlay
   {
     @Override
-    public boolean draw(Canvas canvas, MapView mapView, boolean shadow, long when)
+    public boolean draw(Canvas canvas, MapView mapView, boolean shadow,
+        long when)
     {
       // Log.d(TAG, "drawing");
       super.draw(canvas, mapView, shadow);
@@ -51,7 +52,8 @@ public class MapSelector extends MapActivity
       mapView.getProjection().toPixels(userLoc, screenPts);
       // Log.d(TAG, "got projection");
       // ---add the marker---
-      Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.point);
+      Bitmap bmp = BitmapFactory.decodeResource(getResources(),
+          R.drawable.point);
       canvas.drawBitmap(bmp, screenPts.x, screenPts.y - 25, null);
       // Log.d(TAG, "drew picture");
       return true;
@@ -63,9 +65,12 @@ public class MapSelector extends MapActivity
       // update position of point icon on map
       userLoc = p;
       Log.d(TAG, "tap detected");
-      Toast.makeText(getBaseContext(), p.getLatitudeE6() / 1E6 + "," + p.getLongitudeE6() / 1E6, Toast.LENGTH_SHORT).show();
+      Toast.makeText(getBaseContext(),
+          p.getLatitudeE6() / 1E6 + "," + p.getLongitudeE6() / 1E6,
+          Toast.LENGTH_SHORT).show();
       mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, p.getLatitudeE6() / 1E6);
-      mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE, p.getLongitudeE6() / 1E6);
+      mIntent
+          .putExtra(Constants.INTENT_KEY_LONGITUDE, p.getLongitudeE6() / 1E6);
       setResult(RESULT_OK, mIntent);
       finish(); // Returns to LocationTriggerEditActivity.onActivityResult()
       return false;
@@ -105,7 +110,8 @@ public class MapSelector extends MapActivity
     myMapView.setSatellite(true);
     myMapView.setReticleDrawMode(MapView.ReticleDrawMode.DRAW_RETICLE_OVER);
     myMapView.displayZoomControls(true);
-    userLoc = new GeoPoint((int) (receivedLocation.getLatitude() * 1E6), (int) (receivedLocation.getLongitude() * 1E6));
+    userLoc = new GeoPoint((int) (receivedLocation.getLatitude() * 1E6),
+        (int) (receivedLocation.getLongitude() * 1E6));
     myController = myMapView.getController();
     myController.setZoom(17);
     aml.snapTo(userLoc);

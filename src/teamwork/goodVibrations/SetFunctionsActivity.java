@@ -34,7 +34,8 @@ public class SetFunctionsActivity extends Activity
     // initialize array list
     funcs = new ArrayList<FunctionForUI>();
     // initialize array adapter
-    arrayAdapter = new SetFunctionsAdapter(SetFunctionsActivity.this, R.layout.time_trigger_functions_items, funcs);
+    arrayAdapter = new SetFunctionsAdapter(SetFunctionsActivity.this,
+        R.layout.time_trigger_functions_items, funcs);
 
     // Set the above adapter as the adapter of choice for the list
     lview.setAdapter(arrayAdapter);
@@ -55,17 +56,17 @@ public class SetFunctionsActivity extends Activity
         Log.d(TAG, "Running onClick()");
         int count = arrayAdapter.getCount();
         ArrayList<Integer> chks = new ArrayList<Integer>();
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
           FunctionForUI f = arrayAdapter.getItem(i);
-          if(f.chkbx.isChecked())
+          if (f.chkbx.isChecked())
           {
             chks.add(f.id);
           }
         }
         // convert to int [] from ArrayList<Integer>
         int[] intChks = new int[chks.size()];
-        for(int j = 0; j < chks.size(); j++)
+        for (int j = 0; j < chks.size(); j++)
         {
           intChks[j] = chks.get(j).intValue();
         }
@@ -76,7 +77,7 @@ public class SetFunctionsActivity extends Activity
     });
 
   }
-  
+
   Bundle b;
 
   public void onStart()
@@ -86,14 +87,16 @@ public class SetFunctionsActivity extends Activity
     i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
     startService(i);
-    
-    try{
+
+    try
+    {
       b = getIntent().getExtras();
       int[] intFunctionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-      Log.d( TAG, "intFunctionIDs.length = " + intFunctionIDs.length );
+      Log.d(TAG, "intFunctionIDs.length = " + intFunctionIDs.length);
     }
-    catch( NullPointerException e){
-      Log.e( TAG, "NullPointerException onStart", e);
+    catch (NullPointerException e)
+    {
+      Log.e(TAG, "NullPointerException onStart", e);
     }
   }
 
@@ -118,37 +121,44 @@ public class SetFunctionsActivity extends Activity
 
       Bundle b2 = intent.getExtras();
 
-      if(b2.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
+      if (b2.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
-        String[] functionNames = b2.getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
+        String[] functionNames = b2
+            .getStringArray(Constants.INTENT_KEY_FUNCTION_NAMES);
         int[] functionIDs = b2.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-        for(int i = 0; i < functionNames.length; i++)
+        for (int i = 0; i < functionNames.length; i++)
         {
-          FunctionForUI fTemp = new FunctionForUI(functionIDs[i], functionNames[i]);
+          FunctionForUI fTemp = new FunctionForUI(functionIDs[i],
+              functionNames[i]);
           funcs.add(fTemp);
         }
         // notify array adapter of changes
         arrayAdapter.notifyDataSetChanged();
       }
-      //repopulate fields if we have been here before
-      Log.d( TAG, "Trying to get intent for existing function ids");
-      
-      try{
-        Log.d( TAG, "funcs.size() = " + funcs.size());
-        
+      // repopulate fields if we have been here before
+      Log.d(TAG, "Trying to get intent for existing function ids");
+
+      try
+      {
+        Log.d(TAG, "funcs.size() = " + funcs.size());
+
         int[] intFunctionIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-        Log.d( TAG, "intFunctionIDs.length = " + intFunctionIDs.length );
-        
+        Log.d(TAG, "intFunctionIDs.length = " + intFunctionIDs.length);
+
         int size = arrayAdapter.getCount();
-        for( int i = 0; i < size; i++){
-          for( int j = 0; j < intFunctionIDs.length; j++ ){
-            if( funcs.get(i).id == intFunctionIDs[j] )
+        for (int i = 0; i < size; i++)
+        {
+          for (int j = 0; j < intFunctionIDs.length; j++)
+          {
+            if (funcs.get(i).id == intFunctionIDs[j])
             {
               FunctionForUI ffui = arrayAdapter.getItem(i);
-              if( ffui == null){
+              if (ffui == null)
+              {
                 Log.d(TAG, "funcs.get(i) returned null");
               }
-              else{
+              else
+              {
                 ffui.shouldBeChecked = true;
               }
             }
@@ -156,10 +166,11 @@ public class SetFunctionsActivity extends Activity
         }
         arrayAdapter.notifyDataSetChanged();
       }
-      catch(NullPointerException e){
-        Log.d( TAG, "Null pointer exception dude!");
+      catch (NullPointerException e)
+      {
+        Log.d(TAG, "Null pointer exception dude!");
       }
-      
+
     }
   }
 }

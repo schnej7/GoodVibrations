@@ -24,57 +24,60 @@ public class GoodVibrationsService extends Service
   private int maxPriority = Integer.MAX_VALUE;
 
   private SettingsChanger changer;
-  
+
   public static Context c;
-  
+
   private class SettingsChanger extends Thread
   {
     public void run()
     {
       Trigger t = null;
-      
-      while(!Thread.currentThread().isInterrupted())
+
+      while (!Thread.currentThread().isInterrupted())
       {
         try
         {
-          synchronized(triggers)
+          synchronized (triggers)
           {
             t = triggers.getNextTrigger();
           }
-          if(t != null) // Make sure we have a trigger to process
+          if (t != null) // Make sure we have a trigger to process
           {
             // Sleep for the time until the trigger will execute
             Log.d(TAG, "Sleeping for " + t.getSleepTime());
             Thread.sleep(t.getSleepTime());
             // Execute all of the functions for this trigger
-            
-            if(t.canExecute())
+
+            if (t.canExecute())
             {
-              //set the max priority since if we get to this point, this has the best priority;
-              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name + " with priority: " + t.priority);
+              // set the max priority since if we get to this point, this has
+              // the best priority;
+              Log.d(TAG, "Executing trigger: " + t.id + "  " + t.name
+                  + " with priority: " + t.priority);
               // Execute functions
-              synchronized(triggers)
+              synchronized (triggers)
               {
-                //added boolean for empty function lists
-                //we don't want to switch the state of a function if it doesn't
-                //have any functions to execute 
+                // added boolean for empty function lists
+                // we don't want to switch the state of a function if it doesn't
+                // have any functions to execute
                 if (t.canExecute(maxPriority))
                 {
                   maxPriority = t.priority;
-                  for(Integer fID : t.getFunctions())
+                  for (Integer fID : t.getFunctions())
                   {
-                    Log.d(TAG,"FID: " + fID.intValue());
+                    Log.d(TAG, "FID: " + fID.intValue());
                     Function inverse = functions.get(fID.intValue()).execute();
-                    if(t.isStarting())
+                    if (t.isStarting())
                     {
                       functions.add(inverse);
-                      t.addFunction(new Integer(inverse.id),Constants.INVERSE_FUNCTION);
+                      t.addFunction(new Integer(inverse.id),
+                          Constants.INVERSE_FUNCTION);
                     }
                     else
                     {
                       functions.remove(fID.intValue());
                       t.removeFunction(fID);
-                      //reset the max priority since the trigger has ended
+                      // reset the max priority since the trigger has ended
                       maxPriority = Integer.MAX_VALUE;
                     }
                   }
@@ -91,13 +94,13 @@ public class GoodVibrationsService extends Service
               Log.d(TAG, "No triggers Sleeping for 10000");
               Thread.sleep(10000);
             }
-            catch(InterruptedException e)
+            catch (InterruptedException e)
             {
               Log.d(TAG, "Sleep while no triggers interrupted");
             }
           }
         }
-        catch(InterruptedException e)
+        catch (InterruptedException e)
         {
           Log.d(TAG, "Sleep while waiting for trigger was interrupted");
         }
@@ -109,26 +112,26 @@ public class GoodVibrationsService extends Service
   public void onCreate()
   {
     Log.d(TAG, "Calling onCreate()");
-    
+
     c = getApplicationContext();
-       
+
     functions = new FunctionList(PersistentStorage.loadFunctions());
     triggers = new TriggerQueue(PersistentStorage.loadTriggers());
-    
+
     int maxID = 0;
     int Fids[] = functions.getIDs();
-    for(int loc = 0; loc < Fids.length; loc++)
+    for (int loc = 0; loc < Fids.length; loc++)
     {
-      maxID = (maxID < Fids[loc])? Fids[loc] : maxID;
+      maxID = (maxID < Fids[loc]) ? Fids[loc] : maxID;
     }
-    maxFunctionID = maxID + 1;    
-    
+    maxFunctionID = maxID + 1;
+
     int Tids[] = triggers.getIDs();
     maxID = 0;
     for (int loc = 0; loc < Tids.length; loc++)
     {
-      maxID = (maxID < Tids[loc])? Tids[loc] : maxID;
-    }   
+      maxID = (maxID < Tids[loc]) ? Tids[loc] : maxID;
+    }
     maxTriggerID = maxID + 1;
 
     Log.d(TAG, "Added Function");
@@ -152,18 +155,18 @@ public class GoodVibrationsService extends Service
 
     Log.d(TAG, "Bundle Created " + intentType + "  " + type);
 
-    if(intentType == Constants.FUNCTION_TYPE)
+    if (intentType == Constants.FUNCTION_TYPE)
     {
-      if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+      if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
       {
         int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
-        Log.d(TAG,"IS EDITING FUNCTION: " + id);
-        removeFunction(id,false);
+        Log.d(TAG, "IS EDITING FUNCTION: " + id);
+        removeFunction(id, false);
       }
 
-      switch(type)
+      switch (type)
       {
-        // Add a new volume function
+      // Add a new volume function
         case Constants.FUNCTION_TYPE_VOLUME:
           functions.add(new SetVolumeFunction(b, maxFunctionID++));
           break;
@@ -173,7 +176,7 @@ public class GoodVibrationsService extends Service
           Log.d(TAG, "New Ringtone Function");
           functions.add(new RingtoneFunction(b, maxFunctionID++));
           break;
-          
+
         case Constants.FUNCTION_TYPE_WALLPAPER:
           Log.d(TAG, "New Wallpaper Function");
           functions.add(new WallpaperFunction(b, maxFunctionID++));
@@ -184,37 +187,37 @@ public class GoodVibrationsService extends Service
           break;
       }
       PersistentStorage.saveFunctions(functions.functions);
-      Log.d(TAG,"Functions Saved");
+      Log.d(TAG, "Functions Saved");
     }
-    else if(intentType == Constants.TRIGGER_TYPE)
+    else if (intentType == Constants.TRIGGER_TYPE)
     {
-      if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+      if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
       {
         int id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
-        Log.d(TAG,"IS EDITING TRIGGER: " + id);
+        Log.d(TAG, "IS EDITING TRIGGER: " + id);
         removeTrigger(id);
       }
-      
-      synchronized(triggers)
+
+      synchronized (triggers)
       {
         changer.interrupt();
-        Log.d(TAG,"TRIGGER TYPE");
+        Log.d(TAG, "TRIGGER TYPE");
         Trigger t = null;
-        switch(type)
+        switch (type)
         {
           case Constants.TRIGGER_TYPE_TIME:
-            Log.d(TAG,"TRIGGER TYPE TIME");
+            Log.d(TAG, "TRIGGER TYPE TIME");
             t = new TimeTrigger(b, maxTriggerID++);
             break;
-  
+
           case Constants.TRIGGER_TYPE_LOCATION:
             t = new LocationTrigger(this, b, maxTriggerID++);
             break;
-  
+
           default:
             // Should never happen
         }
-  
+
         Log.d(TAG, "Submitting TimeTrigger To queue");
         // Submit the trigger into the queue
         triggers.add(t);
@@ -227,11 +230,11 @@ public class GoodVibrationsService extends Service
 
       Log.d(TAG, "Trigger submitted");
     }
-    else if(intentType == Constants.GET_DATA)
+    else if (intentType == Constants.GET_DATA)
     {
       Intent i;
       int id;
-      switch(type)
+      switch (type)
       {
         case Constants.INTENT_KEY_FUNCTION_LIST:
           i = new Intent(Constants.SERVICE_MESSAGE);
@@ -254,7 +257,7 @@ public class GoodVibrationsService extends Service
           sendBroadcast(i);
           Log.d(TAG, "GET TRIGGER LIST");
           break;
-          
+
         case Constants.INTENT_KEY_FUNCTION:
           Log.d(TAG, "--Sending function to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
@@ -262,7 +265,7 @@ public class GoodVibrationsService extends Service
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_FUNCTION);
           sendBroadcast(i);
           break;
-          
+
         case Constants.INTENT_KEY_TRIGGER:
           Log.d(TAG, "--Sending trigger to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
@@ -272,18 +275,18 @@ public class GoodVibrationsService extends Service
           break;
       }
     }
-    else if(intentType == Constants.DELETE_TRIGGER)
+    else if (intentType == Constants.DELETE_TRIGGER)
     {
       // Get the id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
       removeTrigger(id);
       Log.d(TAG, "Trigger deleted");
     }
-    else if(intentType == Constants.DELETE_FUNCTION)
+    else if (intentType == Constants.DELETE_FUNCTION)
     {
       // Get id to delete
       int id = b.getInt(Constants.INTENT_KEY_DELETED_ID);
-      removeFunction(id,true);
+      removeFunction(id, true);
     }
 
     Log.d(TAG, "onStartCommand() Finished");
@@ -297,47 +300,48 @@ public class GoodVibrationsService extends Service
   {
     return null;
   }
-  
+
   private void removeFunction(int id, boolean clearFromTriggers)
   {
-    synchronized(triggers)
+    synchronized (triggers)
     {
       changer.interrupt();
-      
-      if(clearFromTriggers)
+
+      if (clearFromTriggers)
       {
-        // Go through all the triggers and remove the function ID if it is in the trigger
-        for(Trigger t : triggers.getTriggers())
+        // Go through all the triggers and remove the function ID if it is in
+        // the trigger
+        for (Trigger t : triggers.getTriggers())
         {
           t.removeFunction(new Integer(id));
         }
       }
-      
+
       // Now remove from the functions list
       functions.remove(id);
-      
-      Log.d(TAG,"REMOVED FUNCTION " + id);
+
+      Log.d(TAG, "REMOVED FUNCTION " + id);
     }
-    
+
     // Restart the settings changer
     SettingsChanger.interrupted();
-    
+
     PersistentStorage.saveFunctions(functions.functions);
     PersistentStorage.saveTriggers(triggers.getTriggers());
   }
 
   private void removeTrigger(int id)
   {
-    synchronized(triggers)
+    synchronized (triggers)
     {
       changer.interrupt();
       triggers.remove(id);
     }
-    
+
     // Restart the settings changer
     SettingsChanger.interrupted();
 
     PersistentStorage.saveTriggers(triggers.getTriggers());
   }
-  
+
 }

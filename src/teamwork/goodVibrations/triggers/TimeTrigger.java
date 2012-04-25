@@ -16,10 +16,7 @@ public class TimeTrigger extends Trigger
 
   public static enum STATE
   {
-    FIRSTSTART,
-    FIRSTSTOP,
-    ACTIVE,
-    INACTIVE
+    FIRSTSTART, FIRSTSTOP, ACTIVE, INACTIVE
   };
 
   private ArrayList<Integer> startFunctionIDs; // The functions that will be
@@ -36,10 +33,10 @@ public class TimeTrigger extends Trigger
   // Constructor for making a time trigger from the GUI
   public TimeTrigger(Bundle b, int newID)
   {
-    Log.d(TAG,"TimeTrigger()");
-    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    Log.d(TAG, "TimeTrigger()");
+    if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
-     id = b.getInt(Constants.INTENT_KEY_EDITED_ID); 
+      id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
     }
     else
     {
@@ -56,68 +53,68 @@ public class TimeTrigger extends Trigger
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    for(int i = 0; i < startIDs.length; i++)
+    for (int i = 0; i < startIDs.length; i++)
     {
       startFunctionIDs.add(new Integer(startIDs[i]));
     }
 
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
-    if(currentTimeInDay > stopTime)
+    if (currentTimeInDay > stopTime)
     {
       state = STATE.FIRSTSTOP;
     }
   }
-  
+
   // TimeTrigger
   // Constructor for making a time trigger from the persistent storage
   public TimeTrigger(String s)
   {
     startFunctionIDs = new ArrayList<Integer>();
     stopFunctionIDs = new ArrayList<Integer>();
-    
+
     type = Trigger.TriggerType.TIME;
-    
+
     String[] categories = s.split(Constants.CATEGORY_DELIM);
-    
+
     name = categories[0];
     id = new Integer(categories[1]).intValue();
 
     String[] startIDsString = categories[2].split(Constants.LIST_DELIM);
-    if(!startIDsString[0].equals(""))
+    if (!startIDsString[0].equals(""))
     {
-      for(String stringID : startIDsString)
+      for (String stringID : startIDsString)
       {
         startFunctionIDs.add(new Integer(stringID).intValue());
       }
     }
-    
+
     String[] stopIDsString = categories[3].split(Constants.LIST_DELIM);
-    if(!stopIDsString[0].equals(""))
+    if (!stopIDsString[0].equals(""))
     {
-      for(String stringID : stopIDsString)
+      for (String stringID : stopIDsString)
       {
         stopFunctionIDs.add(new Integer(stringID).intValue());
       }
     }
 
     startTime = new Long(categories[4]).longValue();
-    stopTime =  new Long(categories[5]).longValue();
+    stopTime = new Long(categories[5]).longValue();
     daysActive = new Byte(categories[6]).byteValue();
     priority = new Integer(categories[7]).intValue();
 
     state = STATE.FIRSTSTART;
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
-    if(currentTimeInDay > stopTime)
+    if (currentTimeInDay > stopTime)
     {
       state = STATE.FIRSTSTOP;
     }
   }
-  
+
   // addFunction
   // Adds a functionID to either the start or stop list
   public void addFunction(Integer fid, boolean isInverse)
   {
-    if(isInverse)
+    if (isInverse)
     {
       stopFunctionIDs.add(fid);
     }
@@ -134,10 +131,10 @@ public class TimeTrigger extends Trigger
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
 
     // If current day is in daysActive
-    if(canExecute())
+    if (canExecute())
     {
       long delay = 0;
-      switch(state)
+      switch (state)
       {
         case FIRSTSTART:
           delay = startTime - currentTimeInDay;
@@ -153,7 +150,7 @@ public class TimeTrigger extends Trigger
           break;
       }
 
-      if(delay < 0)
+      if (delay < 0)
       {
         delay = 0;
       }
@@ -167,7 +164,7 @@ public class TimeTrigger extends Trigger
   // isStarting
   public boolean isStarting()
   {
-    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART)
+    if (state == STATE.INACTIVE || state == STATE.FIRSTSTART)
     {
       return true;
     }
@@ -176,6 +173,7 @@ public class TimeTrigger extends Trigger
       return false;
     }
   }
+
   // canExecute
   // Determines if the trigger can execute on the current day of the week
   public boolean canExecute(int priority)
@@ -183,10 +181,10 @@ public class TimeTrigger extends Trigger
     Log.d(TAG, "Priority: " + this.priority + " MaxPriority: " + priority);
     if (this.priority > priority)
       return false;
-    
+
     return true;
   }
-  
+
   public boolean canExecute()
   {
     Calendar c = Calendar.getInstance();
@@ -196,7 +194,7 @@ public class TimeTrigger extends Trigger
     byte cDayOfWeek = Utils.getDayOfWeekBitMask(dayOfWeek);
 
     // If current day is in daysActive
-    if((daysActive & cDayOfWeek) != 0)
+    if ((daysActive & cDayOfWeek) != 0)
     {
       return true;
     }
@@ -207,11 +205,11 @@ public class TimeTrigger extends Trigger
   // Gets the functions of the specified state
   public ArrayList<Integer> getFunctions(STATE type)
   {
-    if(type == STATE.ACTIVE || type == STATE.FIRSTSTART)
+    if (type == STATE.ACTIVE || type == STATE.FIRSTSTART)
     {
       return startFunctionIDs;
     }
-    else if(type == STATE.INACTIVE)
+    else if (type == STATE.INACTIVE)
     {
       return stopFunctionIDs;
     }
@@ -222,11 +220,12 @@ public class TimeTrigger extends Trigger
   // Gets the functions of the current state
   public ArrayList<Integer> getFunctions()
   {
-    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART || state == STATE.FIRSTSTOP)
+    if (state == STATE.INACTIVE || state == STATE.FIRSTSTART
+        || state == STATE.FIRSTSTOP)
     {
       return startFunctionIDs;
     }
-    else if(state == STATE.ACTIVE)
+    else if (state == STATE.ACTIVE)
     {
       return stopFunctionIDs;
     }
@@ -237,11 +236,11 @@ public class TimeTrigger extends Trigger
   // Changes the state of the trigger.
   public void switchState()
   {
-    if(state == STATE.INACTIVE || state == STATE.FIRSTSTART)
+    if (state == STATE.INACTIVE || state == STATE.FIRSTSTART)
     {
       state = STATE.ACTIVE;
     }
-    else if(state == STATE.ACTIVE || state == STATE.FIRSTSTOP)
+    else if (state == STATE.ACTIVE || state == STATE.FIRSTSTOP)
     {
       state = STATE.INACTIVE;
     }
@@ -252,9 +251,9 @@ public class TimeTrigger extends Trigger
   // Removes the function with id 'id' from the trigger
   public void removeFunction(Integer id)
   {
-    for(int i = 0; i < startFunctionIDs.size(); i++)
+    for (int i = 0; i < startFunctionIDs.size(); i++)
     {
-      if(startFunctionIDs.get(i).equals(id))
+      if (startFunctionIDs.get(i).equals(id))
       {
         startFunctionIDs.remove(i);
         return;
@@ -274,27 +273,27 @@ public class TimeTrigger extends Trigger
     // StartTime
     // EndTime
     // Daysrepeated
-    
+
     String saveString = new String();
     saveString = name + Constants.CATEGORY_DELIM;
-    saveString += id  + Constants.CATEGORY_DELIM;
-    
+    saveString += id + Constants.CATEGORY_DELIM;
+
     // Save the start function ids
-    for(Integer i : startFunctionIDs)
+    for (Integer i : startFunctionIDs)
     {
       saveString += i.toString() + Constants.LIST_DELIM;
     }
     saveString += Constants.CATEGORY_DELIM;
-    
+
     // Save the stop function ids
-    for(Integer i : stopFunctionIDs)
+    for (Integer i : stopFunctionIDs)
     {
       saveString += i.toString() + Constants.LIST_DELIM;
     }
     saveString += Constants.CATEGORY_DELIM;
-    
+
     saveString += Long.toString(startTime) + Constants.CATEGORY_DELIM;
-    saveString += Long.toString(stopTime)  + Constants.CATEGORY_DELIM;
+    saveString += Long.toString(stopTime) + Constants.CATEGORY_DELIM;
     saveString += Byte.toString(daysActive);
     saveString += Constants.CATEGORY_DELIM;
     saveString += Integer.toString(priority);
@@ -310,14 +309,14 @@ public class TimeTrigger extends Trigger
 
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
-    i.putExtra(Constants.INTENT_KEY_EDITED_BOOL,true);
+    i.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
     i.putExtra(Constants.INTENT_KEY_PRIORITY, priority);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_TIME);
-    i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,daysActive);
+    i.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, daysActive);
     i.putExtra(Constants.INTENT_KEY_START_TIME, startTime);
     i.putExtra(Constants.INTENT_KEY_END_TIME, stopTime);
     int[] IDs = new int[startFunctionIDs.size()];
-    for(int a = 0; a < startFunctionIDs.size(); a++)
+    for (int a = 0; a < startFunctionIDs.size(); a++)
     {
       IDs[a] = startFunctionIDs.get(a);
     }

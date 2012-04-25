@@ -40,12 +40,12 @@ public class LocationTrigger extends Trigger
   public LocationTrigger(Context c, Bundle b, int newID)
   {
     initLocationTrigger(c);
-    
+
     isInside = false;
     name = b.getString(Constants.INTENT_KEY_NAME);
-    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
-     id = b.getInt(Constants.INTENT_KEY_EDITED_ID); 
+      id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
     }
     else
     {
@@ -56,12 +56,12 @@ public class LocationTrigger extends Trigger
     Log.d(TAG, "Made Location Manager");
 
     int[] enterIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
-    for(int i = 0; i < enterIDs.length; i++)
+    for (int i = 0; i < enterIDs.length; i++)
     {
       enterFunctionIDs.add(new Integer(enterIDs[i]));
     }
     priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
-    Log.d(TAG,"PRIORITY: " + priority);
+    Log.d(TAG, "PRIORITY: " + priority);
     // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
     // Constant value of 50 for radius
     radius = 50;
@@ -70,7 +70,7 @@ public class LocationTrigger extends Trigger
     l.setLongitude(b.getDouble(Constants.INTENT_KEY_LONGITUDE));
     center = l;
   }
-  
+
   // LocationTrigger
   // Constructor for creating location trigger from the persistent storage
   public LocationTrigger(String s)
@@ -78,44 +78,44 @@ public class LocationTrigger extends Trigger
     Context c = GoodVibrationsService.c;
     initLocationTrigger(c);
     isInside = false;
-    
+
     String[] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     String[] enterIDsString = categories[2].split(Constants.LIST_DELIM);
-    if(!enterIDsString[0].equals(""))
+    if (!enterIDsString[0].equals(""))
     {
-      for(String stringID : enterIDsString)
+      for (String stringID : enterIDsString)
       {
         enterFunctionIDs.add(new Integer(stringID).intValue());
       }
     }
 
     String[] exitIDsString = categories[3].split(Constants.LIST_DELIM);
-    if(!exitIDsString[0].equals(""))
+    if (!exitIDsString[0].equals(""))
     {
-      for(String stringID : exitIDsString)
+      for (String stringID : exitIDsString)
       {
         exitFunctionIDs.add(new Integer(stringID).intValue());
       }
     }
-    
+
     Location l = new Location("");
     l.setLatitude(new Double(categories[4]));
     l.setLongitude(new Double(categories[5]));
     center = l;
-    
+
     radius = new Float(categories[6]).floatValue();
     priority = new Integer(categories[7]).intValue();
-    
-    Log.d(TAG,name);
+
+    Log.d(TAG, name);
     Log.d(TAG, new Integer(id).toString());
-    Log.d(TAG,enterFunctionIDs.toString());
-    Log.d(TAG,exitFunctionIDs.toString());
-    Log.d(TAG,l.toString());
-    Log.d(TAG,new Float(radius).toString());
+    Log.d(TAG, enterFunctionIDs.toString());
+    Log.d(TAG, exitFunctionIDs.toString());
+    Log.d(TAG, l.toString());
+    Log.d(TAG, new Float(radius).toString());
   }
-  
+
   // initLocationTrigger
   // Called by both constructors to get the GPS started and
   // some variables initialized
@@ -147,14 +147,14 @@ public class LocationTrigger extends Trigger
 
     Log.d(TAG, "Got location" + myLocation);
     Log.d(TAG, "Proider: " + bestProvider);
-    
+
     enterFunctionIDs = new ArrayList<Integer>();
     exitFunctionIDs = new ArrayList<Integer>();
   }
-  
+
   public boolean isStarting()
   {
-    if(isInside)
+    if (isInside)
     {
       return false;
     }
@@ -163,14 +163,14 @@ public class LocationTrigger extends Trigger
       return true;
     }
   }
-  
+
   // removeFunction
   // Removes a function that is called by this location trigger
   public void removeFunction(Integer id)
   {
-    for(int i = 0; i < enterFunctionIDs.size(); i++)
+    for (int i = 0; i < enterFunctionIDs.size(); i++)
     {
-      if(enterFunctionIDs.get(i).equals(id))
+      if (enterFunctionIDs.get(i).equals(id))
       {
         enterFunctionIDs.remove(i);
         return;
@@ -183,7 +183,7 @@ public class LocationTrigger extends Trigger
   public long getSleepTime()
   {
     // TODO Should sleep time depend on the last time the trigger was called?
-    
+
     // Check location every 5 minutes
     // return 300000;
 
@@ -196,7 +196,7 @@ public class LocationTrigger extends Trigger
   // current location
   public ArrayList<Integer> getFunctions()
   {
-    if(myLocation.distanceTo(center) > radius)
+    if (myLocation.distanceTo(center) > radius)
     {
       return exitFunctionIDs;
     }
@@ -214,7 +214,7 @@ public class LocationTrigger extends Trigger
   }
 
   // canExecute
-  // Determines if the trigger should execute.  Based on the last exectued
+  // Determines if the trigger should execute. Based on the last exectued
   // location and the current location
   public boolean canExecute(int priority)
   {
@@ -222,21 +222,24 @@ public class LocationTrigger extends Trigger
       return false;
     return true;
   }
-  
+
   public boolean canExecute()
   {
     Log.d(TAG, "canExecute()");
-    if(myLocation != null)
+    if (myLocation != null)
     {
       // Get new location and calculate distance to target
-      Log.d(TAG, "LAT/LON " + myLocation.getLatitude() + "/" + myLocation.getLongitude());
+      Log.d(
+          TAG,
+          "LAT/LON " + myLocation.getLatitude() + "/"
+              + myLocation.getLongitude());
       double dist = myLocation.distanceTo(center);
       boolean isNowInside = (dist < radius);
       Log.d(TAG, "center: " + center);
       Log.d(TAG, "dist: " + dist + " Radius: " + radius);
       Log.d(TAG, "IsnowInside: " + isNowInside);
 
-      if(isNowInside != isInside)
+      if (isNowInside != isInside)
       {
         isInside = isNowInside;
         return true;
@@ -256,24 +259,15 @@ public class LocationTrigger extends Trigger
   // addFunction
   // Adds a functionID to either the start or stop list
   /*
-  public boolean addFunction(boolean type, Integer f)
-  {
-    if(type == ENTERFUNCTION)
-    {
-      enterFunctionIDs.add(f);
-    }
-    else if(type == EXITFUNCTION)
-    {    
-      exitFunctionIDs.add(f);
-    }
-    return true;
-  }
-  */
+   * public boolean addFunction(boolean type, Integer f) { if(type ==
+   * ENTERFUNCTION) { enterFunctionIDs.add(f); } else if(type == EXITFUNCTION) {
+   * exitFunctionIDs.add(f); } return true; }
+   */
 
   @Override
   public void addFunction(Integer fid, boolean isInverse)
   {
-    if(isInverse)
+    if (isInverse)
     {
       exitFunctionIDs.add(fid);
     }
@@ -282,28 +276,31 @@ public class LocationTrigger extends Trigger
       enterFunctionIDs.add(fid);
     }
   }
-  
-  // This class changes the local location variable whenever the 
+
+  // This class changes the local location variable whenever the
   // phones location is updated
   private class GPSLocationListener implements LocationListener
   {
     public void onLocationChanged(Location location)
     {
       Log.d(TAG, "Location Listener Called");
-      if(location != null)
+      if (location != null)
       {
         myLocation = location;
       }
     }
 
     public void onProviderDisabled(String arg0)
-    {}
+    {
+    }
 
     public void onProviderEnabled(String provider)
-    {}
+    {
+    }
 
     public void onStatusChanged(String provider, int status, Bundle extras)
-    {}
+    {
+    }
   }
 
   // getInternalSaveString
@@ -317,25 +314,25 @@ public class LocationTrigger extends Trigger
     // exitFunctionIDs
     // radius
     // center
-    
+
     String saveString;
     saveString = name + Constants.CATEGORY_DELIM;
-    saveString += id  + Constants.CATEGORY_DELIM;
-    
+    saveString += id + Constants.CATEGORY_DELIM;
+
     // Save the start function ids
-    for(Integer i : enterFunctionIDs)
+    for (Integer i : enterFunctionIDs)
     {
       saveString += i.toString() + Constants.LIST_DELIM;
     }
     saveString += Constants.CATEGORY_DELIM;
-    
+
     // Save the stop function ids
-    for(Integer i : exitFunctionIDs)
+    for (Integer i : exitFunctionIDs)
     {
       saveString += i.toString() + Constants.LIST_DELIM;
     }
     saveString += Constants.CATEGORY_DELIM;
-    
+
     saveString += new Double(center.getLatitude()).toString();
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Double(center.getLongitude()).toString();
@@ -344,7 +341,7 @@ public class LocationTrigger extends Trigger
     saveString += Constants.CATEGORY_DELIM;
     saveString += new Integer(priority).toString();
     saveString += Constants.CATEGORY_DELIM;
-    
+
     return saveString;
   }
 
@@ -355,17 +352,17 @@ public class LocationTrigger extends Trigger
 
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
-    i.putExtra(Constants.INTENT_KEY_PRIORITY,priority);
+    i.putExtra(Constants.INTENT_KEY_PRIORITY, priority);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
     i.putExtra(Constants.INTENT_KEY_LATITUDE, center.getLatitude());
     i.putExtra(Constants.INTENT_KEY_LONGITUDE, center.getLatitude());
     int[] IDs = new int[enterFunctionIDs.size()];
-    for(int a = 0; a < enterFunctionIDs.size(); a++)
+    for (int a = 0; a < enterFunctionIDs.size(); a++)
     {
       IDs[a] = enterFunctionIDs.get(a);
     }
     i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, IDs);
-    
+
     return i;
   }
 }

@@ -189,33 +189,46 @@ public class FunctionDisplayActivity extends Activity
               + functionNames[i]);
         }
       }
-      
-      else if(b.getInt(Constants.INTENT_TYPE)== Constants.INTENT_KEY_FUNCTION)
+
+      else if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION)
       {
         Log.d(TAG, "Got INTENT_LEY_FUCNTION");
-        Intent functionEditIntent = new Intent(getApplicationContext(),FunctionEditActivity.class);
+        Intent functionEditIntent = new Intent(getApplicationContext(),
+            FunctionEditActivity.class);
         functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
-        functionEditIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
-        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,b.getInt(Constants.INTENT_KEY_EDITED_ID));
+        functionEditIntent.putExtra(Constants.INTENT_KEY_NAME,
+            b.getString(Constants.INTENT_KEY_NAME));
+        functionEditIntent.putExtra(Constants.INTENT_KEY_EDITED_ID,
+            b.getInt(Constants.INTENT_KEY_EDITED_ID));
         int functionType = b.getInt(Constants.INTENT_KEY_TYPE);
         functionEditIntent.putExtra(Constants.INTENT_KEY_TYPE, functionType);
-        if( functionType == Constants.FUNCTION_TYPE_VOLUME ){
-          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME, b.getInt(Constants.INTENT_KEY_VOLUME));
-          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE, b.getBoolean(Constants.INTENT_KEY_VIBRATE));
-          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, b.getByte(Constants.INTENT_KEY_VOLUME_TYPES));
+        if (functionType == Constants.FUNCTION_TYPE_VOLUME)
+        {
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME,
+              b.getInt(Constants.INTENT_KEY_VOLUME));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
+              b.getBoolean(Constants.INTENT_KEY_VIBRATE));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES,
+              b.getByte(Constants.INTENT_KEY_VOLUME_TYPES));
         }
-        else if( functionType == Constants.FUNCTION_TYPE_RINGTONE ){
-          functionEditIntent.putExtra(Constants.INTENT_KEY_URI, b.getParcelable(Constants.INTENT_KEY_URI));
-          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE, b.getBoolean(Constants.INTENT_KEY_VIBRATE));
-          functionEditIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES, b.getByte(Constants.INTENT_KEY_TONE_TYPES));
+        else if (functionType == Constants.FUNCTION_TYPE_RINGTONE)
+        {
+          functionEditIntent.putExtra(Constants.INTENT_KEY_URI,
+              b.getParcelable(Constants.INTENT_KEY_URI));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
+              b.getBoolean(Constants.INTENT_KEY_VIBRATE));
+          functionEditIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES,
+              b.getByte(Constants.INTENT_KEY_TONE_TYPES));
         }
-        
-        else if( functionType == Constants.FUNCTION_TYPE_RINGTONE ){
-          functionEditIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, b.getParcelable(Constants.INTENT_KEY_IMAGEURI));
+
+        else if (functionType == Constants.FUNCTION_TYPE_RINGTONE)
+        {
+          functionEditIntent.putExtra(Constants.INTENT_KEY_IMAGEURI,
+              b.getParcelable(Constants.INTENT_KEY_IMAGEURI));
         }
-        
+
         startActivityForResult(functionEditIntent, 0);
-        
+
       }
     }
   }

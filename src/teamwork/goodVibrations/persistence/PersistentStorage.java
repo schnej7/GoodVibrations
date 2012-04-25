@@ -27,10 +27,10 @@ public class PersistentStorage
 
   public static ArrayList<Function> loadFunctions()
   {
-    Log.d(TAG,"loadFunction()");
+    Log.d(TAG, "loadFunction()");
     ArrayList<Function> ret = new ArrayList<Function>();
 
-    for(File f : new File(Constants.FUNC_DIR_PATH).listFiles())
+    for (File f : new File(Constants.FUNC_DIR_PATH).listFiles())
     {
       Function fnc = Function.reconstitute(readFile(f));
       ret.add(fnc);
@@ -41,7 +41,7 @@ public class PersistentStorage
 
   public static void saveFunctions(ArrayList<Function> functions)
   {
-    for(File f : new File(Constants.FUNC_DIR_PATH).listFiles())
+    for (File f : new File(Constants.FUNC_DIR_PATH).listFiles())
     {
       f.delete();
     }
@@ -49,19 +49,20 @@ public class PersistentStorage
     {
       PrintWriter out = null;
       File outputFile;
-      for(Function f : functions)
+      for (Function f : functions)
       {
-        outputFile = new File(Constants.FUNC_DIR_PATH, "function" + f.id + ".txt");
+        outputFile = new File(Constants.FUNC_DIR_PATH, "function" + f.id
+            + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(f.getSaveString());
-        if(out != null)
+        if (out != null)
         {
           out.close();
         }
       }
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -71,7 +72,7 @@ public class PersistentStorage
   {
     ArrayList<Trigger> ret = new ArrayList<Trigger>();
 
-    for(File f : new File(Constants.TRIG_DIR_PATH).listFiles())
+    for (File f : new File(Constants.TRIG_DIR_PATH).listFiles())
     {
       ret.add(Trigger.reconstitute(readFile(f)));
     }
@@ -81,7 +82,7 @@ public class PersistentStorage
 
   public static void saveTriggers(ArrayList<Trigger> triggers)
   {
-    for(File f : new File(Constants.TRIG_DIR_PATH).listFiles())
+    for (File f : new File(Constants.TRIG_DIR_PATH).listFiles())
     {
       f.delete();
     }
@@ -89,19 +90,20 @@ public class PersistentStorage
     {
       PrintWriter out = null;
       File outputFile;
-      for(Trigger t : triggers)
+      for (Trigger t : triggers)
       {
-        outputFile = new File(Constants.TRIG_DIR_PATH, "trigger" + t.id + ".txt");
+        outputFile = new File(Constants.TRIG_DIR_PATH, "trigger" + t.id
+            + ".txt");
         outputFile.createNewFile();
         out = new PrintWriter(new FileWriter(outputFile));
         out.write(t.getSaveString());
-        if(out != null)
+        if (out != null)
         {
           out.close();
         }
       }
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }
@@ -114,7 +116,7 @@ public class PersistentStorage
     trigDir.mkdirs();
     funcDir.mkdirs();
 
-    Log.d(TAG,Constants.FUNC_DIR_PATH);
+    Log.d(TAG, Constants.FUNC_DIR_PATH);
   }
 
   private static String readFile(File f)
@@ -126,7 +128,7 @@ public class PersistentStorage
       StringBuilder stringBuilder = new StringBuilder();
       String ls = System.getProperty("line.separator");
 
-      while((line = reader.readLine()) != null)
+      while ((line = reader.readLine()) != null)
       {
         stringBuilder.append(line);
         stringBuilder.append(ls);
@@ -134,7 +136,7 @@ public class PersistentStorage
       reader.close();
       return stringBuilder.toString();
     }
-    catch(IOException e)
+    catch (IOException e)
     {
       e.printStackTrace();
     }

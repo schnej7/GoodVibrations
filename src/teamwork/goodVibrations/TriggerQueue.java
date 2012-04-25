@@ -27,7 +27,7 @@ public class TriggerQueue
     {
       public int compare(Trigger t1, Trigger t2)
       {
-        if(t1.getSleepTime() == t2.getSleepTime())
+        if (t1.getSleepTime() == t2.getSleepTime())
         {
           return 0;
         }
@@ -37,10 +37,11 @@ public class TriggerQueue
 
     triggers = new ArrayList<Trigger>();
   }
+
   public TriggerQueue(Collection<Trigger> c)
   {
     this();
-    for(Trigger t : c)
+    for (Trigger t : c)
     {
       add(t);
     }
@@ -52,6 +53,7 @@ public class TriggerQueue
   {
     triggers.add(t);
   }
+
   public synchronized ArrayList<Trigger> getTriggers()
   {
     return triggers;
@@ -61,31 +63,31 @@ public class TriggerQueue
   // Removes a trigger from the queue defined by index
   public void remove(int index)
   {
-    for(int i = 0; i < triggers.size(); i++)
+    for (int i = 0; i < triggers.size(); i++)
     {
       Trigger t = triggers.get(i);
-      if(t.id == index)
+      if (t.id == index)
       {
         triggers.remove(i);
       }
     }
   }
-  
+
   public Intent getTriggerIntent(int id)
   {
-    for(Trigger t : triggers)
+    for (Trigger t : triggers)
     {
       // Found the trigger
-      if(t.id == id)
+      if (t.id == id)
       {
         /*
-        Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
-        
-        i.putExtra(Constants.INTENT_KEY_NAME,t.name);
-        i.putExtra(Constants.INTENT_KEY_, value)
-        
-        return i;
-        */
+         * Intent i = new Intent(Constants.SERVICE_DATA_TRIGGER_MESSAGE);
+         * 
+         * i.putExtra(Constants.INTENT_KEY_NAME,t.name);
+         * i.putExtra(Constants.INTENT_KEY_, value)
+         * 
+         * return i;
+         */
       }
     }
     return null;
@@ -99,7 +101,7 @@ public class TriggerQueue
     {
       return Collections.min(triggers, comparator);
     }
-    catch(NoSuchElementException e)
+    catch (NoSuchElementException e)
     {
       return null;
     }
@@ -110,24 +112,24 @@ public class TriggerQueue
   public void switchState(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
-    while(iter.hasNext())
+    while (iter.hasNext())
     {
       Trigger t = iter.next();
-      if(t.id == id)
+      if (t.id == id)
       {
         t.switchState();
         return;
       }
     }
   }
-  
+
   public Trigger get(int id)
   {
     Iterator<Trigger> iter = triggers.iterator();
-    while(iter.hasNext())
+    while (iter.hasNext())
     {
       Trigger t = iter.next();
-      if(t.id == id)
+      if (t.id == id)
       {
         return t;
       }
@@ -142,7 +144,7 @@ public class TriggerQueue
     Iterator<Trigger> iter = triggers.iterator();
     int[] IDs = new int[triggers.size()];
     int i = 0;
-    while(iter.hasNext())
+    while (iter.hasNext())
     {
       IDs[i] = iter.next().id;
       i++;
@@ -158,7 +160,7 @@ public class TriggerQueue
     Iterator<Trigger> iter = triggers.iterator();
     String[] names = new String[triggers.size()];
     int i = 0;
-    while(iter.hasNext())
+    while (iter.hasNext())
     {
       names[i] = iter.next().name;
       i++;

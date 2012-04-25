@@ -22,12 +22,14 @@ public class TimeTriggerSetTimesActivity extends Activity
     setContentView(R.layout.set_times);
 
     Bundle b = getIntent().getExtras();
-    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
-    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-    
+    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
+        b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+    mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+        b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+
     startTimePicker = (TimePicker) findViewById(R.id.startPicker);
     endTimePicker = (TimePicker) findViewById(R.id.endPicker);
-    
+
   }
 
   protected void onStart()
@@ -40,21 +42,29 @@ public class TimeTriggerSetTimesActivity extends Activity
     {
       public void onClick(View v)
       {
-        Intent TimeTriggerDaysIntent = new Intent(getApplicationContext(), TimeTriggerSetDaysActivity.class);
+        Intent TimeTriggerDaysIntent = new Intent(getApplicationContext(),
+            TimeTriggerSetDaysActivity.class);
         try
         {
           Bundle b = mIntent.getExtras();
-          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
-          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.calculateTimeInMillis(startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute()));
-          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.calculateTimeInMillis(endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute()));
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
+              b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+              b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils
+              .calculateTimeInMillis(startTimePicker.getCurrentHour(),
+                  startTimePicker.getCurrentMinute()));
+          TimeTriggerDaysIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils
+              .calculateTimeInMillis(endTimePicker.getCurrentHour(),
+                  endTimePicker.getCurrentMinute()));
         }
-        catch(NullPointerException e)
+        catch (NullPointerException e)
         {
           // If we get a NullPointerException that means that this hasn't been
           // called so there is no data to be passed anyway.
         }
-        startActivityForResult(TimeTriggerDaysIntent, Constants.REQUEST_CODE_DAY_PICKER);
+        startActivityForResult(TimeTriggerDaysIntent,
+            Constants.REQUEST_CODE_DAY_PICKER);
       }
     });
 
@@ -63,34 +73,44 @@ public class TimeTriggerSetTimesActivity extends Activity
     {
       public void onClick(View v)
       {
-        mIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils.calculateTimeInMillis(startTimePicker.getCurrentHour(), startTimePicker.getCurrentMinute()));
-        mIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils.calculateTimeInMillis(endTimePicker.getCurrentHour(), endTimePicker.getCurrentMinute()));
+        mIntent.putExtra(Constants.INTENT_KEY_START_TIME, Utils
+            .calculateTimeInMillis(startTimePicker.getCurrentHour(),
+                startTimePicker.getCurrentMinute()));
+        mIntent.putExtra(Constants.INTENT_KEY_END_TIME, Utils
+            .calculateTimeInMillis(endTimePicker.getCurrentHour(),
+                endTimePicker.getCurrentMinute()));
 
         setResult(RESULT_OK, mIntent);
         finish(); // Return to TimeTriggerEditActivity.onActivityResult()
       }
     });
-    
-    //Look for bundle with time data in it
-    try{
-      Log.d( TAG, "Trying to get intent");
+
+    // Look for bundle with time data in it
+    try
+    {
+      Log.d(TAG, "Trying to get intent");
       Bundle b = getIntent().getExtras();
       long startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
       long endTime = b.getLong(Constants.INTENT_KEY_END_TIME);
       startTimePicker.setCurrentHour(Utils.getHoursFromMillis(startTime));
-      Log.d(TAG,  "Start hour: " + Utils.getHoursFromMillis(startTime));
+      Log.d(TAG, "Start hour: " + Utils.getHoursFromMillis(startTime));
       startTimePicker.setCurrentMinute(Utils.getMinutesFromMillis(startTime));
       endTimePicker.setCurrentHour(Utils.getHoursFromMillis(endTime));
       endTimePicker.setCurrentMinute(Utils.getMinutesFromMillis(endTime));
       Log.d(TAG, "GOT INTENT");
     }
-    catch(NullPointerException e){
-      
-      startTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils.getTimeOfDayInMillis()));
-      startTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils.getTimeOfDayInMillis()));
-      endTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils.getTimeOfDayInMillis()));
-      endTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils.getTimeOfDayInMillis()));
-      Log.d( TAG, "No bundle to set to");
+    catch (NullPointerException e)
+    {
+
+      startTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils
+          .getTimeOfDayInMillis()));
+      startTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils
+          .getTimeOfDayInMillis()));
+      endTimePicker.setCurrentHour(Utils.getHoursFromMillis(Utils
+          .getTimeOfDayInMillis()));
+      endTimePicker.setCurrentHour(Utils.getMinutesFromMillis(Utils
+          .getTimeOfDayInMillis()));
+      Log.d(TAG, "No bundle to set to");
     }
   }
 
@@ -98,20 +118,22 @@ public class TimeTriggerSetTimesActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
-      if(requestCode == Constants.REQUEST_CODE_DAY_PICKER)
+      if (requestCode == Constants.REQUEST_CODE_DAY_PICKER)
       {
         Log.d(TAG, "Daypicker Returned");
         Bundle b = data.getExtras();
-        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
-        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE,
+            b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
+            b.getBoolean(Constants.INTENT_KEY_REPEAT_DAYS_BOOL));
         long startTime = b.getLong(Constants.INTENT_KEY_START_TIME);
         long endTime = b.getLong(Constants.INTENT_KEY_END_TIME);
         mIntent.putExtra(Constants.INTENT_KEY_START_TIME, startTime);
-        mIntent.putExtra(Constants.INTENT_KEY_END_TIME,endTime);
-        getIntent().putExtra(Constants.INTENT_KEY_START_TIME,startTime);
-        getIntent().putExtra(Constants.INTENT_KEY_END_TIME,endTime);
+        mIntent.putExtra(Constants.INTENT_KEY_END_TIME, endTime);
+        getIntent().putExtra(Constants.INTENT_KEY_START_TIME, startTime);
+        getIntent().putExtra(Constants.INTENT_KEY_END_TIME, endTime);
       }
     }
     else

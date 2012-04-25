@@ -30,30 +30,33 @@ public abstract class Trigger
   public abstract Intent getTriggerAsIntent();
 
   abstract public boolean canExecute();
+
   abstract public boolean canExecute(int priority);
 
   abstract String getInternalSaveString();
-  
+
   public abstract void addFunction(Integer fid, boolean isInverse);
-  
+
   public abstract boolean isStarting();
 
   public String getSaveString()
   {
-    return type.getTypeInt() + Constants.SAVE_STRING_DELIM + getInternalSaveString();
+    return type.getTypeInt() + Constants.SAVE_STRING_DELIM
+        + getInternalSaveString();
   }
 
   public static Trigger reconstitute(String s)
   {
-    if(s == null)
+    if (s == null)
       return null;
     try
     {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      return (Trigger) TriggerType.getType(i).getTriggerClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
+      return (Trigger) TriggerType.getType(i).getTriggerClass()
+          .getConstructor(new Class<?>[] { String.class }).newInstance(a[1]);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       e.printStackTrace();
     }
@@ -62,14 +65,13 @@ public abstract class Trigger
 
   public enum TriggerType
   {
-    TIME(0, TimeTrigger.class),
-    LOCATION(1, LocationTrigger.class);
+    TIME(0, TimeTrigger.class), LOCATION(1, LocationTrigger.class);
 
-    private static HashMap<Integer, TriggerType> lookup = new HashMap<Integer,TriggerType>();
+    private static HashMap<Integer, TriggerType> lookup = new HashMap<Integer, TriggerType>();
 
     static
     {
-      for(TriggerType t : EnumSet.allOf(TriggerType.class))
+      for (TriggerType t : EnumSet.allOf(TriggerType.class))
       {
         lookup.put(t.type, t);
       }

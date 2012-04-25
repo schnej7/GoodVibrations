@@ -25,41 +25,47 @@ public class TriggerEditActivity extends Activity
     super.onStart();
     Log.d(TAG, "onStart()");
 
-    //add time trigger button
+    // add time trigger button
     final Button buttonAddTimeTrigger = (Button) findViewById(R.id.buttonAddTimeTrigger);
     buttonAddTimeTrigger.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
-        Intent TimeTriggerEditIntent = new Intent(getApplicationContext(), TimeTriggerEditActivity.class);
-        TimeTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
-        startActivityForResult(TimeTriggerEditIntent, Constants.REQUEST_CODE_TIME);
+        Intent TimeTriggerEditIntent = new Intent(getApplicationContext(),
+            TimeTriggerEditActivity.class);
+        TimeTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL,
+            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
+        startActivityForResult(TimeTriggerEditIntent,
+            Constants.REQUEST_CODE_TIME);
       }
     });
 
-    //add location trigger button
+    // add location trigger button
     final Button buttonAddLocationTrigger = (Button) findViewById(R.id.buttonAddLocTrigger);
     buttonAddLocationTrigger.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
-        Intent LocationTriggerEditIntent = new Intent(getApplicationContext(), LocationTriggerEditActivity.class);
-        LocationTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
-        startActivityForResult(LocationTriggerEditIntent, Constants.REQUEST_CODE_LOCATION);
+        Intent LocationTriggerEditIntent = new Intent(getApplicationContext(),
+            LocationTriggerEditActivity.class);
+        LocationTriggerEditIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL,
+            b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL));
+        startActivityForResult(LocationTriggerEditIntent,
+            Constants.REQUEST_CODE_LOCATION);
       }
     });
   }
 
-  //on activity result -> pass the data on
+  // on activity result -> pass the data on
   @Override
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
     Log.d(TAG, "onActivityResult()");
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
       Bundle b = data.getExtras();
-      switch(requestCode)
+      switch (requestCode)
       {
         case Constants.REQUEST_CODE_TIME:
           Log.d(TAG, "ST: " + b.getLong(Constants.INTENT_KEY_START_TIME));

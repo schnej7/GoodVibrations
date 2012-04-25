@@ -18,25 +18,27 @@ public abstract class Function
   public abstract Function execute();
 
   public abstract String getInternalSaveString();
-  
+
   public abstract Intent getFunctionAsIntent();
 
   public String getSaveString()
   {
-    return type.getTypeInt() + Constants.SAVE_STRING_DELIM + getInternalSaveString();
+    return type.getTypeInt() + Constants.SAVE_STRING_DELIM
+        + getInternalSaveString();
   }
 
   public static Function reconstitute(String s)
   {
-    if(s == null)
+    if (s == null)
       return null;
     try
-    { 
+    {
       String[] a = s.split(Constants.SAVE_STRING_DELIM);
       int i = Integer.valueOf(a[0]);
-      return (Function) FunctionType.getType(i).getFunctionClass().getConstructor(new Class<?>[] {String.class}).newInstance(a[1]);
+      return (Function) FunctionType.getType(i).getFunctionClass()
+          .getConstructor(new Class<?>[] { String.class }).newInstance(a[1]);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       e.printStackTrace();
     }
@@ -45,16 +47,14 @@ public abstract class Function
 
   public enum FunctionType
   {
-    RINGTONE(0, RingtoneFunction.class),
-    UI(1, FunctionForUI.class),
-    RING_VOLUME(2, SetVolumeFunction.class),
-    WALLPAPER(3, WallpaperFunction.class);
+    RINGTONE(0, RingtoneFunction.class), UI(1, FunctionForUI.class), RING_VOLUME(
+        2, SetVolumeFunction.class), WALLPAPER(3, WallpaperFunction.class);
 
     private static HashMap<Integer, FunctionType> lookup = new HashMap<Integer, FunctionType>();
 
     static
     {
-      for(FunctionType t : EnumSet.allOf(FunctionType.class))
+      for (FunctionType t : EnumSet.allOf(FunctionType.class))
       {
         lookup.put(t.type, t);
       }
@@ -83,6 +83,6 @@ public abstract class Function
     {
       return type;
     }
-    
+
   }
 }

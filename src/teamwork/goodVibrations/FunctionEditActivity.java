@@ -22,7 +22,7 @@ import android.widget.Toast;
 public class FunctionEditActivity extends Activity
 {
   private static final String TAG = "FunctionEditActivity";
-  final String [] wallpaperItems = new String [] {"Select Image"};
+  final String[] wallpaperItems = new String[] { "Select Image" };
   private ArrayAdapter<String> adapter;
   AlertDialog dialog;
   AlertDialog.Builder builder;
@@ -30,22 +30,26 @@ public class FunctionEditActivity extends Activity
   Uri ringtone_uri;
   Uri imageUri;
   LinearLayout llVolumeOptions;
-  LinearLayout llRingtoneOptions; 
-  LinearLayout llWallpaperOptions; 
+  LinearLayout llRingtoneOptions;
+  LinearLayout llWallpaperOptions;
   int returnedFromImageSelector;
   private boolean beingEdited = false;
   private Bundle savedInstance;
   private int myId;
-  //final String [] items = new String [] {"Select from Wallpapers", "Select from Gallery"};
+
+  // final String [] items = new String [] {"Select from Wallpapers",
+  // "Select from Gallery"};
 
   public void onCreate(Bundle savedInstanceState)
   {
-    adapter = new ArrayAdapter<String> (this, android.R.layout.select_dialog_item, wallpaperItems);
+    adapter = new ArrayAdapter<String>(this,
+        android.R.layout.select_dialog_item, wallpaperItems);
     builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
     savedInstance = getIntent().getExtras();
     beingEdited = savedInstance.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
-    if( beingEdited ){
+    if (beingEdited)
+    {
       myId = savedInstance.getInt(Constants.INTENT_KEY_EDITED_ID);
     }
     Log.d(TAG, "onCreate()");
@@ -56,21 +60,21 @@ public class FunctionEditActivity extends Activity
   {
     super.onStart();
     Log.d(TAG, "onStart()");
-    
-    
+
     llVolumeOptions = (LinearLayout) findViewById(R.id.llFunctionVolume);
-    llRingtoneOptions= (LinearLayout) findViewById(R.id.llRingTone);
+    llRingtoneOptions = (LinearLayout) findViewById(R.id.llRingTone);
     llWallpaperOptions = (LinearLayout) findViewById(R.id.llWallpaper);
     String array_spinner[];
     array_spinner = new String[3];
     array_spinner[Constants.FUNCTION_TYPE_VOLUME] = "Volume";
     array_spinner[Constants.FUNCTION_TYPE_RINGTONE] = "Ringtone";
     array_spinner[Constants.FUNCTION_TYPE_WALLPAPER] = "Wallpaper";
-    returnedFromImageSelector = mIntent.getIntExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
-    
+    returnedFromImageSelector = mIntent.getIntExtra(
+        Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
+
     final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
-    final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);  
- 
+    final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
+
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
     final CheckBox chkVolumeVibrate = (CheckBox) findViewById(R.id.chkVolumeVibrate);
     final CheckBox chkRingtoneVibrate = (CheckBox) findViewById(R.id.chkRingtoneVibrate);
@@ -84,92 +88,105 @@ public class FunctionEditActivity extends Activity
     final CheckBox chkAlarmTone = (CheckBox) findViewById(R.id.chkAlarmTone);
     final CheckBox chkNotificationTone = (CheckBox) findViewById(R.id.chkNotificationTone);
 
-    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_list_item, array_spinner);
+    ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
+        R.layout.spinner_list_item, array_spinner);
     spinnerType.setAdapter(spinnerAdapter);
-    spinnerType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-    {
-      public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-      {
-        Log.d(TAG,"rfIS = " + returnedFromImageSelector);
-        if (returnedFromImageSelector == 1)
+    spinnerType
+        .setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
-         //if the activity returned from an image selector, reset the case and selected view thingy.
-         i = 2; 
-         spinnerType.setSelection(2);
-        }
-        returnedFromImageSelector = 0;
-        mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
-        switch(i)
-        {
-          case 0:
-            llVolumeOptions.setVisibility(View.VISIBLE);
-            llRingtoneOptions.setVisibility(View.GONE);
-            llWallpaperOptions.setVisibility(View.GONE);
-            break;
-          case 1:
-            llVolumeOptions.setVisibility(View.GONE);
-            llRingtoneOptions.setVisibility(View.VISIBLE);
-            llWallpaperOptions.setVisibility(View.GONE);
-            break;
-          case 2:
-            llVolumeOptions.setVisibility(View.GONE);
-            llRingtoneOptions.setVisibility(View.GONE);
-            llWallpaperOptions.setVisibility(View.VISIBLE);
-            break;
-          default:
-            llVolumeOptions.setVisibility(View.GONE);
-            llRingtoneOptions.setVisibility(View.GONE);
-            llWallpaperOptions.setVisibility(View.GONE);
-            break;
-        }
-      }
+          public void onItemSelected(AdapterView<?> adapterView, View view,
+              int i, long l)
+          {
+            Log.d(TAG, "rfIS = " + returnedFromImageSelector);
+            if (returnedFromImageSelector == 1)
+            {
+              // if the activity returned from an image selector, reset the case
+              // and selected view thingy.
+              i = 2;
+              spinnerType.setSelection(2);
+            }
+            returnedFromImageSelector = 0;
+            mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
+            switch (i)
+            {
+              case 0:
+                llVolumeOptions.setVisibility(View.VISIBLE);
+                llRingtoneOptions.setVisibility(View.GONE);
+                llWallpaperOptions.setVisibility(View.GONE);
+                break;
+              case 1:
+                llVolumeOptions.setVisibility(View.GONE);
+                llRingtoneOptions.setVisibility(View.VISIBLE);
+                llWallpaperOptions.setVisibility(View.GONE);
+                break;
+              case 2:
+                llVolumeOptions.setVisibility(View.GONE);
+                llRingtoneOptions.setVisibility(View.GONE);
+                llWallpaperOptions.setVisibility(View.VISIBLE);
+                break;
+              default:
+                llVolumeOptions.setVisibility(View.GONE);
+                llRingtoneOptions.setVisibility(View.GONE);
+                llWallpaperOptions.setVisibility(View.GONE);
+                break;
+            }
+          }
 
-      public void onNothingSelected(AdapterView<?> adapterView)
-      {
-        return;
-      }
-    });
-    
+          public void onNothingSelected(AdapterView<?> adapterView)
+          {
+            return;
+          }
+        });
+
     final Button buttonSelectWallpaper = (Button) findViewById(R.id.btn_choose);
     buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
     {
 
       public void onClick(View v)
       {
-        
-        
+
         builder.setTitle("Select Image");
-        builder.setAdapter( adapter, new DialogInterface.OnClickListener() {
-           public void onClick( DialogInterface dialog, int item ) { 
-             if (item == 0) {
-               Intent intent = new Intent();
-             
-               intent.setType("image/*");
-               intent.setAction(Intent.ACTION_GET_CONTENT);
-               
-               startActivityForResult(Intent.createChooser(intent, "Complete action using"), Constants.PICK_FROM_FILE); 
-             } 
-           }
-        } );
-        
-       dialog = builder.create();
-       
-       Button button   = (Button) findViewById(R.id.btn_choose);
-       //ImageView mImageView  = (ImageView) findViewById(R.id.iv_photo);
-       
-       ((Button) findViewById(R.id.btn_choose)).setOnClickListener(new View.OnClickListener() {
-           public void onClick(View v) {
-               dialog.show();
-           }
-       });
-       button.setOnClickListener(new View.OnClickListener() {
-         public void onClick(View v) {
-          dialog.show();
-         }
-      });
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener()
+        {
+          public void onClick(DialogInterface dialog, int item)
+          {
+            if (item == 0)
+            {
+              Intent intent = new Intent();
+
+              intent.setType("image/*");
+              intent.setAction(Intent.ACTION_GET_CONTENT);
+
+              startActivityForResult(
+                  Intent.createChooser(intent, "Complete action using"),
+                  Constants.PICK_FROM_FILE);
+            }
+          }
+        });
+
+        dialog = builder.create();
+
+        Button button = (Button) findViewById(R.id.btn_choose);
+        // ImageView mImageView = (ImageView) findViewById(R.id.iv_photo);
+
+        ((Button) findViewById(R.id.btn_choose))
+            .setOnClickListener(new View.OnClickListener()
+            {
+              public void onClick(View v)
+              {
+                dialog.show();
+              }
+            });
+        button.setOnClickListener(new View.OnClickListener()
+        {
+          public void onClick(View v)
+          {
+            dialog.show();
+          }
+        });
 
       }
-      
+
     });
 
     // The Select Ringtone button
@@ -181,12 +198,11 @@ public class FunctionEditActivity extends Activity
       public void onClick(View v)
       {
         Intent i = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);
-        i.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,RingtoneManager.TYPE_ALL);
+        i.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE,
+            RingtoneManager.TYPE_ALL);
         startActivityForResult(i, Constants.REQUEST_CODE_RINGTONE_PICKER);
       }
     });
-    
-    
 
     final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
     buttonAdd.setOnClickListener(new View.OnClickListener()
@@ -195,53 +211,61 @@ public class FunctionEditActivity extends Activity
       {
         int i = spinnerType.getSelectedItemPosition();
         mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
-        if( beingEdited ){
+        if (beingEdited)
+        {
           mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, myId);
-          Log.d(TAG,"PUTTING ID: " + myId);
+          Log.d(TAG, "PUTTING ID: " + myId);
         }
         mIntent.putExtra(Constants.INTENT_KEY_TYPE, i);
-        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
+        mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText()
+            .toString());
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
-        switch(i)
+        switch (i)
         {
           case Constants.FUNCTION_TYPE_VOLUME:
             // Use the volume fields
             // Convert 0-99 volume to 0 to MaxVol
             float progress = (float) sliderVolume.getProgress();
             int volume = new Float(progress).intValue();
-            Log.d(TAG,"PROGRESS: " + progress + " VOLUME: " + volume);
-            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_VOLUME);
+            Log.d(TAG, "PROGRESS: " + progress + " VOLUME: " + volume);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE,
+                Constants.FUNCTION_TYPE_VOLUME);
             mIntent.putExtra(Constants.INTENT_KEY_VOLUME, volume);
-            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkVolumeVibrate.isChecked());
-            
-            byte volumeTypes = (byte)0;
+            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
+                chkVolumeVibrate.isChecked());
+
+            byte volumeTypes = (byte) 0;
             volumeTypes |= Utils.booleanToByte(chkRingtoneVolume.isChecked());
             volumeTypes |= Utils.booleanToByte(chkMediaVolume.isChecked()) << 1;
             volumeTypes |= Utils.booleanToByte(chkAlarmVolume.isChecked()) << 2;
-            volumeTypes |= Utils.booleanToByte(chkNotificationVolume.isChecked()) << 3;
-            
-            Log.d(TAG,"VOLUMETYPES " + volumeTypes);
-            
+            volumeTypes |= Utils.booleanToByte(chkNotificationVolume
+                .isChecked()) << 3;
+
+            Log.d(TAG, "VOLUMETYPES " + volumeTypes);
+
             mIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, volumeTypes);
-            
+
             break;
           case Constants.FUNCTION_TYPE_RINGTONE:
             // Use the ring tone fields
-            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE,
+                Constants.FUNCTION_TYPE_RINGTONE);
             mIntent.putExtra(Constants.INTENT_KEY_URI, ringtone_uri);
-            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE, chkRingtoneVibrate.isChecked());
-            
-            byte toneTypes = (byte)0;
+            mIntent.putExtra(Constants.INTENT_KEY_VIBRATE,
+                chkRingtoneVibrate.isChecked());
+
+            byte toneTypes = (byte) 0;
             toneTypes |= Utils.booleanToByte(chkRingtoneTone.isChecked());
             toneTypes |= Utils.booleanToByte(chkAlarmTone.isChecked()) << 1;
             toneTypes |= Utils.booleanToByte(chkNotificationTone.isChecked()) << 2;
             mIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
-            
+
             break;
           case Constants.FUNCTION_TYPE_WALLPAPER:
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
             mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
-            mIntent.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_WALLPAPER);
+            mIntent.putExtra(Constants.INTENT_KEY_TYPE,
+                Constants.FUNCTION_TYPE_WALLPAPER);
             break;
           default:
             // Do nothing, this should never happen
@@ -253,27 +277,33 @@ public class FunctionEditActivity extends Activity
     });
 
     txtName.setText(savedInstance.getString(Constants.INTENT_KEY_NAME));
-    Log.d(TAG, "INTENT_KEY_NAME: " + savedInstance.getString(Constants.INTENT_KEY_NAME));
+    Log.d(
+        TAG,
+        "INTENT_KEY_NAME: "
+            + savedInstance.getString(Constants.INTENT_KEY_NAME));
     switch (savedInstance.getInt(Constants.INTENT_KEY_TYPE))
     {
       case Constants.FUNCTION_TYPE_VOLUME:
         spinnerType.setSelection(0);
-        sliderVolume.setProgress(savedInstance.getInt(Constants.INTENT_KEY_VOLUME));
-        chkVolumeVibrate.setChecked(savedInstance.getBoolean(Constants.INTENT_KEY_VIBRATE));
-        byte volumeTypes = savedInstance.getByte(Constants.INTENT_KEY_VOLUME_TYPES);
-        if((volumeTypes & (byte)1) != 0)
+        sliderVolume.setProgress(savedInstance
+            .getInt(Constants.INTENT_KEY_VOLUME));
+        chkVolumeVibrate.setChecked(savedInstance
+            .getBoolean(Constants.INTENT_KEY_VIBRATE));
+        byte volumeTypes = savedInstance
+            .getByte(Constants.INTENT_KEY_VOLUME_TYPES);
+        if ((volumeTypes & (byte) 1) != 0)
         {
           chkRingtoneVolume.setChecked(true);
         }
-        if((volumeTypes & (byte)2) != 0)
+        if ((volumeTypes & (byte) 2) != 0)
         {
           chkMediaVolume.setChecked(true);
         }
-        if((volumeTypes & (byte)4) != 0)
+        if ((volumeTypes & (byte) 4) != 0)
         {
           chkAlarmVolume.setChecked(true);
         }
-        if((volumeTypes & (byte)8) != 0)
+        if ((volumeTypes & (byte) 8) != 0)
         {
           chkNotificationVolume.setChecked(true);
         }
@@ -281,24 +311,25 @@ public class FunctionEditActivity extends Activity
       case Constants.FUNCTION_TYPE_RINGTONE:
         spinnerType.setSelection(1);
         ringtone_uri = savedInstance.getParcelable(Constants.INTENT_KEY_URI);
-        chkRingtoneVibrate.setChecked(savedInstance.getBoolean(Constants.INTENT_KEY_VIBRATE));
+        chkRingtoneVibrate.setChecked(savedInstance
+            .getBoolean(Constants.INTENT_KEY_VIBRATE));
         byte toneTypes = savedInstance.getByte(Constants.INTENT_KEY_TONE_TYPES);
-        if((toneTypes & (byte)1) != 0)
+        if ((toneTypes & (byte) 1) != 0)
         {
           chkRingtoneTone.setChecked(true);
         }
-        if((toneTypes & (byte)2) != 0)
+        if ((toneTypes & (byte) 2) != 0)
         {
           chkAlarmTone.setChecked(true);
         }
-        if((toneTypes & (byte)4) != 0)
+        if ((toneTypes & (byte) 4) != 0)
         {
           chkNotificationTone.setChecked(true);
         }
         break;
       case Constants.FUNCTION_TYPE_WALLPAPER:
         spinnerType.setSelection(2);
-        imageUri = savedInstance.getParcelable(Constants.INTENT_KEY_IMAGEURI); 
+        imageUri = savedInstance.getParcelable(Constants.INTENT_KEY_IMAGEURI);
         break;
     }
   }
@@ -307,9 +338,10 @@ public class FunctionEditActivity extends Activity
   protected void onActivityResult(int requestCode, int resultCode, Intent data)
   {
     super.onActivityResult(requestCode, resultCode, data);
-    if(resultCode == RESULT_OK)
+    if (resultCode == RESULT_OK)
     {
-      switch (requestCode) {
+      switch (requestCode)
+      {
         case Constants.PICK_FROM_FILE:
           imageUri = data.getData();
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
@@ -317,12 +349,13 @@ public class FunctionEditActivity extends Activity
           break;
         case Constants.REQUEST_CODE_RINGTONE_PICKER:
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
-          ringtone_uri = data.getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
+          ringtone_uri = data
+              .getParcelableExtra(RingtoneManager.EXTRA_RINGTONE_PICKED_URI);
           Log.d(TAG, "uri " + ringtone_uri);
           Toast.makeText(this, "" + ringtone_uri, Toast.LENGTH_LONG).show();
         default:
           break;
-       }
+      }
     }
     else
     {

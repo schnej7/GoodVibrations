@@ -21,15 +21,15 @@ public class WallpaperFunction extends Function
   private Context mC;
   private WallpaperManager WM;
   private Uri imageUri;
- 
-  public WallpaperFunction(Bundle b,int newID)
+
+  public WallpaperFunction(Bundle b, int newID)
   {
-    Log.d(TAG,"RingtoneFunction() Constructor");
+    Log.d(TAG, "RingtoneFunction() Constructor");
     mC = GoodVibrationsService.c;
     WM = WallpaperManager.getInstance(mC);
     imageUri = b.getParcelable(Constants.INTENT_KEY_IMAGEURI);
     name = b.getString(Constants.INTENT_KEY_NAME);
-    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
       id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
     }
@@ -39,49 +39,50 @@ public class WallpaperFunction extends Function
     }
     type = Function.FunctionType.WALLPAPER;
   }
-  
+
   public WallpaperFunction(String s)
   {
     mC = GoodVibrationsService.c;
     WM = WallpaperManager.getInstance(mC);
-    String [] categories = s.split(Constants.CATEGORY_DELIM);
+    String[] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     imageUri = Uri.parse(categories[2]);
     type = Function.FunctionType.WALLPAPER;
   }
-  
+
   @Override
   public WallpaperFunction execute()
   {
     Log.d(TAG, "execute() - Setting Wallpaper to " + imageUri);
     WallpaperFunction inverse = getInverse();
-    
+
     try
     {
-      //Convert uri to bitmap
-      Log.d(TAG,"Changing Wallpaper");
-      
-      Bitmap bitmap = MediaStore.Images.Media.getBitmap(mC.getContentResolver(), imageUri);
+      // Convert uri to bitmap
+      Log.d(TAG, "Changing Wallpaper");
+
+      Bitmap bitmap = MediaStore.Images.Media.getBitmap(
+          mC.getContentResolver(), imageUri);
       WM.setBitmap(bitmap);
     }
-    catch(Exception e)
+    catch (Exception e)
     {
       Log.d(TAG, "Error executing set wallpaper");
       // error handling goes here -- also, use something other than Throwable
     }
     return inverse;
   }
-  
+
   private WallpaperFunction getInverse()
   {
     Bundle b = new Bundle();
-    
-    b.putParcelable(Constants.INTENT_KEY_IMAGEURI,imageUri);
-    b.putString(Constants.INTENT_KEY_NAME,name + "inv");
-    
-    WallpaperFunction inverse = new WallpaperFunction(b,id*-1);
-    return inverse;    
+
+    b.putParcelable(Constants.INTENT_KEY_IMAGEURI, imageUri);
+    b.putString(Constants.INTENT_KEY_NAME, name + "inv");
+
+    WallpaperFunction inverse = new WallpaperFunction(b, id * -1);
+    return inverse;
   }
 
   @Override
@@ -89,9 +90,9 @@ public class WallpaperFunction extends Function
   {
     String saveString = new String();
     saveString = name + Constants.CATEGORY_DELIM;
-    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += id + Constants.CATEGORY_DELIM;
     saveString += imageUri.toString() + Constants.CATEGORY_DELIM;
-    
+
     return saveString;
   }
 
@@ -99,12 +100,12 @@ public class WallpaperFunction extends Function
   public Intent getFunctionAsIntent()
   {
     Intent i = new Intent(Constants.SERVICE_MESSAGE);
-    
+
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_WALLPAPER);
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
-    
+
     return i;
   }
 

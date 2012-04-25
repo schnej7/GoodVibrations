@@ -26,12 +26,13 @@ public class RingtoneFunction extends Function
   {
     Log.d(TAG, "RingtoneFunction() Constructor");
     mC = GoodVibrationsService.c;
-    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
+    AM = (AudioManager) GoodVibrationsService.c
+        .getSystemService(Context.AUDIO_SERVICE);
     mUri = b.getParcelable(Constants.INTENT_KEY_URI);
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
     toneTypes = b.getByte(Constants.INTENT_KEY_TONE_TYPES);
-    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
       id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
     }
@@ -41,24 +42,25 @@ public class RingtoneFunction extends Function
     }
     type = Function.FunctionType.RINGTONE;
   }
-  
+
   // RingtoneFunction
   // Constructor for making ringtones from persistent storage
   public RingtoneFunction(String s)
   {
     mC = GoodVibrationsService.c;
-    AM = (AudioManager) GoodVibrationsService.c.getSystemService(Context.AUDIO_SERVICE);
+    AM = (AudioManager) GoodVibrationsService.c
+        .getSystemService(Context.AUDIO_SERVICE);
     type = Function.FunctionType.RINGTONE;
-    String [] categories = s.split(Constants.CATEGORY_DELIM);
+    String[] categories = s.split(Constants.CATEGORY_DELIM);
     name = categories[0];
     id = new Integer(categories[1]).intValue();
     mUri = Uri.parse(categories[2]);
     vibrate = new Boolean(categories[3]).booleanValue();
     toneTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RINGTONE;
-    
-    Log.d(TAG,"NAME: " + name);
-    Log.d(TAG,"ID: " + id);
+
+    Log.d(TAG, "NAME: " + name);
+    Log.d(TAG, "ID: " + id);
   }
 
   // execute
@@ -66,53 +68,59 @@ public class RingtoneFunction extends Function
   public RingtoneFunction execute()
   {
     Log.d(TAG, "execute() - Setting Ringtone to " + mUri);
-    
+
     RingtoneFunction inverse = getInverse();
-  
+
     // If the Ringtone was selected
-    if((toneTypes & (byte)1) != 0)
+    if ((toneTypes & (byte) 1) != 0)
     {
-      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE, mUri);
+      RingtoneManager.setActualDefaultRingtoneUri(mC,
+          RingtoneManager.TYPE_RINGTONE, mUri);
     }
     // If the Alarm tone was selected
-    if((toneTypes & (byte)2) != 0)
+    if ((toneTypes & (byte) 2) != 0)
     {
-      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_ALARM, mUri);
+      RingtoneManager.setActualDefaultRingtoneUri(mC,
+          RingtoneManager.TYPE_ALARM, mUri);
     }
     // If the notification tone was selected
-    if((toneTypes & (byte)4) != 0)
+    if ((toneTypes & (byte) 4) != 0)
     {
-      RingtoneManager.setActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_NOTIFICATION, mUri);
+      RingtoneManager.setActualDefaultRingtoneUri(mC,
+          RingtoneManager.TYPE_NOTIFICATION, mUri);
     }
 
     // If the vibrate checkbox was checked
-    if(vibrate)
+    if (vibrate)
     {
-      AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_ON);
+      AM.setVibrateSetting(AudioManager.STREAM_RING,
+          AudioManager.VIBRATE_SETTING_ON);
     }
     else
     {
-      AM.setVibrateSetting(AudioManager.STREAM_RING, AudioManager.VIBRATE_SETTING_OFF);
+      AM.setVibrateSetting(AudioManager.STREAM_RING,
+          AudioManager.VIBRATE_SETTING_OFF);
     }
-    
+
     return inverse;
   }
-  
+
   private RingtoneFunction getInverse()
   {
     Bundle b = new Bundle();
-        
-    Uri ringtone = RingtoneManager.getActualDefaultRingtoneUri(mC, RingtoneManager.TYPE_RINGTONE);
+
+    Uri ringtone = RingtoneManager.getActualDefaultRingtoneUri(mC,
+        RingtoneManager.TYPE_RINGTONE);
     int currentVibrate = AM.getVibrateSetting(AudioManager.STREAM_RING);
     boolean currentVibrateBool = false;
     currentVibrateBool = (currentVibrate == AudioManager.VIBRATE_SETTING_ON);
-    
+
     b.putParcelable(Constants.INTENT_KEY_URI, ringtone);
     b.putBoolean(Constants.INTENT_KEY_VIBRATE, currentVibrateBool);
     b.putString(Constants.INTENT_KEY_NAME, name + "inv");
     b.putByte(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
-    
-    RingtoneFunction inverse = new RingtoneFunction(b,-1*id);
+
+    RingtoneFunction inverse = new RingtoneFunction(b, -1 * id);
     return inverse;
   }
 
@@ -123,14 +131,14 @@ public class RingtoneFunction extends Function
   {
     String saveString = new String();
     saveString = name + Constants.CATEGORY_DELIM;
-    saveString += id  + Constants.CATEGORY_DELIM;
+    saveString += id + Constants.CATEGORY_DELIM;
     saveString += mUri.toString();
-    saveString += Constants.CATEGORY_DELIM;    
+    saveString += Constants.CATEGORY_DELIM;
     saveString += new Boolean(vibrate).toString();
-    saveString += Constants.CATEGORY_DELIM; 
+    saveString += Constants.CATEGORY_DELIM;
     saveString += new Byte(toneTypes);
     saveString += Constants.CATEGORY_DELIM;
-    
+
     return saveString;
   }
 
@@ -138,14 +146,14 @@ public class RingtoneFunction extends Function
   public Intent getFunctionAsIntent()
   {
     Intent i = new Intent(Constants.SERVICE_MESSAGE);
-    
+
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.FUNCTION_TYPE_RINGTONE);
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_URI, mUri);
     i.putExtra(Constants.INTENT_KEY_VIBRATE, vibrate);
     i.putExtra(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
-    
+
     return i;
   }
 
