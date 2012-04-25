@@ -37,7 +37,14 @@ public class TimeTrigger extends Trigger
   public TimeTrigger(Bundle b, int newID)
   {
     Log.d(TAG,"TimeTrigger()");
-    id = newID;
+    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    {
+     id = b.getInt(Constants.INTENT_KEY_EDITED_ID); 
+    }
+    else
+    {
+      id = newID;
+    }
     name = b.getString(Constants.INTENT_KEY_NAME);
     startFunctionIDs = new ArrayList<Integer>();
     stopFunctionIDs = new ArrayList<Integer>();
@@ -300,8 +307,7 @@ public class TimeTrigger extends Trigger
   public Intent getTriggerAsIntent()
   {
     Intent i = new Intent(Constants.SERVICE_MESSAGE);
-    
-    i.putExtra(Constants.INTENT_KEY_EDITED_BOOL, true);
+
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
     i.putExtra(Constants.INTENT_KEY_EDITED_BOOL,true);

@@ -43,7 +43,14 @@ public class LocationTrigger extends Trigger
     
     isInside = false;
     name = b.getString(Constants.INTENT_KEY_NAME);
-    id = newID;
+    if(b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
+    {
+     id = b.getInt(Constants.INTENT_KEY_EDITED_ID); 
+    }
+    else
+    {
+      id = newID;
+    }
     type = Trigger.TriggerType.LOCATION;
 
     Log.d(TAG, "Made Location Manager");
@@ -344,7 +351,7 @@ public class LocationTrigger extends Trigger
   @Override
   public Intent getTriggerAsIntent()
   {
-    Intent i = new Intent();
+    Intent i = new Intent(Constants.SERVICE_MESSAGE);
 
     i.putExtra(Constants.INTENT_KEY_NAME, name);
     i.putExtra(Constants.INTENT_KEY_EDITED_ID, id);
@@ -352,7 +359,12 @@ public class LocationTrigger extends Trigger
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.TRIGGER_TYPE_LOCATION);
     i.putExtra(Constants.INTENT_KEY_LATITUDE, center.getLatitude());
     i.putExtra(Constants.INTENT_KEY_LONGITUDE, center.getLatitude());
-    i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, enterFunctionIDs.toArray());
+    int[] IDs = new int[enterFunctionIDs.size()];
+    for(int a = 0; a < enterFunctionIDs.size(); a++)
+    {
+      IDs[a] = enterFunctionIDs.get(a);
+    }
+    i.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, IDs);
     
     return i;
   }

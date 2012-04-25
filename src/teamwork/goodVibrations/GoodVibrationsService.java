@@ -145,13 +145,6 @@ public class GoodVibrationsService extends Service
   public int onStartCommand(Intent intent, int flags, int startId)
   {
     Log.d(TAG, "Starting onStartCommand");
-    
-    
-    Log.d(TAG,"MANUALLY MAKING TRIGGER");
-//    TimeTrigger tt = new TimeTrigger("name@12@1#2#3#@4#5#6#@1234567890@2345678901@28");
-//    LocationTrigger tt = new LocationTrigger(getApplicationContext(),"name@13@1#2#3#@4#5#6#@-41.324@713.234@40.2");
-    Log.d(TAG,"DONE MANUALLY MAKING TRIGGER");
-    
 
     Bundle b = intent.getExtras();
     final int intentType = b.getInt(Constants.INTENT_TYPE);
@@ -271,6 +264,7 @@ public class GoodVibrationsService extends Service
           break;
           
         case Constants.INTENT_KEY_TRIGGER:
+          Log.d(TAG, "--Sending trigger to activity");
           id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
           i = triggers.get(id).getTriggerAsIntent();
           i.putExtra(Constants.INTENT_TYPE, Constants.INTENT_KEY_TRIGGER);

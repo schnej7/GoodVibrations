@@ -17,6 +17,7 @@ public class TimeTriggerEditActivity extends Activity
   EditText txtName;
   EditText txtPriority;
   private boolean firstTime = true;
+  private boolean beingEdited = false;
   
   public void onCreate(Bundle savedInstanceState)
   {
@@ -132,20 +133,20 @@ public class TimeTriggerEditActivity extends Activity
     });
     
     Bundle b = getIntent().getExtras();
-    boolean beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
+    beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
     Log.d(TAG, "beingEdited = " + beingEdited);
-    if(beingEdited){
+    if(beingEdited && firstTime){
       firstTime = false;
       txtName.setText(b.getString(Constants.INTENT_KEY_NAME));
       mIntent.putExtra(Constants.INTENT_KEY_NAME, b.getString(Constants.INTENT_KEY_NAME));
       txtPriority.setText(new Integer(b.getInt(Constants.INTENT_KEY_PRIORITY)).toString());
+      mIntent.putExtra(Constants.INTENT_KEY_EDITED_ID, b.getInt(Constants.INTENT_KEY_EDITED_ID));
       mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, b.getInt(Constants.INTENT_KEY_PRIORITY));
       mIntent.putExtra(Constants.INTENT_KEY_START_TIME, b.getLong(Constants.INTENT_KEY_START_TIME));
       mIntent.putExtra(Constants.INTENT_KEY_END_TIME, b.getLong(Constants.INTENT_KEY_END_TIME));
       mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, b.getByte(Constants.INTENT_KEY_REPEAT_DAYS_BYTE));
       mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS, b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS));
-      Log.d(TAG, "INTENT_KEY_FUNCTION_IDS = " + b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS).toString() );
     }
   }
 
