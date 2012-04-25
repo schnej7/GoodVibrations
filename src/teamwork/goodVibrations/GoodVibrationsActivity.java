@@ -37,14 +37,4 @@ public class GoodVibrationsActivity extends TabActivity
     tabHost.addTab(spec);
   }
 
-  @Override
-  public void onStart()
-  {
-    super.onStart();
-
-    // Intent i1 = new Intent(this, MapSelector.class);
-    // startActivityForResult(i1, 0);
-
-  }
-
 }

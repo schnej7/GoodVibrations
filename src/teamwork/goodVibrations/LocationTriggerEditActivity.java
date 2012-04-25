@@ -104,12 +104,13 @@ public class LocationTriggerEditActivity extends Activity
         {
           mIntent.putExtra(Constants.INTENT_KEY_PRIORITY, 1);
         }
-        // start
         setResult(RESULT_OK, mIntent);
         finish(); // Returns to TriggerDisplayActivity.onActivityResult()
       }
     });
 
+    //If this trigger is being edited then populate all of the fields
+    //and put the values into mIntent
     Bundle b = getIntent().getExtras();
     beingEdited = b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
@@ -151,6 +152,7 @@ public class LocationTriggerEditActivity extends Activity
         mIntent.putExtra(Constants.INTENT_KEY_LONGITUDE,
             b.getDouble(Constants.INTENT_KEY_LONGITUDE));
       }
+      //Get the list of functions to choose from
       else if (requestCode == Constants.REQUEST_CODE_SET_FUNCTION_IDS)
       {
         mIntent.putExtra(Constants.INTENT_KEY_FUNCTION_IDS,
