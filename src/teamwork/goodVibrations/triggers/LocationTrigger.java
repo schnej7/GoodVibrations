@@ -14,9 +14,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 
+//location trigger
+//can fire based on whether a user is within m meters of a point in space
 public class LocationTrigger extends Trigger
 {
 
+  //member variables
   private static String TAG = "LocationTrigger";
   private boolean isInside;
   private LocationManager LM;
@@ -62,7 +65,6 @@ public class LocationTrigger extends Trigger
     }
     priority = b.getInt(Constants.INTENT_KEY_PRIORITY);
     Log.d(TAG, "PRIORITY: " + priority);
-    // radius = b.getFloat(Constants.INTENT_KEY_RADIUS);
     // Constant value of 50 for radius
     radius = 50;
     Location l = new Location("");
@@ -130,8 +132,12 @@ public class LocationTrigger extends Trigger
 
     Log.d(TAG, "Got providers");
     Log.d(TAG, "PROVIDERS:" + providers);
+    //criteria is used for determining which piece of hardware is used
+    //for determining location
     criteria = new Criteria();
+    //accuracy fine sets GPS as the preferred device 
     criteria.setAccuracy(Criteria.ACCURACY_FINE);
+    //will get GPS if GPS is enabled, or Cell tower if it isn't
     bestProvider = LM.getBestProvider(criteria, true);
     myLocation = new Location(bestProvider);
     myLocation = LM.getLastKnownLocation(bestProvider);
@@ -140,10 +146,6 @@ public class LocationTrigger extends Trigger
     listener = new GPSLocationListener();
     Log.d(TAG, "BEST: " + bestProvider);
     LM.requestLocationUpdates(bestProvider, 10000, 0, listener);
-
-    // Location recievedLocation = new Location(bestProvider);
-    // recievedLocation.setLatitude(0);
-    // recievedLocation.setLongitude(0);
 
     Log.d(TAG, "Got location" + myLocation);
     Log.d(TAG, "Proider: " + bestProvider);
@@ -182,11 +184,6 @@ public class LocationTrigger extends Trigger
   // Returns how long the location trigger sleeps before being checked again
   public long getSleepTime()
   {
-    // TODO Should sleep time depend on the last time the trigger was called?
-
-    // Check location every 5 minutes
-    // return 300000;
-
     // Check location every 10 seconds
     return 60000;
   }
@@ -223,9 +220,12 @@ public class LocationTrigger extends Trigger
     return true;
   }
 
+  //canExecute
+  //determines if the trigger should fire
   public boolean canExecute()
   {
     Log.d(TAG, "canExecute()");
+    //if location is null the program will die
     if (myLocation != null)
     {
       // Get new location and calculate distance to target
@@ -239,6 +239,7 @@ public class LocationTrigger extends Trigger
       Log.d(TAG, "dist: " + dist + " Radius: " + radius);
       Log.d(TAG, "IsnowInside: " + isNowInside);
 
+      //the trigger should fire if you moved out of the circle of influence
       if (isNowInside != isInside)
       {
         isInside = isNowInside;
@@ -258,12 +259,7 @@ public class LocationTrigger extends Trigger
 
   // addFunction
   // Adds a functionID to either the start or stop list
-  /*
-   * public boolean addFunction(boolean type, Integer f) { if(type ==
-   * ENTERFUNCTION) { enterFunctionIDs.add(f); } else if(type == EXITFUNCTION) {
-   * exitFunctionIDs.add(f); } return true; }
-   */
-
+ 
   @Override
   public void addFunction(Integer fid, boolean isInverse)
   {
@@ -290,6 +286,8 @@ public class LocationTrigger extends Trigger
       }
     }
 
+   
+    //these need to be in here because of the interface
     public void onProviderDisabled(String arg0)
     {
     }

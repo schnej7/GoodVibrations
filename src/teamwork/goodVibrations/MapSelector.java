@@ -22,6 +22,7 @@ import com.google.android.maps.Overlay;
 import android.util.Log;
 import android.widget.Toast;
 
+//map selector displays a map via google api and lets a user select a point
 public class MapSelector extends MapActivity
 {
 
@@ -68,6 +69,7 @@ public class MapSelector extends MapActivity
       Toast.makeText(getBaseContext(),
           p.getLatitudeE6() / 1E6 + "," + p.getLongitudeE6() / 1E6,
           Toast.LENGTH_SHORT).show();
+      //store the selected point
       mIntent.putExtra(Constants.INTENT_KEY_LATITUDE, p.getLatitudeE6() / 1E6);
       mIntent
           .putExtra(Constants.INTENT_KEY_LONGITUDE, p.getLongitudeE6() / 1E6);
@@ -93,23 +95,24 @@ public class MapSelector extends MapActivity
     // Get initial location
     Context c = getApplicationContext();
     LM = (LocationManager) c.getSystemService(Context.LOCATION_SERVICE);
+    //reset criteria and location provider
     Criteria criteria = new Criteria();
     criteria.setAccuracy(Criteria.ACCURACY_FINE);
     String bestProvider = LM.getBestProvider(criteria, true);
     Log.d(TAG, "BEST: " + bestProvider);
     Location receivedLocation = LM.getLastKnownLocation(bestProvider);
 
-    // setContentView(couk.chrisjenx.androidmaplib.R.layout.main);
-    // aml = new AMLController(this, Constants.MAP_API_KEY);
-
+    //set the view for the map
     setContentView(R.layout.quick_start);
     aml = new AMLController(this, R.id.map_view);
 
     myMapView = aml.getMapView();
 
+    //set satellite view and other settings
     myMapView.setSatellite(true);
     myMapView.setReticleDrawMode(MapView.ReticleDrawMode.DRAW_RETICLE_OVER);
     myMapView.displayZoomControls(true);
+    //get users current position and set map to that point
     userLoc = new GeoPoint((int) (receivedLocation.getLatitude() * 1E6),
         (int) (receivedLocation.getLongitude() * 1E6));
     myController = myMapView.getController();
@@ -131,6 +134,7 @@ public class MapSelector extends MapActivity
   }
 
   @Override
+  //needs to be here for interface
   protected boolean isRouteDisplayed()
   {
     return false;

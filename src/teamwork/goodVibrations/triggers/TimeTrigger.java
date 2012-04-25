@@ -13,6 +13,10 @@ public class TimeTrigger extends Trigger
 {
   private static String TAG = "TimeTrigger";
 
+  //various states for time triggers
+  //FIRSTSTART is for when a trigger was created befor the end time, FIRSTSTOP is
+  //for when a trigger was created after the end time, ACTIVE is for when a trigger is between 
+  //start and end times, and inactive is for when a trigger is off
   public static enum STATE
   {
     FIRSTSTART, FIRSTSTOP, ACTIVE, INACTIVE
@@ -41,6 +45,7 @@ public class TimeTrigger extends Trigger
     {
       id = newID;
     }
+    //pull data out of that lovely construct known as a bundle
     name = b.getString(Constants.INTENT_KEY_NAME);
     startFunctionIDs = new ArrayList<Integer>();
     stopFunctionIDs = new ArrayList<Integer>();
@@ -52,12 +57,15 @@ public class TimeTrigger extends Trigger
     type = Trigger.TriggerType.TIME;
     // int[] startIDs = b.getIntArray(Constants.INTENT_KEY_START_FUNCTION_IDS);
     int[] startIDs = b.getIntArray(Constants.INTENT_KEY_FUNCTION_IDS);
+    //associate required functions with the trigger
     for (int i = 0; i < startIDs.length; i++)
     {
       startFunctionIDs.add(new Integer(startIDs[i]));
     }
 
     long currentTimeInDay = Utils.getTimeOfDayInMillis();
+    //set state to FIRSTSTOP if trigger was created after the stop time
+    //(during the inactive phase)
     if (currentTimeInDay > stopTime)
     {
       state = STATE.FIRSTSTOP;
@@ -73,12 +81,15 @@ public class TimeTrigger extends Trigger
 
     type = Trigger.TriggerType.TIME;
 
+    //split string and fill in member variables
     String[] categories = s.split(Constants.CATEGORY_DELIM);
 
     name = categories[0];
     id = new Integer(categories[1]).intValue();
 
     String[] startIDsString = categories[2].split(Constants.LIST_DELIM);
+    //If there are no function ids, then there is a blank string
+    //blank strings can't be represented as an integer
     if (!startIDsString[0].equals(""))
     {
       for (String stringID : startIDsString)
@@ -135,16 +146,23 @@ public class TimeTrigger extends Trigger
       long delay = 0;
       switch (state)
       {
+        //sleep time needs to be calculated differently based on which statethe trigger is in
         case FIRSTSTART:
+          //sleep from now until the start time
           delay = startTime - currentTimeInDay;
           break;
         case ACTIVE:
+          //sleep from now until the end time
           delay = stopTime - currentTimeInDay;
           break;
         case INACTIVE:
+          //sleep for the remainder of the day, and then sleep until the start time
           delay = Constants.dayInMillis - stopTime + startTime;
           break;
         case FIRSTSTOP:
+          //sleep until the end of the dayand then until the start time
+          //basicall the same as INACTIVE, except trigger could be at a 
+          //later time than it would be for INACTIVE
           delay = Constants.dayInMillis - currentTimeInDay + startTime;
           break;
       }
@@ -160,7 +178,8 @@ public class TimeTrigger extends Trigger
     return Constants.dayInMillis - currentTimeInDay;
   }
 
-  // isStarting
+  //isStarting
+  //if the state is inactive or first start, then trigger should be counted as starting up 
   public boolean isStarting()
   {
     if (state == STATE.INACTIVE || state == STATE.FIRSTSTART)
@@ -174,7 +193,7 @@ public class TimeTrigger extends Trigger
   }
 
   // canExecute
-  // Determines if the trigger can execute on the current day of the week
+  // Determines if the trigger can execute based on a given priority
   public boolean canExecute(int priority)
   {
     Log.d(TAG, "Priority: " + this.priority + " MaxPriority: " + priority);
@@ -184,6 +203,8 @@ public class TimeTrigger extends Trigger
     return true;
   }
 
+  //canExecute
+  // Determines if the trigger can execute on the current day of the week
   public boolean canExecute()
   {
     Calendar c = Calendar.getInstance();
