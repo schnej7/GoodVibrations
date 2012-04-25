@@ -38,6 +38,7 @@ public class FunctionDisplayActivity extends Activity
 
     registerForContextMenu(listView);
 
+    //Add button
     final Button buttonAdd = (Button) findViewById(R.id.addFunction);
     buttonAdd.setOnClickListener(new View.OnClickListener()
     {
@@ -49,7 +50,7 @@ public class FunctionDisplayActivity extends Activity
         startActivityForResult(functionEditIntent, 0);
       }
     });
-
+    
     IntentFilter messageFilter;
     messageFilter = new IntentFilter(Constants.SERVICE_MESSAGE);
     messageFilter.addAction(Constants.SERVICE_MESSAGE);
@@ -60,6 +61,7 @@ public class FunctionDisplayActivity extends Activity
   public void onResume()
   {
     super.onResume();
+    //On resume ask the service for a new list of functions
     Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
     i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
@@ -76,14 +78,10 @@ public class FunctionDisplayActivity extends Activity
   public void onCreateContextMenu(ContextMenu menu, View v,
       ContextMenuInfo menuInfo)
   {
+    //Options to edit and delete functions
     AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
     menu.setHeaderTitle(functionArrayAdapter.getItem(info.position));
-    menu.add(Menu.NONE, Constants.MENU_ITEM_EDIT, Menu.NONE, "Edit"); // TODO
-                                                                      // The
-                                                                      // strings
-                                                                      // should
-                                                                      // be
-                                                                      // resources
+    menu.add(Menu.NONE, Constants.MENU_ITEM_EDIT, Menu.NONE, "Edit");
     menu.add(Menu.NONE, Constants.MENU_ITEM_DELETE, Menu.NONE, "Delete");
   }
 
@@ -93,13 +91,15 @@ public class FunctionDisplayActivity extends Activity
     AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
         .getMenuInfo();
     int menuItemIndex = item.getItemId();
+    //This is the function edit button
     if (menuItemIndex == Constants.MENU_ITEM_EDIT)
     {
       Log.d(TAG, "SHOULD START EDIT ACTIVITY HERE");
       String functionMenuName = functionArrayAdapter.getItem(info.position);
       int endIndex = functionMenuName.indexOf(')', 1);
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
-
+      
+      //Send an intent to the service to get the function data
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
@@ -109,6 +109,7 @@ public class FunctionDisplayActivity extends Activity
       onResume();
 
     }
+    //This is the function delete button
     else if (menuItemIndex == Constants.MENU_ITEM_DELETE)
     {
       Log.d(TAG, "SHOULD DELETE TRIGGER HERE");
@@ -117,6 +118,7 @@ public class FunctionDisplayActivity extends Activity
       int endIndex = functionMenuName.indexOf(')', 1);
       int id = Integer.parseInt(functionMenuName.substring(1, endIndex));
 
+      //Send an intent to the service to delete the function
       Intent i = new Intent(getApplicationContext(),
           GoodVibrationsService.class);
       i.putExtra(Constants.INTENT_TYPE, Constants.DELETE_FUNCTION);
@@ -176,6 +178,8 @@ public class FunctionDisplayActivity extends Activity
 
       Bundle b = intent.getExtras();
 
+      //If the message from the service is a list of all the functions
+      //Then update our list
       if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         functionArrayAdapter.clear();
@@ -190,6 +194,7 @@ public class FunctionDisplayActivity extends Activity
         }
       }
 
+      //If the intent from the service is a function, then begin to edit it
       else if (b.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION)
       {
         Log.d(TAG, "Got INTENT_LEY_FUCNTION");
@@ -202,6 +207,7 @@ public class FunctionDisplayActivity extends Activity
             b.getInt(Constants.INTENT_KEY_EDITED_ID));
         int functionType = b.getInt(Constants.INTENT_KEY_TYPE);
         functionEditIntent.putExtra(Constants.INTENT_KEY_TYPE, functionType);
+        //Function is of volume type
         if (functionType == Constants.FUNCTION_TYPE_VOLUME)
         {
           functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME,
@@ -211,6 +217,7 @@ public class FunctionDisplayActivity extends Activity
           functionEditIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES,
               b.getByte(Constants.INTENT_KEY_VOLUME_TYPES));
         }
+        //The function is of ringtone type
         else if (functionType == Constants.FUNCTION_TYPE_RINGTONE)
         {
           functionEditIntent.putExtra(Constants.INTENT_KEY_URI,
@@ -220,8 +227,8 @@ public class FunctionDisplayActivity extends Activity
           functionEditIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES,
               b.getByte(Constants.INTENT_KEY_TONE_TYPES));
         }
-
-        else if (functionType == Constants.FUNCTION_TYPE_RINGTONE)
+        //The function is of Ringtone type
+        else if (functionType == Constants.FUNCTION_TYPE_WALLPAPER)
         {
           functionEditIntent.putExtra(Constants.INTENT_KEY_IMAGEURI,
               b.getParcelable(Constants.INTENT_KEY_IMAGEURI));

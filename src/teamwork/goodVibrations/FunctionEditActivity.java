@@ -37,16 +37,16 @@ public class FunctionEditActivity extends Activity
   private Bundle savedInstance;
   private int myId;
 
-  // final String [] items = new String [] {"Select from Wallpapers",
-  // "Select from Gallery"};
-
   public void onCreate(Bundle savedInstanceState)
   {
     adapter = new ArrayAdapter<String>(this,
         android.R.layout.select_dialog_item, wallpaperItems);
+    //Allows for the edit on wallpaper
     builder = new AlertDialog.Builder(this);
     super.onCreate(savedInstanceState);
     savedInstance = getIntent().getExtras();
+    //Used for sending to the service whether to create a new function or
+    //edit th eold one
     beingEdited = savedInstance.getBoolean(Constants.INTENT_KEY_EDITED_BOOL);
     if (beingEdited)
     {
@@ -88,6 +88,7 @@ public class FunctionEditActivity extends Activity
     final CheckBox chkAlarmTone = (CheckBox) findViewById(R.id.chkAlarmTone);
     final CheckBox chkNotificationTone = (CheckBox) findViewById(R.id.chkNotificationTone);
 
+    //This spinner allows switching between function types
     ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this,
         R.layout.spinner_list_item, array_spinner);
     spinnerType.setAdapter(spinnerAdapter);
@@ -97,6 +98,7 @@ public class FunctionEditActivity extends Activity
           public void onItemSelected(AdapterView<?> adapterView, View view,
               int i, long l)
           {
+            //Saves the image if you switch off that selector item
             Log.d(TAG, "rfIS = " + returnedFromImageSelector);
             if (returnedFromImageSelector == 1)
             {
@@ -109,16 +111,19 @@ public class FunctionEditActivity extends Activity
             mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
             switch (i)
             {
+              //Volume menu
               case 0:
                 llVolumeOptions.setVisibility(View.VISIBLE);
                 llRingtoneOptions.setVisibility(View.GONE);
                 llWallpaperOptions.setVisibility(View.GONE);
                 break;
+              //Ringtone menu
               case 1:
                 llVolumeOptions.setVisibility(View.GONE);
                 llRingtoneOptions.setVisibility(View.VISIBLE);
                 llWallpaperOptions.setVisibility(View.GONE);
                 break;
+              //Wallpaper menu
               case 2:
                 llVolumeOptions.setVisibility(View.GONE);
                 llRingtoneOptions.setVisibility(View.GONE);
@@ -138,6 +143,7 @@ public class FunctionEditActivity extends Activity
           }
         });
 
+    //Button to select what wallpaper to use
     final Button buttonSelectWallpaper = (Button) findViewById(R.id.btn_choose);
     buttonSelectWallpaper.setOnClickListener(new View.OnClickListener()
     {
@@ -204,11 +210,13 @@ public class FunctionEditActivity extends Activity
       }
     });
 
+    //The done button (either done editing or done adding)
     final Button buttonAdd = (Button) findViewById(R.id.buttonDoneTriggerEdit);
     buttonAdd.setOnClickListener(new View.OnClickListener()
     {
       public void onClick(View v)
       {
+        //Figure out what type it is
         int i = spinnerType.getSelectedItemPosition();
         mIntent.putExtra(Constants.INTENT_KEY_EDITED_BOOL, beingEdited);
         if (beingEdited)
@@ -222,6 +230,7 @@ public class FunctionEditActivity extends Activity
         mIntent.putExtra(Constants.INTENT_TYPE, Constants.FUNCTION_TYPE);
         switch (i)
         {
+          //Put extras in for volume type
           case Constants.FUNCTION_TYPE_VOLUME:
             // Use the volume fields
             // Convert 0-99 volume to 0 to MaxVol
@@ -246,6 +255,7 @@ public class FunctionEditActivity extends Activity
             mIntent.putExtra(Constants.INTENT_KEY_VOLUME_TYPES, volumeTypes);
 
             break;
+          //Put extras in for ringtone type
           case Constants.FUNCTION_TYPE_RINGTONE:
             // Use the ring tone fields
             mIntent.putExtra(Constants.INTENT_KEY_TYPE,
@@ -261,6 +271,7 @@ public class FunctionEditActivity extends Activity
             mIntent.putExtra(Constants.INTENT_KEY_TONE_TYPES, toneTypes);
 
             break;
+          //Put extras in for wallpaper type
           case Constants.FUNCTION_TYPE_WALLPAPER:
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
             mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
@@ -276,13 +287,16 @@ public class FunctionEditActivity extends Activity
       }
     });
 
+    //Get the name if the function is being edited
     txtName.setText(savedInstance.getString(Constants.INTENT_KEY_NAME));
     Log.d(
         TAG,
         "INTENT_KEY_NAME: "
             + savedInstance.getString(Constants.INTENT_KEY_NAME));
+    //Set the fields of the form based on the intent values
     switch (savedInstance.getInt(Constants.INTENT_KEY_TYPE))
     {
+      //Volume case
       case Constants.FUNCTION_TYPE_VOLUME:
         spinnerType.setSelection(0);
         sliderVolume.setProgress(savedInstance
@@ -308,6 +322,7 @@ public class FunctionEditActivity extends Activity
           chkNotificationVolume.setChecked(true);
         }
         break;
+      //Ringtone case
       case Constants.FUNCTION_TYPE_RINGTONE:
         spinnerType.setSelection(1);
         ringtone_uri = savedInstance.getParcelable(Constants.INTENT_KEY_URI);
@@ -327,6 +342,7 @@ public class FunctionEditActivity extends Activity
           chkNotificationTone.setChecked(true);
         }
         break;
+      //Wallpaper case
       case Constants.FUNCTION_TYPE_WALLPAPER:
         spinnerType.setSelection(2);
         imageUri = savedInstance.getParcelable(Constants.INTENT_KEY_IMAGEURI);
@@ -342,11 +358,13 @@ public class FunctionEditActivity extends Activity
     {
       switch (requestCode)
       {
+        //This is the result of picking an image
         case Constants.PICK_FROM_FILE:
           imageUri = data.getData();
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
           Toast.makeText(this, "" + imageUri, Toast.LENGTH_LONG).show();
           break;
+        //This is the result of picking a ringtone
         case Constants.REQUEST_CODE_RINGTONE_PICKER:
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
           ringtone_uri = data
@@ -357,10 +375,11 @@ public class FunctionEditActivity extends Activity
           break;
       }
     }
+    //If picking a file failed...
     else
     {
-      Log.d(TAG, "RINGTONE RESULT FAIL");
-      Toast.makeText(this, "Ringtone Fail", Toast.LENGTH_LONG).show();
+      Log.d(TAG, "RESULT FAIL");
+      Toast.makeText(this, "Fail", Toast.LENGTH_LONG).show();
     }
   }
 
