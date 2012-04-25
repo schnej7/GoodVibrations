@@ -10,15 +10,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+// A function to set the ring, alarm and notification tone 
 public class RingtoneFunction extends Function
 {
   private static String TAG = "RingtoneFunction";
 
-  private Uri mUri;
-  private boolean vibrate;
-  private AudioManager AM;
-  private byte toneTypes;
-  Context mC;
+  private Uri mUri;        // The URI to the tone
+  private boolean vibrate; // Whether to vibrate
+  private AudioManager AM; // A reference to the audio manager.
+  private byte toneTypes;  // A bit mask that holds flags to determine which types of tones are to be ste
+  Context mC;              // A reference to the context
 
   // RingtoneFunction
   // Constructor for making ringtone functions through GUI
@@ -32,6 +33,7 @@ public class RingtoneFunction extends Function
     vibrate = b.getBoolean(Constants.INTENT_KEY_VIBRATE);
     name = b.getString(Constants.INTENT_KEY_NAME);
     toneTypes = b.getByte(Constants.INTENT_KEY_TONE_TYPES);
+    // Set the ID properly if it is a new or edited function
     if (b.getBoolean(Constants.INTENT_KEY_EDITED_BOOL))
     {
       id = b.getInt(Constants.INTENT_KEY_EDITED_ID);
@@ -58,9 +60,6 @@ public class RingtoneFunction extends Function
     vibrate = new Boolean(categories[3]).booleanValue();
     toneTypes = new Byte(categories[4]).byteValue();
     type = Function.FunctionType.RINGTONE;
-
-    Log.d(TAG, "NAME: " + name);
-    Log.d(TAG, "ID: " + id);
   }
 
   // execute
@@ -69,6 +68,7 @@ public class RingtoneFunction extends Function
   {
     Log.d(TAG, "execute() - Setting Ringtone to " + mUri);
 
+    // Save the inverse function
     RingtoneFunction inverse = getInverse();
 
     // If the Ringtone was selected
@@ -102,9 +102,14 @@ public class RingtoneFunction extends Function
           AudioManager.VIBRATE_SETTING_OFF);
     }
 
+    // Reutrn the inverse funciton so the setting can be reverted
     return inverse;
   }
 
+  // getInverse
+  // Retuns the inverse of the functoin (generally the current settings)
+  // as another RingtoneFunciton whose ID is the negative of the current
+  // one.  This is used to revert the settings when a trigger turns off
   private RingtoneFunction getInverse()
   {
     Bundle b = new Bundle();
@@ -141,7 +146,10 @@ public class RingtoneFunction extends Function
 
     return saveString;
   }
-
+  
+  // getFunctionAsIntent()
+  // Returns the ringtone function as an intent which is passed
+  // to the activity when this function needs to be edited
   @Override
   public Intent getFunctionAsIntent()
   {

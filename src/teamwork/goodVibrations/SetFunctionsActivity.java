@@ -46,8 +46,8 @@ public class SetFunctionsActivity extends Activity
     dataReceiver = new DataReceiver();
     registerReceiver(dataReceiver, messageFilter);
 
+    //Done Button
     final Button buttonDone = (Button) findViewById(R.id.doneSetTimeTriggerFunctions);
-
     buttonDone.setOnClickListener(new View.OnClickListener()
     {
 
@@ -56,6 +56,7 @@ public class SetFunctionsActivity extends Activity
         Log.d(TAG, "Running onClick()");
         int count = arrayAdapter.getCount();
         ArrayList<Integer> chks = new ArrayList<Integer>();
+        //Get the list of checked functions
         for (int i = 0; i < count; i++)
         {
           FunctionForUI f = arrayAdapter.getItem(i);
@@ -64,7 +65,7 @@ public class SetFunctionsActivity extends Activity
             chks.add(f.id);
           }
         }
-        // convert to int [] from ArrayList<Integer>
+
         int[] intChks = new int[chks.size()];
         for (int j = 0; j < chks.size(); j++)
         {
@@ -83,11 +84,13 @@ public class SetFunctionsActivity extends Activity
   public void onStart()
   {
     super.onStart();
+    //Get the full list of functions from the service
     Intent i = new Intent(getApplicationContext(), GoodVibrationsService.class);
     i.putExtra(Constants.INTENT_TYPE, Constants.GET_DATA);
     i.putExtra(Constants.INTENT_KEY_TYPE, Constants.INTENT_KEY_FUNCTION_LIST);
     startService(i);
 
+    //If the trigger is being edited then populate the check boxes correctly
     try
     {
       b = getIntent().getExtras();
@@ -109,18 +112,13 @@ public class SetFunctionsActivity extends Activity
   class DataReceiver extends BroadcastReceiver
   {
     @Override
-    public void onReceive(Context context, Intent intent)// this method receives
-                                                         // broadcast messages.
-                                                         // Be sure to modify
-                                                         // AndroidManifest.xml
-                                                         // file in order to
-                                                         // enable message
-                                                         // receiving
+    public void onReceive(Context context, Intent intent)
     {
       Log.d(TAG, "RECIEVED BROADCAST MESSAGE");
 
       Bundle b2 = intent.getExtras();
 
+      //This is the services's response to populate the list of functions
       if (b2.getInt(Constants.INTENT_TYPE) == Constants.INTENT_KEY_FUNCTION_LIST)
       {
         String[] functionNames = b2
@@ -138,6 +136,8 @@ public class SetFunctionsActivity extends Activity
       // repopulate fields if we have been here before
       Log.d(TAG, "Trying to get intent for existing function ids");
 
+      //Once the functions are added, check off the ones that
+      //should be checked off
       try
       {
         Log.d(TAG, "funcs.size() = " + funcs.size());

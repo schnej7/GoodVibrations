@@ -11,13 +11,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 
+// A function to set the wallpaper
 public class WallpaperFunction extends Function
 {
   private String TAG = "Wallpaper Function";
-  private Context mC;
-  private WallpaperManager WM;
-  private Uri imageUri;
+  private Context mC;           // A reference to the context
+  private WallpaperManager WM;  // A reference to the wallpaper manager
+  private Uri imageUri;         // A URI to the wallpaper image
 
+  // Constructor when creating from service
   public WallpaperFunction(Bundle b, int newID)
   {
     Log.d(TAG, "RingtoneFunction() Constructor");
@@ -36,6 +38,7 @@ public class WallpaperFunction extends Function
     type = Function.FunctionType.WALLPAPER;
   }
 
+  // Constructor when remaking from persistent storage
   public WallpaperFunction(String s)
   {
     mC = GoodVibrationsService.c;
@@ -47,6 +50,8 @@ public class WallpaperFunction extends Function
     type = Function.FunctionType.WALLPAPER;
   }
 
+  // execute
+  // Does the actual changing of the wallpaper
   @Override
   public WallpaperFunction execute()
   {
@@ -70,6 +75,10 @@ public class WallpaperFunction extends Function
     return inverse;
   }
 
+  // getInverse
+  // Note:  This function does not actually get the current wallpaper.
+  //        This is because there is no access to it in the Android API
+  //        Instead, this just returns the wallpaper that the function sets
   private WallpaperFunction getInverse()
   {
     Bundle b = new Bundle();
@@ -81,6 +90,8 @@ public class WallpaperFunction extends Function
     return inverse;
   }
 
+  // getInternalSaveString
+  // Gets the function as a string to save in the persistent storage 
   @Override
   public String getInternalSaveString()
   {
@@ -92,6 +103,9 @@ public class WallpaperFunction extends Function
     return saveString;
   }
 
+  // getFunctionAsIntent
+  // Returns the wallpaper as an intent which is used when editing the
+  // wallpaper function in the GUI
   @Override
   public Intent getFunctionAsIntent()
   {
