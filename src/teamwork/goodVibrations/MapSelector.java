@@ -12,6 +12,7 @@ import android.graphics.Canvas;
 import android.graphics.Point;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import com.google.android.maps.GeoPoint;
@@ -34,7 +35,9 @@ public class MapSelector extends MapActivity
   private MapView myMapView;
   private MapController myController;
   private Intent mIntent;
+  private Location myLocation;
   GeoPoint userLoc;
+    
 
   // Helper class
   // MapOverlay will draw a point on the map and display a
@@ -59,7 +62,7 @@ public class MapSelector extends MapActivity
       // Log.d(TAG, "drew picture");
       return true;
     }
-
+    
     @Override
     public boolean onTap(GeoPoint p, MapView mapView)
     {
@@ -89,6 +92,7 @@ public class MapSelector extends MapActivity
 
   protected void onStart()
   {
+    
     Log.d(TAG, "Starting Activity");
     super.onStart();
 
@@ -100,7 +104,11 @@ public class MapSelector extends MapActivity
     criteria.setAccuracy(Criteria.ACCURACY_FINE);
     String bestProvider = LM.getBestProvider(criteria, true);
     Log.d(TAG, "BEST: " + bestProvider);
-    Location receivedLocation = LM.getLastKnownLocation(bestProvider);
+    GPSLocationListener listener = new GPSLocationListener();
+    LM.requestLocationUpdates(bestProvider, 10000, 0, listener);
+    Location receivedLocation = new Location(bestProvider);
+    receivedLocation = LM.getLastKnownLocation(bestProvider);
+
 
     //set the view for the map
     setContentView(R.layout.quick_start);
@@ -113,6 +121,7 @@ public class MapSelector extends MapActivity
     myMapView.setReticleDrawMode(MapView.ReticleDrawMode.DRAW_RETICLE_OVER);
     myMapView.displayZoomControls(true);
     //get users current position and set map to that point
+    Log.d(TAG, "receivedLocation: " + receivedLocation);
     userLoc = new GeoPoint((int) (receivedLocation.getLatitude() * 1E6),
         (int) (receivedLocation.getLongitude() * 1E6));
     myController = myMapView.getController();
@@ -132,12 +141,39 @@ public class MapSelector extends MapActivity
     Log.d(TAG, "made overlay");
 
   }
-
-  @Override
-  //needs to be here for interface
-  protected boolean isRouteDisplayed()
+//This class changes the local location variable whenever the
+//phones location is updated
+public class GPSLocationListener implements LocationListener
+{
+public void onLocationChanged(Location location)
+{
+  Log.d(TAG, "Location Listener Called");
+  if (location != null)
   {
-    return false;
+    myLocation = location;
   }
-
 }
+
+
+//these need to be in here because of the interface
+public void onProviderDisabled(String arg0)
+{
+}
+
+public void onProviderEnabled(String provider)
+{
+}
+
+public void onStatusChanged(String provider, int status, Bundle extras)
+{
+}
+}
+
+@Override
+protected boolean isRouteDisplayed()
+{
+  // TODO Auto-generated method stub
+  return false;
+}
+}
+
