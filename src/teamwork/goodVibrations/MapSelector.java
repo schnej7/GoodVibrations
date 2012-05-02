@@ -112,9 +112,17 @@ public class MapSelector extends MapActivity
     myMapView.setSatellite(true);
     myMapView.setReticleDrawMode(MapView.ReticleDrawMode.DRAW_RETICLE_OVER);
     myMapView.displayZoomControls(true);
-    //get users current position and set map to that point
-    userLoc = new GeoPoint((int) (receivedLocation.getLatitude() * 1E6),
-        (int) (receivedLocation.getLongitude() * 1E6));
+    //get users current position and set map to that point 
+    try
+    {
+      userLoc = new GeoPoint((int) (receivedLocation.getLatitude()  * 1E6),
+                             (int) (receivedLocation.getLongitude() * 1E6));
+    }
+    catch(NullPointerException e)
+    {
+      userLoc = new GeoPoint((int)(42.730051 * 1E6),(int)(-73.681729*1E6));
+    }
+    
     myController = myMapView.getController();
     myController.setZoom(17);
     aml.snapTo(userLoc);
