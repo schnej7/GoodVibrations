@@ -43,7 +43,7 @@
 	    <string name="endTime">End Time</string>
 	    <string name="addTimeTrigger">Add Time Trigger</string>
 	    <string name="setTimes">Set Start and End Times</string>
-	    <string name="repeat">Repeat?</string>
+	    <string name="repeat">Days Active</string>
 	    <string name="mon">Monday</string>
 	    <string name="tues">Tuesday</string>
 	    <string name="wed">Wednesday</string>
