@@ -84,8 +84,12 @@ public class GoodVibrationsService extends Service
                     }
                     else
                     {
-                      functions.remove(fID.intValue());
-                      t.removeFunction(fID);
+                      // Only remove functions if they have negative IDs
+                      if(fID.intValue() < 0)
+                      {
+                        functions.remove(fID.intValue());
+                        t.removeFunction(fID);
+                      }
                       // reset the max priority since the trigger has ended
                       maxPriority = Integer.MAX_VALUE;
                     }
