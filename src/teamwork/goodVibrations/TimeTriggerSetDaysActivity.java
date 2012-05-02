@@ -36,9 +36,6 @@ public class TimeTriggerSetDaysActivity extends Activity
     final CheckBox chkThursday = (CheckBox) findViewById(R.id.chkThursday);
     final CheckBox chkFriday = (CheckBox) findViewById(R.id.chkFriday);
     final CheckBox chkSaturday = (CheckBox) findViewById(R.id.chkSaturday);
-    //repeat? checkbox
-    final CheckBox chkRepeat = (CheckBox) findViewById(R.id.chkRepeatWeekly);
-
     
     try
     {
@@ -65,7 +62,6 @@ public class TimeTriggerSetDaysActivity extends Activity
         chkFriday.setChecked(true);
       if ((Utils.getDayOfWeekBitMask(7) & daysActive) != 0)
         chkSaturday.setChecked(true);
-      chkRepeat.setChecked(repeat);
     }
     catch (NullPointerException e)
     {
@@ -95,8 +91,7 @@ public class TimeTriggerSetDaysActivity extends Activity
           days |= Utils.getDayOfWeekBitMask(6);
         if (chkSaturday.isChecked())
           days |= Utils.getDayOfWeekBitMask(7);
-        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL,
-            chkRepeat.isChecked());
+        mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BOOL, false);
         Log.d(TAG, "DAYS: " + days);
         mIntent.putExtra(Constants.INTENT_KEY_REPEAT_DAYS_BYTE, days);
         setResult(RESULT_OK, mIntent);

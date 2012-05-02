@@ -3,52 +3,64 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-	<CheckBox
-            android:id="@+id/chkMonday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/mon" />
-	<CheckBox
-            android:id="@+id/chkTuesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/tues" />
-	<CheckBox
-            android:id="@+id/chkWednesday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/wed" />
-	<CheckBox
-            android:id="@+id/chkThursday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/thurs" />
-	<CheckBox
-            android:id="@+id/chkFriday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/fri" />
-	<CheckBox
-            android:id="@+id/chkSaturday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sat" />
-	<CheckBox
-            android:id="@+id/chkSunday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sun" />
-	<CheckBox
-            android:id="@+id/chkRepeatWeekly"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30sp"
-            android:text="@string/repeatWeekly" />
-	<Button
+
+    <CheckBox
+        android:id="@+id/chkMonday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/mon" />
+
+    <CheckBox
+        android:id="@+id/chkTuesday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/tues" />
+
+    <CheckBox
+        android:id="@+id/chkWednesday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/wed" />
+
+    <CheckBox
+        android:id="@+id/chkThursday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/thurs" />
+
+    <CheckBox
+        android:id="@+id/chkFriday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/fri" />
+
+    <CheckBox
+        android:id="@+id/chkSaturday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/sat" />
+
+    <CheckBox
+        android:id="@+id/chkSunday"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:text="@string/sun" />
+
+    <Button
         android:id="@+id/doneSetTimes"
         style="@style/ButtonText"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="left"
+        android:layout_weight="1"
         android:background="@drawable/btn_green"
         android:text="@string/done" />
+
 </LinearLayout>
