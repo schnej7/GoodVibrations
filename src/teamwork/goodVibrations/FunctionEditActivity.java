@@ -36,6 +36,7 @@ public class FunctionEditActivity extends Activity
   private boolean beingEdited = false;
   private Bundle savedInstance;
   private int myId;
+  EditText txtName;
 
   public void onCreate(Bundle savedInstanceState)
   {
@@ -72,7 +73,7 @@ public class FunctionEditActivity extends Activity
     returnedFromImageSelector = mIntent.getIntExtra(
         Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 0);
 
-    final EditText txtName = (EditText) findViewById(R.id.editTextFunctionName);
+    txtName = (EditText) findViewById(R.id.editTextFunctionName);
     final Spinner spinnerType = (Spinner) findViewById(R.id.typeSelect);
 
     final SeekBar sliderVolume = (SeekBar) findViewById(R.id.skbarVolume);
@@ -273,6 +274,7 @@ public class FunctionEditActivity extends Activity
             break;
           //Put extras in for wallpaper type
           case Constants.FUNCTION_TYPE_WALLPAPER:
+            mIntent.putExtra(Constants.INTENT_KEY_NAME, txtName.getText().toString());
             mIntent.putExtra(Constants.INTENT_KEY_IMAGEURI, imageUri);
             mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
             mIntent.putExtra(Constants.INTENT_KEY_TYPE,
@@ -363,6 +365,9 @@ public class FunctionEditActivity extends Activity
           imageUri = data.getData();
           mIntent.putExtra(Constants.INTENT_KEY_CALLED_IMAGE_SELECTOR, 1);
           Toast.makeText(this, "" + imageUri, Toast.LENGTH_LONG).show();
+          
+          String temp =  mIntent.getExtras().getString(Constants.INTENT_KEY_NAME);
+          txtName.setText(temp.toCharArray(), 0, temp.toCharArray().length);
           break;
         //This is the result of picking a ringtone
         case Constants.REQUEST_CODE_RINGTONE_PICKER:
